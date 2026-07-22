@@ -1,0 +1,24 @@
+name: Build Business Central extension
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate extension manifest
+        shell: pwsh
+        run: Get-Content app.json -Raw | ConvertFrom-Json | Out-Null
+      - name: Inventory AL source files
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem src -Recurse -Filter *.al
+          if ($files.Count -eq 0) { throw 'No AL source files found.' }
+          "$($files.Count) AL files found."
+
+# Add a BC artifact download, symbol restore, compilation, and test stage through
+# AL-Go once the target tenant version and signing approach are finalized.

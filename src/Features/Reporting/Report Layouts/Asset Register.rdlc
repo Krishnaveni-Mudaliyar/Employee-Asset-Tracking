@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DataSource_Result">
+      <ConnectionProperties>
+        <DataProvider>NAV</DataProvider>
+        <ConnectString>Data Source=NAV</ConnectString>
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CompanyName_Col"><DataField>CompanyName_Col</DataField></Field>
+        <Field Name="AssetNo_Col"><DataField>AssetNo_Col</DataField></Field>
+        <Field Name="Description_Col"><DataField>Description_Col</DataField></Field>
+        <Field Name="Category_Col"><DataField>Category_Col</DataField></Field>
+        <Field Name="Status_Col"><DataField>Status_Col</DataField></Field>
+        <Field Name="CurrentEmployee_Col"><DataField>CurrentEmployee_Col</DataField></Field>
+        <Field Name="AssignmentDate_Col"><DataField>AssignmentDate_Col</DataField></Field>
+        <Field Name="Cost_Col"><DataField>Cost_Col</DataField></Field>
+        <Field Name="WarrantyExpiryDate_Col"><DataField>WarrantyExpiryDate_Col</DataField></Field>
+        <Field Name="MaintenanceStatus_Col"><DataField>MaintenanceStatus_Col</DataField></Field>
+        <Field Name="LastMaintenanceDate_Col"><DataField>LastMaintenanceDate_Col</DataField></Field>
+        <Field Name="AssetCondition_Col"><DataField>AssetCondition_Col</DataField></Field>
+        <Field Name="SerialNumber_Col"><DataField>SerialNumber_Col</DataField></Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource_Result</DataSourceName>
+        <CommandText>DataSet_Result</CommandText>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Textbox Name="Title">
+            <CanGrow>true</CanGrow>
+            <Height>0.4in</Height>
+            <Width>7.5in</Width>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Asset Register</Value>
+                    <Style><FontSize>16pt</FontSize><FontWeight>Bold</FontWeight></Style>
+                  </TextRun>
+                </TextRuns>
+              </Paragraph>
+            </Paragraphs>
+            <Top>0in</Top>
+            <Left>0in</Left>
+          </Textbox>
+          <Tablix Name="Tablix1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn><Width>0.7in</Width></TablixColumn>
+                <TablixColumn><Width>1.3in</Width></TablixColumn>
+                <TablixColumn><Width>0.8in</Width></TablixColumn>
+                <TablixColumn><Width>0.8in</Width></TablixColumn>
+                <TablixColumn><Width>1.1in</Width></TablixColumn>
+                <TablixColumn><Width>0.6in</Width></TablixColumn>
+                <TablixColumn><Width>0.9in</Width></TablixColumn>
+                <TablixColumn><Width>1.0in</Width></TablixColumn>
+                <TablixColumn><Width>1.0in</Width></TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell><CellContents><Textbox Name="H_AssetNo"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Asset No.</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="H_Description"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Description</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="H_Category"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Category</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="H_Status"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Status</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="H_Employee"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Current Employee</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="H_Cost"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Cost</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="H_Warranty"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Warranty Expiry</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="H_MaintStatus"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Maintenance Status</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="H_Serial"><Paragraphs><Paragraph><TextRuns><TextRun><Value>Serial Number</Value><Style><FontWeight>Bold</FontWeight></Style></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell><CellContents><Textbox Name="AssetNo_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!AssetNo_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="Description_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!Description_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="Category_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!Category_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="Status_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!Status_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="CurrentEmployee_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!CurrentEmployee_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="Cost_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!Cost_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="WarrantyExpiryDate_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!WarrantyExpiryDate_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="MaintenanceStatus_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!MaintenanceStatus_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                    <TablixCell><CellContents><Textbox Name="SerialNumber_Col"><Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!SerialNumber_Col.Value</Value></TextRun></TextRuns></Paragraph></Paragraphs></Textbox></CellContents></TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember>
+                  <Group Name="Details" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember /><TablixMember /><TablixMember /><TablixMember />
+                <TablixMember /><TablixMember /><TablixMember /><TablixMember /><TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <DataSetName>DataSet_Result</DataSetName>
+            <Top>0.5in</Top>
+            <Left>0in</Left>
+            <Height>0.5in</Height>
+            <Width>8.2in</Width>
+          </Tablix>
+        </ReportItems>
+        <Height>1.2in</Height>
+      </Body>
+      <Width>8.5in</Width>
+      <Page>
+        <PageHeight>11in</PageHeight>
+        <PageWidth>11in</PageWidth>
+        <LeftMargin>0.5in</LeftMargin>
+        <RightMargin>0.5in</RightMargin>
+        <TopMargin>0.5in</TopMargin>
+        <BottomMargin>0.5in</BottomMargin>
+        <ColumnSpacing>0in</ColumnSpacing>
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+</Report>

@@ -1,0 +1,15 @@
+{
+    "al.enableCodeAnalysis": true, // Enable code analysis
+    "al.codeAnalyzers": [
+        // "${AppSourceCop}", // App Source publishing rules
+        "${CodeCop}", // Code quality rules
+        "${PerTenantExtensionCop}", // Per-tenant extension rules
+        "${UICop}" // UI validation rules
+    ],
+    "al.backgroundCodeAnalysis": true, //analysis run as you type,not jsut when you save, errors shows up in real time.
+    "al.enableCodeActions": true, // vs code suggest quick fixes, like spell with autocorrect
+    "editor.formatOnSave": true, // format code when you save
+    "editor.codeLens": true,
+    "editor.suggestSelection": "first",
+    "al.incrementalBuild": true // only recompiles changed files, imp as pro. grows, faster build times
+}

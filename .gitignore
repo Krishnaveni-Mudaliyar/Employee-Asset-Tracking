@@ -1,0 +1,14 @@
+# Business Central dependency symbols and local runtime state
+.alpackages/
+.snapshots/
+
+# Generated packages, reports, and temporary build output
+output/
+!output/
+!output/.gitkeep
+*.app
+*.zip
+TestResults/
+
+# Local VS Code user settings
+.vscode/*.user.json

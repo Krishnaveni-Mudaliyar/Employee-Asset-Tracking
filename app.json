@@ -1,0 +1,48 @@
+{
+  "id": "c8750eeb-a49a-410d-8bd0-31d794e9c15a",
+  "name": "Employee Asset Tracking",
+  "publisher": "Krishnaveni Mudaliyar",
+  "version": "1.0.0.0",
+  "brief": "Professional employee asset tracking and management module",
+  "description": "Comprehensive asset tracking module for managing employee asset assignments, returns, transfers, and maintenance. Includes notifications, audit trails, and reporting.",
+      "dependencies": [
+        {
+          "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
+          "name": "Base Application",
+          "publisher": "Microsoft",
+          "version": "27.4.45366.47530"
+        },
+        {
+          "id": "f3552374-a1f2-4356-848e-196002525837",
+          "name": "Business Foundation",
+          "publisher": "Microsoft",
+          "version": "24.0.0.0"
+        },
+        {
+          "id": "63ca2fa4-4f03-4f2b-a480-172fef340d3f","name": "System Application",
+          "publisher": "Microsoft",
+          "version": "27.4.45366.46024"
+        }
+      ],
+      "screenshots": [],
+      "platform": "24.0.0.0",
+      "application": "24.0.0.0",
+      "idRanges": [
+        {
+          "from": 50000,
+          "to": 60000
+        }
+      ],
+      "runtime": "16.0",
+      "target": "Cloud",
+      "features":
+      [
+        "NoImplicitWith",
+        "TranslationFile"
+      ],
+      "resourceExposurePolicy": {
+        "allowDebugging": true,
+        "allowDownloadingSource": false,"includeSourceInSymbolFile": false
+      },
+      "propagateDependencies": false
+    }
