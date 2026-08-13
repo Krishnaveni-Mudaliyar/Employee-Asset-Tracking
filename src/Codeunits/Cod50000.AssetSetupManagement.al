@@ -11,4 +11,38 @@ codeunit 50000 "Asset Setup Management"
         end;
         exit(AssetSetup);
     end;
+
+    procedure GetAssetNo(): Code[20]
+    var
+        AssetSetup: Record "Asset Setup";
+        NoSeries: Codeunit "No. Series";
+
+    begin
+        AssetSetup := GetSetup();
+
+        if AssetSetup."Asset Nos." = '' then
+            Error(
+                'Asset No. Series must be specified in Asset Setup.');
+
+        exit(NoSeries.GetNextNo(AssetSetup."Asset Nos.", WorkDate(), true));
+    end;
+
+    procedure GetAssetRequestNo(): Code[20]
+    var
+        AssetSetup: Record "Asset Setup";
+        NoSeries: Codeunit "No. Series";
+
+    begin
+        AssetSetup := GetSetup();
+
+        if AssetSetup."Asset Request Nos." = '' then
+            Error(
+                'Asset Request No. Series must be specified in Asset Setup.');
+
+        exit(
+            NoSeries.GetNextNo(
+                AssetSetup."Asset Request Nos.",
+                WorkDate(),
+                true));
+    end;
 }

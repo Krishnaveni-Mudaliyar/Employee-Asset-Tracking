@@ -148,4 +148,18 @@ table 50004 Asset
         key(AssetTagNo; "Asset Tag No.") { }
         key(Status; Status) { }
     }
+
+    trigger OnInsert()
+    var
+        AssetSetupManagement: Codeunit "Asset Setup Management";
+    begin
+        if "No." = '' then
+            "No." := AssetSetupManagement.GetAssetNo();
+
+        /* if Status = Status::Available then
+             exit;
+
+         Status := Status::Available;
+         */
+    end;
 }
