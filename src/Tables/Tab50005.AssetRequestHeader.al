@@ -106,4 +106,9 @@ table 50005 "Asset Request Header"
 
         Status := Status::Open;
     end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnSendAssetRequestForApproval()
+    begin
+    end;
 }
