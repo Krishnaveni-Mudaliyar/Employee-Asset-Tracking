@@ -108,7 +108,9 @@ table 50005 "Asset Request Header"
     end;
 
     [IntegrationEvent(false, false)]
-    procedure OnSendAssetRequestForApproval()
+    procedure OnSendAssetRequestForApproval(
+        var
+        AssetRequestHeader: Record "Asset Request Header")
     begin
     end;
 }

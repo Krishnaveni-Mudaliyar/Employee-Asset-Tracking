@@ -10,6 +10,6 @@ codeunit 50002 "Asset Request Management"
                 'Asset request %1 must have open status before it can be sent for approval.',
                 AssetRequestHeader."No.");
 
-        AssetRequestHeader.OnSendAssetRequestForApproval();
+        AssetRequestHeader.OnSendAssetRequestForApproval(AssetRequestHeader);
     end;
 }

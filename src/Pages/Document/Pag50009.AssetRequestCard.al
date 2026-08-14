@@ -63,7 +63,7 @@ page 50009 "Asset Request Card"
                 SubPageLink = "Document No." = field("No.");
             }
 
-            group(Approval)
+            group(Approvals)
             {
                 Caption = 'Approval'
 ;
@@ -90,6 +90,49 @@ page 50009 "Asset Request Card"
                     ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the value of the Approval Date-Time field.', Comment = '%';
+                }
+            }
+        }
+    }
+    actions
+    {
+        area(Processing)
+        {
+            group(Approval)
+            {
+                Caption = 'Approval';
+
+                action(SendForApproval)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Send for Approval';
+                    Image = SendApprovalRequest;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    ToolTip = 'Send the asset request for approval.';
+
+                    trigger OnAction()
+                    var
+                        AssetRequestManagement: Codeunit "Asset Request Management";
+                    begin
+                        CurrPage.SaveRecord();
+                        AssetRequestManagement.SendForApproval(Rec);
+                        CurrPage.Update(false);
+                    end;
+                }
+
+                action(CancelApproveRequest)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Cancel Approve Request';
+                    Image = CancelApprovalRequest;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    ToolTip = 'Cancel the approval request for the asset request.';
+                    trigger OnAction()
+                    begin
+                        Error('Cancel Approval Request will be implemented with the standard approval cancellation process.');
+                    end;
                 }
             }
         }

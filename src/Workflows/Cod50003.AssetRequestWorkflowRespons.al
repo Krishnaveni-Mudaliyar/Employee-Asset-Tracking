@@ -24,6 +24,25 @@ codeunit 50003 "Asset Request Workflow Respons"
             'Group 0');
     end;
 
+    [EventSubscriber(
+        ObjectType::Codeunit,
+        Codeunit::"Workflow Response Handling",
+        OnAddWorkflowResponsePredecessorsToLibrary,
+        '',
+        false,
+        false)]
+    local procedure AddAssetRequestWorkflowResponsePredecessors(ResponseFunctionName: Code[128])
+    var
+        AssetRequestWorkflowEvents: Codeunit "Asset Request Workflow Events";
+        WorkflowResponseHandling: Codeunit "Workflow Response Handling";
+    begin
+        case ResponseFunctionName of
+            SetAssetRequestPendingApprovalCode():
+                WorkflowResponseHandling.AddResponsePredecessor(
+                    SetAssetRequestPendingApprovalCode(),
+                    AssetRequestWorkflowEvents.RunWorkflowOnSendAssetRequestForApprovalCode());
+        end;
+    end;
 
     [EventSubscriber(
         ObjectType::Codeunit,
@@ -40,7 +59,7 @@ codeunit 50003 "Asset Request Workflow Respons"
     var
         AssetRequestHeader: Record "Asset Request Header";
     begin
-        if ResponseWorkflowStepInstance.Argument <> SetAssetRequestPendingApprovalCode() then
+        if ResponseWorkflowStepInstance."Function Name" <> SetAssetRequestPendingApprovalCode() then
             exit;
 
         AssetRequestHeader := Variant;
