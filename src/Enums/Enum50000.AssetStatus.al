@@ -1,7 +1,7 @@
 enum 50000 "Asset Status"
 {
     Extensible = true;
-    
+
     value(0; Available)
     {
         Caption = 'Available';

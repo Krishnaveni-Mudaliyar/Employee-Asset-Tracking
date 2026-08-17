@@ -5,7 +5,6 @@ codeunit 50003 "Asset Request Workflow Respons"
         exit('SETASSETREQUESTPENDINGAPPROVAL');
     end;
 
-
     [EventSubscriber(
         ObjectType::Codeunit,
         Codeunit::"Workflow Response Handling",
@@ -74,6 +73,4 @@ codeunit 50003 "Asset Request Workflow Respons"
 
         ResponseExecuted := true;
     end;
-
-
 }

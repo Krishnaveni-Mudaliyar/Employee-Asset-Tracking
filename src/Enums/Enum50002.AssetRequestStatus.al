@@ -1,7 +1,7 @@
 enum 50002 "Asset Request Status"
 {
     Extensible = true;
-    
+
     value(0; Open)
     {
         Caption = 'Open';

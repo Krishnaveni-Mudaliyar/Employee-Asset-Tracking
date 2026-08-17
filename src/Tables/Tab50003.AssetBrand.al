@@ -2,7 +2,7 @@ table 50003 "Asset Brand"
 {
     Caption = 'Asset Brand';
     DataClassification = CustomerContent;
-    
+
     fields
     {
         field(1; "Code"; Code[20])

@@ -155,11 +155,5 @@ table 50004 Asset
     begin
         if "No." = '' then
             "No." := AssetSetupManagement.GetAssetNo();
-
-        /* if Status = Status::Available then
-             exit;
-
-         Status := Status::Available;
-         */
     end;
 }

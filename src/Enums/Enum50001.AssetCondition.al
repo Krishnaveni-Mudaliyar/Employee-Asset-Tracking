@@ -1,7 +1,7 @@
 enum 50001 "Asset Condition"
 {
     Extensible = true;
-    
+
     value(0; New)
     {
         Caption = 'New';

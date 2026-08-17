@@ -5,7 +5,6 @@ page 50010 "Asset Request Subpage"
     PageType = ListPart;
     SourceTable = "Asset Request Line";
     AutoSplitKey = true;
-
     layout
     {
         area(Content)
@@ -13,7 +12,6 @@ page 50010 "Asset Request Subpage"
             repeater(Lines)
             {
                 Caption = 'General';
-
                 field("Asset Category Code"; Rec."Asset Category Code")
                 {
                     ApplicationArea = All;
