@@ -37,10 +37,14 @@ codeunit 50003 "Asset Request Workflow Respons"
         WorkflowResponseHandling: Codeunit "Workflow Response Handling";
     begin
         case ResponseFunctionName of
+            WorkflowResponseHandling.CreateApprovalRequestsCode():
+                WorkflowResponseHandling.AddResponsePredecessor(
+                    WorkflowResponseHandling.CreateApprovalRequestsCode(),
+                    AssetRequestWorkflowEvents.RunWorkflowOnSendAssetRequestForApprovalCode());
+
             SetAssetRequestPendingApprovalCode():
                 WorkflowResponseHandling.AddResponsePredecessor(
-                    SetAssetRequestPendingApprovalCode(),
-                    AssetRequestWorkflowEvents.RunWorkflowOnSendAssetRequestForApprovalCode());
+                        SetAssetRequestPendingApprovalCode(), AssetRequestWorkflowEvents.RunWorkflowOnSendAssetRequestForApprovalCode());
         end;
     end;
 
