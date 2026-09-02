@@ -127,6 +127,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         asserterror AssetRequestApprovalMgmt.CancelApprovalRequest(AssetRequestHeader);
     end;
 
+    [Test]
     procedure TestAssignAssetRequiresApprovedRequest()
     var
         AssetRequestHeader: Record "Asset Request Header";
@@ -202,6 +203,43 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
     end;
 
     [Test]
+    procedure TestAssignAssetCreatesNotificationForRequester()
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetRequestLine: Record "Asset Request Line";
+        Asset: Record Asset;
+        AssetNotification: Record "Asset Notification";
+        AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+    begin
+        // [GIVEN] an Approved request with one line
+        AssetRequestHeader.Init();
+        AssetRequestHeader.Insert(true);
+        AssetRequestHeader."Employee No." := GetAnyEmployeeNo();
+        AssetRequestHeader.Status := AssetRequestHeader.Status::Approved;
+        AssetRequestHeader.Modify(true);
+
+        AssetRequestLine.Init();
+        AssetRequestLine."Document No." := AssetRequestHeader."No.";
+        AssetRequestLine."Line No." := 10000;
+        AssetRequestLine.Insert(true);
+        AssetRequestLine.Validate(Quantity, 1);
+        AssetRequestLine.Validate("Approved Quantity", 1);
+        AssetRequestLine.Modify(true);
+
+        Asset.Init();
+        Asset.Insert(true);
+        Asset.Modify(true);
+
+        // [WHEN] the asset is assigned
+        AssetAssignmentManagement.AssignAsset(AssetRequestLine, Asset."No.");
+
+        // [THEN] a notification was created for the requester referencing the request
+        AssetNotification.SetRange("Recipient User ID", AssetRequestHeader."Requested By");
+        AssetNotification.SetRange("Related Document No.", AssetRequestHeader."No.");
+        LibraryAssert.IsFalse(AssetNotification.IsEmpty(), 'Expected a notification for the requester after assignment.');
+    end;
+
+    [Test]
     procedure TestReturnAssetRequiresAssignedStatus()
     var
         Asset: Record Asset;
@@ -252,6 +290,52 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         // [WHEN] trying to dispose of it
         // [THEN] it fails
         asserterror AssetDisposalManagement.DisposeAsset(Asset."No.", 'Attempted while assigned.');
+    end;
+
+    [Test]
+    procedure TestBulkAssignFromStockAssignsUpToRemainingQuantity()
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetRequestLine: Record "Asset Request Line";
+        Asset1: Record Asset;
+        Asset2: Record Asset;
+        Asset3: Record Asset;
+        AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+        AssignedCount: Integer;
+    begin
+        // [GIVEN] an Approved request needing 2 assets, and 3 Available assets in stock
+        AssetRequestHeader.Init();
+        AssetRequestHeader.Insert(true);
+        AssetRequestHeader."Employee No." := GetAnyEmployeeNo();
+        AssetRequestHeader.Status := AssetRequestHeader.Status::Approved;
+        AssetRequestHeader.Modify(true);
+
+        AssetRequestLine.Init();
+        AssetRequestLine."Document No." := AssetRequestHeader."No.";
+        AssetRequestLine."Line No." := 10000;
+        AssetRequestLine.Insert(true);
+        AssetRequestLine.Validate(Quantity, 2);
+        AssetRequestLine.Validate("Approved Quantity", 2);
+        AssetRequestLine.Modify(true);
+
+        Asset1.Init();
+        Asset1.Insert(true);
+        Asset1.Modify(true);
+        Asset2.Init();
+        Asset2.Insert(true);
+        Asset2.Modify(true);
+        Asset3.Init();
+        Asset3.Insert(true);
+        Asset3.Modify(true);
+
+        // [WHEN] bulk-assigning from stock
+        AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(AssetRequestLine);
+
+        // [THEN] exactly 2 were assigned, not all 3
+        LibraryAssert.AreEqual(2, AssignedCount, 'Should assign only up to the remaining approved quantity.');
+
+        AssetRequestLine.Get(AssetRequestLine."Document No.", AssetRequestLine."Line No.");
+        LibraryAssert.AreEqual(2, AssetRequestLine."Assigned Quantity", 'Assigned Quantity should be 2.');
     end;
 
     local procedure EnsureAssetSetup(var AssetSetup: Record "Asset Setup")
