@@ -9,6 +9,7 @@
             "environmentName": "BC-Modules",
             "startupObjectId": 22,
             "startupObjectType": "Page",
+            "tenant": "34bf3a6d-fc44-4c00-81e1-6a1edf2eda4e",
             "breakOnError": "All",
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
