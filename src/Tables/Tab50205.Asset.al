@@ -29,7 +29,8 @@ table 50205 Asset
 
                 if AssetCategory.Blocked then
                     Error(
-                        'Asset Category %1 is blocked and cannot be used.', "Category Code");
+                        'Asset Category %1 is blocked and cannot be used.',
+                        "Category Code");
             end;
         }
         field(4; "Sub Category Code"; Code[20])
@@ -41,6 +42,7 @@ table 50205 Asset
             var
                 AssetSubCategory: Record "Asset Sub Category";
                 AssetCategory: Record "Asset Category";
+
             begin
                 if "Sub Category Code" = '' then
                     exit;
@@ -49,7 +51,16 @@ table 50205 Asset
 
                 if AssetSubCategory."Blocked" then
                     Error(
-                        'Asset sub category %1 us blocked and cannot be used.', "Sub Category Code");
+                        'Asset sub category %1 us blocked and cannot be used.',
+                         "Sub Category Code");
+
+                if
+                ("Category Code" <> '') and (AssetSubCategory."Category Code" <> "Category Code")
+                then
+                    Error(
+                        'Asset sub category %1 does not belong to asset category %2.',
+                        "Sub Category Code",
+                        "Category Code");
 
                 if ("Category Code" <> '') and (AssetSubCategory."Category Code" <> "Category Code")
                 then
@@ -63,7 +74,8 @@ table 50205 Asset
 
                     if AssetCategory.Blocked then
                         Error(
-                            'Asset Category %1 is blocked and cannot be used.', AssetSubCategory."Category Code");
+                            'Asset Category %1 is blocked and cannot be used.',
+                            AssetSubCategory."Category Code");
                 end;
             end;
         }
@@ -83,7 +95,8 @@ table 50205 Asset
 
                 if AssetBrand.Blocked then
                     Error(
-                        'Asset brand %1 is blocked and cannot be used.', "Brand Code");
+                        'Asset brand %1 is blocked and cannot be used.',
+                        "Brand Code");
             end;
         }
         field(6; "Model No."; Code[50])
@@ -93,10 +106,48 @@ table 50205 Asset
         field(7; "Serial No."; Code[50])
         {
             Caption = 'Serial No.';
+
+            trigger OnValidate()
+            var
+                Asset: Record Asset;
+            begin
+                if "Serial No." = '' then
+                    exit;
+
+                Asset.SetRange("Serial No.", "Serial No.");
+                Asset.SetFilter("No.", '<>%1', "No.");
+
+                if not Asset.IsEmpty() then begin
+                    Asset.FindFirst();
+                    Error(
+                        'Serial No. %1 is already used on asset %2.',
+                        "Serial No.",
+                        Asset."No.");
+                end;
+            end;
         }
         field(8; "Asset Tag No."; Code[50])
         {
             Caption = 'Asset Tag No.';
+
+            trigger OnValidate()
+            var
+                Asset: Record Asset;
+            begin
+                if "Asset Tag No." = '' then
+                    exit;
+
+                Asset.SetRange("Asset Tag No.", "Asset Tag No.");
+                Asset.SetFilter("No.", '<>%1', "No.");
+
+                if not Asset.IsEmpty() then begin
+                    Asset.FindFirst();
+                    Error(
+                        'Asset Tag No. %1 is already used on asset %2.',
+                        "Asset Tag No.",
+                        Asset."No.");
+                end;
+            end;
         }
         field(9; "Purchase Date"; Date)
         {
