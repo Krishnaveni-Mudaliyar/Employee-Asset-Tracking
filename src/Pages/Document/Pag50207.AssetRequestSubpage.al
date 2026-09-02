@@ -51,4 +51,37 @@ page 50207 "Asset Request Subpage"
             }
         }
     }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(AssignAsset)
+            {
+                ApplicationArea = All;
+                Caption = 'Assign Asset';
+                Image = Approve;
+                ToolTip = 'Assign a specific available asset to this request line.';
+
+                trigger OnAction()
+                var
+                    AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+                    AssignAssetDialog: Page "Assign Asset Dialog";
+                    AssetNo: Code[20];
+                begin
+                    CurrPage.SaveRecord();
+
+                    if AssignAssetDialog.RunModal() <> Action::OK then
+                        exit;
+
+                    AssetNo := AssignAssetDialog.GetAssetNo();
+                    if AssetNo = '' then
+                        exit;
+
+                    AssetAssignmentManagement.AssignAsset(Rec, AssetNo);
+                    CurrPage.Update(false);
+                end;
+            }
+        }
+    }
 }
