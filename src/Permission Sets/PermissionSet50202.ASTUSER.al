@@ -43,8 +43,5 @@ permissionset 50202 "AST-USER"
         page "Asset Assignment List" = X,
         page "Asset Assignment Hist. FactBox" = X,
         page "Emp. Active Asset Assgn." = X,
-        page "Asset Notifications" = X,
-
-        // Page extension — so the Assigned Assets factbox renders on their Employee Card
-        pageextension "Employee Card Ext." = X;
+        page "Asset Notifications" = X;
 }

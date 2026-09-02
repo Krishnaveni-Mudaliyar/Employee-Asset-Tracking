@@ -3,7 +3,7 @@ page 50228 "Asset Notifications"
     ApplicationArea = All;
     Caption = 'Asset Notifications';
     PageType = List;
-    SourceTable = "Asset Notification"
+    SourceTable = "Asset Notification";
     UsageCategory = Lists;
     Editable = false;
 

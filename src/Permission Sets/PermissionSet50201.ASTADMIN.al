@@ -63,9 +63,6 @@ permissionset 50201 "AST-ADMIN"
         page "Emp. Active Asset Assgn." = X,
         page "Asset Notifications" = X,
 
-        // Page extensions
-        pageextension "Employee Card Ext." = X,
-
         // Reports
         report "Asset Register" = X;
 }
