@@ -126,4 +126,4 @@ Employee-Asset-Tracking/
 
 - **Cancel Approve Request** action is a stub (raises an explanatory error rather than cancelling the approval).
 - No page/action currently transitions a request from **Approved** to **Assigned/Closed**, or handles Returns, Transfers, Maintenance, or Disposals, even though number series for those are already defined in Asset Setup — these look like planned next phases of the module.
-- Minor field-name typos carried from the source (`Approved Quanity`, `Assigned Quanity`) — kept as-is here to match the actual field names in code.
+- Minor field-name typos carried from the source (`Approved Quantity`, `Assigned Quantity`) — kept as-is here to match the actual field names in code.

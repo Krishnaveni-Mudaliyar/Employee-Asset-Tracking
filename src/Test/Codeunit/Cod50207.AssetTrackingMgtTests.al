@@ -80,13 +80,13 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetRequestLine.Validate(Quantity, 5);
 
         // [THEN] Approved Quantity cannot exceed Quantity
-        asserterror AssetRequestLine.Validate("Approved Quanity", 6);
+        asserterror AssetRequestLine.Validate("Approved Quantity", 6);
 
         // [WHEN] a valid approved quantity is set
-        AssetRequestLine.Validate("Approved Quanity", 3);
+        AssetRequestLine.Validate("Approved Quantity", 3);
 
         // [THEN] Assigned Quantity cannot exceed Approved Quantity
-        asserterror AssetRequestLine.Validate("Assigned Quanity", 4);
+        asserterror AssetRequestLine.Validate("Assigned Quantity", 4);
     end;
 
     [Test]

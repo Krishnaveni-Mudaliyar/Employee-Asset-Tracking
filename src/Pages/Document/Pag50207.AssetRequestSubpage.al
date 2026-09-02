@@ -32,16 +32,16 @@ page 50207 "Asset Request Subpage"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Quantity field.', Comment = '%';
                 }
-                field("Approved Quanity"; Rec."Approved Quanity")
+                field("Approved Quantity"; Rec."Approved Quantity")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Approved Quanity field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Approved Quantity field.', Comment = '%';
                 }
-                field("Assigned Quanity"; Rec."Assigned Quanity")
+                field("Assigned Quantity"; Rec."Assigned Quantity")
                 {
                     ApplicationArea = All;
                     Editable = false;
-                    ToolTip = 'Specifies the value of the Assigned Quanity field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Assigned Quantity field.', Comment = '%';
                 }
                 field(Status; Rec.Status)
                 {

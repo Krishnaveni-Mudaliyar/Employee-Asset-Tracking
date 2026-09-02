@@ -79,37 +79,37 @@ table 50207 "Asset Request Line"
                         'Quantity must be greater than zero.');
             end;
         }
-        field(7; "Approved Quanity"; Decimal)
+        field(7; "Approved Quantity"; Decimal)
         {
-            Caption = 'Approved Quanity';
+            Caption = 'Approved Quantity';
             DecimalPlaces = 0 : 0;
 
             trigger OnValidate()
             begin
-                if "Approved Quanity" < 0 then
+                if "Approved Quantity" < 0 then
                     Error(
                         'Approved Quantity cannot be negative.');
 
-                if "Approved Quanity" > Quantity then
+                if "Approved Quantity" > Quantity then
                     Error(
                         'Approved Quantity cannot be greater than quantity.');
             end;
         }
-        field(8; "Assigned Quanity"; Decimal)
+        field(8; "Assigned Quantity"; Decimal)
         {
-            Caption = 'Assigned Quanity';
+            Caption = 'Assigned Quantity';
             DecimalPlaces = 0 : 0;
             Editable = false;
 
             trigger OnValidate()
             begin
-                if "Assigned Quanity" < 0 then
+                if "Assigned Quantity" < 0 then
                     Error(
                         'Assigned Quantity cannot be negative.');
 
-                if "Assigned Quanity" > "Approved Quanity" then
+                if "Assigned Quantity" > "Approved Quantity" then
                     Error(
-                        'Assigned Quantity cannot be greater than approved quanity.');
+                        'Assigned Quantity cannot be greater than Approved Quantity.');
             end;
         }
         field(9; Status; Enum "Asset Request Status")

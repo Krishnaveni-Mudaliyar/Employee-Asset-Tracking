@@ -31,7 +31,7 @@ codeunit 50204 "Asset Request Approval Mgmt."
         if ApprovalEntry.FindSet(true) then
             repeat
                 ApprovalEntry.Status := ApprovalEntry.Status::Canceled;
-                ApprovalEntry."Last Modified Date-Time" := CurrentDateTime();
+                ApprovalEntry."Last Date-Time Modified" := CurrentDateTime();
                 ApprovalEntry.Modify(true);
             until ApprovalEntry.Next() = 0;
 

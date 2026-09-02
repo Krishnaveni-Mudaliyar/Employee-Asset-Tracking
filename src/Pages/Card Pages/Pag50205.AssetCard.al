@@ -180,8 +180,8 @@ page 50205 "Asset Card"
                     AssetTransferManagement.TransferAsset(
                         Rec."No.",
                         TransferAssetDialog.GetToEmployeeNo(),
-                        TransferAssetDialog.GetLocationCode(),
-                        TransferAssetDialog.GetRemarks());
+                        TransferAssetDialog.GetToLocationCode(),
+                    TransferAssetDialog.GetRemarks());
                     CurrPage.Update(false);
                 end;
             }

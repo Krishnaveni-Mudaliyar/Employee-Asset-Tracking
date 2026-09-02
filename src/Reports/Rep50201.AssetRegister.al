@@ -29,6 +29,12 @@ report 50201 "Asset Register"
             column(WarrantyStartDate; Format("Warranty Start Date")) { }
             column(WarrantyEndDate; Format("Warranty End Date")) { }
             column(BlockedText; Format(Blocked)) { }
+
+            trigger OnPreDataItem()
+            begin
+                if not IncludeBlocked then
+                    SetRange(Blocked, false);
+            end;
         }
     }
 
@@ -58,12 +64,6 @@ report 50201 "Asset Register"
             IncludeBlocked := true;
         end;
     }
-
-    trigger OnPreDataItem()
-    begin
-        if not IncludeBlocked then
-            Asset.SetRange(Blocked, false);
-    end;
 
     var
         IncludeBlocked: Boolean;
