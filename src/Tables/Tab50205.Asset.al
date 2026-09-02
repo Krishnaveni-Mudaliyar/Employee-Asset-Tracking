@@ -187,6 +187,39 @@ table 50205 Asset
         {
             Caption = 'Blocked';
         }
+        field(18; "Shortcut Dimension 1 Code"; Code[20])
+        {
+            CaptionClass = '1,2,1';
+            Caption = 'Shortcut Dimension 1 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1));
+
+            trigger OnValidate()
+            begin
+                DimMgt.ValidateShortcutDimValues(1, "Shortcut Dimension 1 Code", "Dimension Set ID");
+            end;
+        }
+        field(19; "Shortcut Dimension 2 Code"; Code[20])
+        {
+            CaptionClass = '1,2,2';
+            Caption = 'Shortcut Dimension 2 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2));
+
+            trigger OnValidate()
+            begin
+                DimMgt.ValidateShortcutDimValues(2, "Shortcut Dimension 2 Code", "Dimension Set ID");
+            end;
+        }
+        field(20; "Dimension Set ID"; Integer)
+        {
+            Caption = 'Dimension Set ID';
+            Editable = false;
+            TableRelation = "Dimension Set Entry"."Dimension Set ID";
+
+            trigger OnLookup()
+            begin
+                ShowDimensions();
+            end;
+        }
     }
     keys
     {
@@ -206,5 +239,20 @@ table 50205 Asset
     begin
         if "No." = '' then
             "No." := AssetSetupManagement.GetAssetNo();
+    end;
+
+    var
+        DimMgt: Codeunit DimensionManagement;
+
+    procedure ShowDimensions()
+    begin
+        // NOTE: EditDimensionSet's exact parameter order/signature on codeunit
+        // "Dimension Management" can vary slightly between BC versions. Verify this
+        // call against your BC 28 symbols before relying on it — if it doesn't
+        // compile as-is, check the codeunit's actual procedure signature in the
+        // AL Symbol browser and adjust the arguments to match.
+        "Dimension Set ID" :=
+            DimMgt.EditDimensionSet(Database::Asset, "Dimension Set ID", "No.", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code");
+        Modify(true);
     end;
 }

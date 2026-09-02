@@ -23,6 +23,7 @@ permissionset 50202 "AST-USER"
         tabledata "Asset Transfer" = R,
         tabledata "Asset Maintenance" = R,
         tabledata "Asset Disposal" = R,
+        tabledata "Asset Notification" = RIMD,
 
         // Codeunits needed to send/cancel their own approval request
         codeunit "Asset Setup Management" = X,
@@ -31,6 +32,7 @@ permissionset 50202 "AST-USER"
         codeunit "Asset Request Approval Mgmt." = X,
         codeunit "Asset Request Workflow Events" = X,
         codeunit "Asset Request Approval Events" = X,
+        codeunit "Asset Notification Management" = X,
 
         // Pages
         page "Asset Card" = X,
@@ -41,6 +43,7 @@ permissionset 50202 "AST-USER"
         page "Asset Assignment List" = X,
         page "Asset Assignment Hist. FactBox" = X,
         page "Emp. Active Asset Assgn." = X,
+        page "Asset Notifications" = X,
 
         // Page extension — so the Assigned Assets factbox renders on their Employee Card
         pageextension "Employee Card Ext." = X;
