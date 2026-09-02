@@ -55,8 +55,59 @@ codeunit 50206 "Asset Assignment Management"
         AssetRequestLine.Validate("Assigned Quantity", AssetRequestLine."Assigned Quantity" + 1);
         AssetRequestLine.Modify(true);
 
+        NotifyRequesterOfAssignment(AssetRequestHeader, AssetNo);
         CloseHeaderIfFullyAssigned(AssetRequestHeader);
     end;
+
+    procedure BulkAssignFromStock(var AssetRequestLine: Record "Asset Request Line"): Integer
+    var
+        Asset: Record Asset;
+        RemainingToAssign: Integer;
+        AssignedCount: Integer;
+    begin
+        RemainingToAssign := AssetRequestLine."Approved Quantity" - AssetRequestLine."Assigned Quantity";
+
+        if RemainingToAssign <= 0 then
+            Error(
+                'Asset request line for %1 is already fully assigned (%2 of %3).',
+                AssetRequestLine."Asset Category Code",
+                AssetRequestLine."Assigned Quantity",
+                AssetRequestLine."Approved Quantity");
+
+        Asset.SetRange(Status, Asset.Status::Available);
+        Asset.SetRange(Blocked, false);
+
+        if AssetRequestLine."Asset Category Code" <> '' then
+            Asset.SetRange("Category Code", AssetRequestLine."Asset Category Code");
+
+        if AssetRequestLine."Asset Sub Category Code" <> '' then
+            Asset.SetRange("Sub Category Code", AssetRequestLine."Asset Sub Category Code");
+
+        if not Asset.FindSet() then
+            exit(0);
+
+        AssignedCount := 0;
+
+        repeat
+            if AssignedCount < RemainingToAssign then begin
+                AssignAsset(AssetRequestLine, Asset."No.");
+                AssignedCount += 1;
+            end;
+        until (Asset.Next() = 0) or (AssignedCount >= RemainingToAssign);
+
+        exit(AssignedCount);
+    end;
+
+    local procedure NotifyRequesterOfAssignment(AssetRequestHeader: Record "Asset Request Header"; AssetNo: Code[20])
+    var
+        AssetNotificationManagement: Codeunit "Asset Notification Management";
+    begin
+        AssetNotificationManagement.Notify(
+            AssetRequestHeader."Requested By",
+            StrSubstNo('Asset %1 has been assigned to you for request %2.', AssetNo, AssetRequestHeader."No."),
+            AssetRequestHeader."No.");
+    end;
+
 
     local procedure CloseHeaderIfFullyAssigned(var AssetRequestHeader: Record "Asset Request Header")
     var
