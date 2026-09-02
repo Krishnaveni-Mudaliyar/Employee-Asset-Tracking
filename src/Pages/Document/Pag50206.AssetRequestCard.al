@@ -130,8 +130,19 @@ page 50206 "Asset Request Card"
                     PromotedCategory = Process;
                     ToolTip = 'Cancel the approval request for the asset request.';
                     trigger OnAction()
+                    var
+                        AssetRequestApprovalMgmt: Codeunit "Asset Request Approval Mgmt.";
                     begin
-                        Error('Cancel Approval Request will be implemented with the standard approval cancellation process.');
+                        if not Confirm(
+                            'Do you want to cancel the approval request for asset request %1?',
+                            false,
+                            Rec."No.")
+                        then
+                            exit;
+
+                        CurrPage.SaveRecord();
+                        AssetRequestApprovalMgmt.CancelApprovalRequest(Rec);
+                        CurrPage.Update(false);
                     end;
                 }
             }
