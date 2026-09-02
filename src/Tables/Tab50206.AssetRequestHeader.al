@@ -80,6 +80,39 @@ table 50206 "Asset Request Header"
             DataClassification = SystemMetadata;
             Editable = false;
         }
+        field(13; "Shortcut Dimension 1 Code"; Code[20])
+        {
+            CaptionClass = '1,2,1';
+            Caption = 'Shortcut Dimension 1 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1));
+
+            trigger OnValidate()
+            begin
+                DimMgt.ValidateShortcutDimValues(1, "Shortcut Dimension 1 Code", "Dimension Set ID");
+            end;
+        }
+        field(14; "Shortcut Dimension 2 Code"; Code[20])
+        {
+            CaptionClass = '1,2,2';
+            Caption = 'Shortcut Dimension 2 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2));
+
+            trigger OnValidate()
+            begin
+                DimMgt.ValidateShortcutDimValues(2, "Shortcut Dimension 2 Code", "Dimension Set ID");
+            end;
+        }
+        field(15; "Dimension Set ID"; Integer)
+        {
+            Caption = 'Dimension Set ID';
+            Editable = false;
+            TableRelation = "Dimension Set Entry"."Dimension Set ID";
+
+            trigger OnLookup()
+            begin
+                ShowDimensions();
+            end;
+        }
     }
     keys
     {
@@ -105,6 +138,18 @@ table 50206 "Asset Request Header"
         "Created Date-Time" := CurrentDateTime();
 
         Status := Status::Open;
+    end;
+
+    var
+        DimMgt: Codeunit DimensionManagement;
+
+    procedure ShowDimensions()
+    begin
+        // NOTE: see the same caveat as on the Asset table — verify EditDimensionSet's
+        // signature against your BC 28 symbols before relying on this.
+        "Dimension Set ID" :=
+            DimMgt.EditDimensionSet(Database::"Asset Request Header", "Dimension Set ID", "No.", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code");
+        Modify(true);
     end;
 
     [IntegrationEvent(false, false)]
