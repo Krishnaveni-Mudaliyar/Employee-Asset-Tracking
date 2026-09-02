@@ -50,6 +50,16 @@ page 50206 "Asset Request Card"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Reason field.', Comment = '%';
                 }
+                field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
+                {
+                    ApplicationArea = Dimensions;
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 1 Code field.', Comment = '%';
+                }
+                field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
+                {
+                    ApplicationArea = Dimensions;
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field.', Comment = '%';
+                }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = All;
@@ -96,6 +106,24 @@ page 50206 "Asset Request Card"
     }
     actions
     {
+        area(Navigation)
+        {
+            action(Dimensions)
+            {
+                ApplicationArea = Dimensions;
+                Caption = 'Dimensions';
+                Image = Dimensions;
+                Promoted = true;
+                PromotedCategory = Category5;
+                ShortCutKey = 'Ctrl+Alt+D';
+                ToolTip = 'View or edit dimensions that are assigned to this asset request.';
+
+                trigger OnAction()
+                begin
+                    Rec.ShowDimensions();
+                end;
+            }
+        }
         area(Processing)
         {
             group(Approval)
