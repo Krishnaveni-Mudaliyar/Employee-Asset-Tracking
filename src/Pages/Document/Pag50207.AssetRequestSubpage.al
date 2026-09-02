@@ -82,6 +82,36 @@ page 50207 "Asset Request Subpage"
                     CurrPage.Update(false);
                 end;
             }
+            action(BulkAssignFromStock)
+            {
+                ApplicationArea = All;
+                Caption = 'Bulk Assign from Stock';
+                Image = ApplyEntries;
+                ToolTip = 'Automatically assign available matching assets to fill the remaining approved quantity on this line.';
+
+                trigger OnAction()
+                var
+                    AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+                    AssignedCount: Integer;
+                begin
+                    CurrPage.SaveRecord();
+
+                    if not Confirm(
+                        'Automatically assign up to %1 available matching assets to this line?',
+                        false, Rec."Approved Quantity" - Rec."Assigned Quantity")
+                    then
+                        exit;
+
+                    AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(Rec);
+
+                    if AssignedCount = 0 then
+                        Message('No matching Available assets were found in stock.')
+                    else
+                        Message('%1 asset(s) assigned.', AssignedCount);
+
+                    CurrPage.Update(false);
+                end;
+            }
         }
     }
 }
