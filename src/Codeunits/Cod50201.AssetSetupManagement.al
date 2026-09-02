@@ -64,4 +64,23 @@ codeunit 50201 "Asset Setup Management"
                 WorkDate(),
                 true));
     end;
+
+    procedure GetAssignmentNo(): Code[20]
+    var
+        AssetSetup: Record "Asset Setup";
+        NoSeries: Codeunit "No. Series";
+
+    begin
+        AssetSetup := GetSetup();
+
+        if AssetSetup."Assignment Nos." = '' then
+            Error(
+                'Assignment No. Series must be specified in Asset Setup.');
+
+        exit(
+            NoSeries.GetNextNo(
+                AssetSetup."Assignment Nos.",
+                WorkDate(),
+                true));
+    end;
 }
