@@ -31,7 +31,8 @@ table 50207 "Asset Request Line"
 
                 if AssetCategory.Blocked then
                     Error(
-                        'Asset Category %1 is blocked and cannot be requested.', "Asset Category Code");
+                        'Asset Category %1 is blocked and cannot be requested.',
+                        "Asset Category Code");
             end;
         }
         field(4; "Asset Sub Category Code"; Code[20])
@@ -50,7 +51,8 @@ table 50207 "Asset Request Line"
 
                 if AssetSubCategory.Blocked then
                     Error(
-                        'Asset sub category %1 is blocked and cannot be requested.', "Asset Sub Category Code");
+                        'Asset sub category %1 is blocked and cannot be requested.',
+                        "Asset Sub Category Code");
 
                 if ("Asset Category Code" <> '') and
                         (AssetSubCategory."Category Code" <> "Asset Category Code")
