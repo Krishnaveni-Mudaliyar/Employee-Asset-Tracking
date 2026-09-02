@@ -69,6 +69,16 @@ page 50205 "Asset Card"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Blocked field.', Comment = '%';
                 }
+                field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
+                {
+                    ApplicationArea = Dimensions;
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 1 Code field.', Comment = '%';
+                }
+                field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
+                {
+                    ApplicationArea = Dimensions;
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field.', Comment = '%';
+                }
             }
             group(Purchase)
             {
@@ -134,6 +144,24 @@ page 50205 "Asset Card"
     }
     actions
     {
+        area(Navigation)
+        {
+            action(Dimensions)
+            {
+                ApplicationArea = Dimensions;
+                Caption = 'Dimensions';
+                Image = Dimensions;
+                Promoted = true;
+                PromotedCategory = Category5;
+                ShortCutKey = 'Ctrl+Alt+D';
+                ToolTip = 'View or edit dimensions that are assigned to this asset.';
+
+                trigger OnAction()
+                begin
+                    Rec.ShowDimensions();
+                end;
+            }
+        }
         area(Processing)
         {
             action(ReturnAsset)

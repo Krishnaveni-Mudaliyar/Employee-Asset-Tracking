@@ -16,7 +16,7 @@ permissionset 50201 "AST-ADMIN"
         tabledata "Asset Return" = RIMD,
         tabledata "Asset Transfer" = RIMD,
         tabledata "Asset Maintenance" = RIMD,
-        tabledata "Asset Disposal" = RIMD
+        tabledata "Asset Disposal" = RIMD,
 
         // Codeunits — execute
         codeunit "Asset Setup Management" = X,
