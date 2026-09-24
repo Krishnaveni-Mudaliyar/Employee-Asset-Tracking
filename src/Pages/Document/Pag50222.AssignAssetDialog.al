@@ -2,7 +2,7 @@ page 50222 "Assign Asset Dialog"
 {
     PageType = StandardDialog;
     Caption = 'Assign Asset';
-    SourceTable = Asset;
+    SourceTable = "Fixed Asset";
     SourceTableTemporary = true;
 
     layout
@@ -14,16 +14,16 @@ page 50222 "Assign Asset Dialog"
                 ApplicationArea = All;
                 Caption = 'Asset No.';
                 ToolTip = 'Specifies the available asset to assign.';
-                TableRelation = Asset."No." where(Status = const(Available), Blocked = const(false));
+                TableRelation = "Fixed Asset"."No." where("IT Asset Status" = const(Available), "IT Asset Blocked" = const(false));
 
                 trigger OnValidate()
                 var
-                    Asset: Record Asset;
+                    FixedAsset: Record "Fixed Asset";
                 begin
                     if Rec."No." = '' then
                         exit;
 
-                    if not Asset.Get(Rec."No.") then
+                    if not FixedAsset.Get(Rec."No.") then
                         Error('Asset %1 does not exist.', Rec."No.");
                 end;
             }

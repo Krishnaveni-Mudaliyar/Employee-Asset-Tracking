@@ -4,7 +4,7 @@ report 50201 "Asset Register"
     Caption = 'Asset Register';
     UsageCategory = ReportsAndAnalysis;
     DefaultLayout = Excel;
-    ExcelLayout = './src/Reports/Layouts/AssetRegister.xlsx';
+    ExcelLayout = 'src\Report Layouts';
 
     dataset
     {

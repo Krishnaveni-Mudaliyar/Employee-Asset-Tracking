@@ -34,7 +34,6 @@ pageextension 50201 "Employee Card Ext." extends "Employee Card"
                     PAGE.Run(PAGE::"Asset Request Card", AssetRequestHeader);
                 end;
             }
-
         }
     }
 }

@@ -98,7 +98,8 @@ page 50207 "Asset Request Subpage"
 
                     if not Confirm(
                         'Automatically assign up to %1 available matching assets to this line?',
-                        false, Rec."Approved Quantity" - Rec."Assigned Quantity")
+                        false,
+                        Rec."Approved Quantity" - Rec."Assigned Quantity")
                     then
                         exit;
 

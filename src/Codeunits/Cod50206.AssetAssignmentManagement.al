@@ -3,7 +3,7 @@ codeunit 50206 "Asset Assignment Management"
     procedure AssignAsset(var AssetRequestLine: Record "Asset Request Line"; AssetNo: Code[20])
     var
         AssetRequestHeader: Record "Asset Request Header";
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         AssetAssignment: Record "Asset Assignment";
     begin
         AssetRequestHeader.Get(AssetRequestLine."Document No.");
@@ -20,27 +20,34 @@ codeunit 50206 "Asset Assignment Management"
                 AssetRequestLine."Assigned Quantity",
                 AssetRequestLine."Approved Quantity");
 
-        Asset.Get(AssetNo);
+        FixedAsset.Get(AssetNo);
 
-        if Asset.Blocked then
-            Error('Asset %1 is blocked and cannot be assigned.', AssetNo);
+        if FixedAsset."IT Asset Blocked" then
+            Error(
+                'Asset %1 is blocked and cannot be assigned.',
+                AssetNo);
 
-        if Asset.Status <> Asset.Status::Available then
-            Error('Asset %1 is not Available (current status: %2).', AssetNo, Asset.Status);
+        if FixedAsset."IT Asset Status" <> FixedAsset."IT Asset Status"::Available then
+            Error(
+                'Asset %1 is not Available (current status: %2).',
+                AssetNo,
+                FixedAsset."IT Asset Status");
 
         if (AssetRequestLine."Asset Category Code" <> '') and
-           (Asset."Category Code" <> AssetRequestLine."Asset Category Code")
+           (FixedAsset."Asset Category Code" <> AssetRequestLine."Asset Category Code")
         then
             Error(
                 'Asset %1 does not belong to the requested category %2.',
-                AssetNo, AssetRequestLine."Asset Category Code");
+                AssetNo,
+                AssetRequestLine."Asset Category Code");
 
         if (AssetRequestLine."Asset Sub Category Code" <> '') and
-           (Asset."Sub Category Code" <> AssetRequestLine."Asset Sub Category Code")
+           (FixedAsset."Sub Category Code" <> AssetRequestLine."Asset Sub Category Code")
         then
             Error(
                 'Asset %1 does not belong to the requested sub category %2.',
-                AssetNo, AssetRequestLine."Asset Sub Category Code");
+                AssetNo,
+                AssetRequestLine."Asset Sub Category Code");
 
         AssetAssignment.Init();
         AssetAssignment."Document No." := AssetRequestLine."Document No.";
@@ -49,10 +56,12 @@ codeunit 50206 "Asset Assignment Management"
         AssetAssignment."Employee No." := AssetRequestHeader."Employee No.";
         AssetAssignment.Insert(true);
 
-        Asset.Status := Asset.Status::Assigned;
-        Asset.Modify(true);
+        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Assigned;
+        FixedAsset.Modify(true);
 
-        AssetRequestLine.Validate("Assigned Quantity", AssetRequestLine."Assigned Quantity" + 1);
+        AssetRequestLine.Validate(
+            "Assigned Quantity",
+            AssetRequestLine."Assigned Quantity" + 1);
         AssetRequestLine.Modify(true);
 
         NotifyRequesterOfAssignment(AssetRequestHeader, AssetNo);
@@ -61,7 +70,7 @@ codeunit 50206 "Asset Assignment Management"
 
     procedure BulkAssignFromStock(var AssetRequestLine: Record "Asset Request Line"): Integer
     var
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         RemainingToAssign: Integer;
         AssignedCount: Integer;
     begin
@@ -74,26 +83,27 @@ codeunit 50206 "Asset Assignment Management"
                 AssetRequestLine."Assigned Quantity",
                 AssetRequestLine."Approved Quantity");
 
-        Asset.SetRange(Status, Asset.Status::Available);
-        Asset.SetRange(Blocked, false);
+        FixedAsset.SetRange("IT Asset Status", FixedAsset."IT Asset Status"::Available);
+        FixedAsset.SetRange("IT Asset Blocked", false);
 
-        if AssetRequestLine."Asset Category Code" <> '' then
-            Asset.SetRange("Category Code", AssetRequestLine."Asset Category Code");
+        if AssetRequestLine."Asset Category Code" <> ''
+        then
+            FixedAsset.SetRange("Asset Category Code", AssetRequestLine."Asset Category Code");
 
         if AssetRequestLine."Asset Sub Category Code" <> '' then
-            Asset.SetRange("Sub Category Code", AssetRequestLine."Asset Sub Category Code");
+            FixedAsset.SetRange("Asset Sub Category Code", AssetRequestLine."Asset Sub Category Code");
 
-        if not Asset.FindSet() then
+        if not FixedAsset.FindSet() then
             exit(0);
 
         AssignedCount := 0;
 
         repeat
             if AssignedCount < RemainingToAssign then begin
-                AssignAsset(AssetRequestLine, Asset."No.");
+                AssignAsset(AssetRequestLine, FixedAsset."No.");
                 AssignedCount += 1;
             end;
-        until (Asset.Next() = 0) or (AssignedCount >= RemainingToAssign);
+        until (FixedAsset.Next() = 0) or (AssignedCount >= RemainingToAssign);
 
         exit(AssignedCount);
     end;
@@ -104,10 +114,12 @@ codeunit 50206 "Asset Assignment Management"
     begin
         AssetNotificationManagement.Notify(
             AssetRequestHeader."Requested By",
-            StrSubstNo('Asset %1 has been assigned to you for request %2.', AssetNo, AssetRequestHeader."No."),
+            StrSubstNo(
+                'Asset %1 has been assigned to you for request %2.',
+                AssetNo,
+                AssetRequestHeader."No."),
             AssetRequestHeader."No.");
     end;
-
 
     local procedure CloseHeaderIfFullyAssigned(var AssetRequestHeader: Record "Asset Request Header")
     var
