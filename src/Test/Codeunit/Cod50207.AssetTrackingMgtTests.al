@@ -4,30 +4,13 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
 
     var
         LibraryAssert: Codeunit "Library Assert";
-
-    [Test]
-    procedure TestNewAssetDefaultAndNumbering()
-    var
-        AssetSetup: Record "Asset Setup";
-        Asset: Record Asset;
-
-    begin
-        // [GIVEN] Asset Setup Has an Asset Nos. series
-        EnsureAssetSetup(AssetSetup);
-
-        // [WHEN] a new Assert is inserted with a blank No.
-        Asset.Init();
-        Asset.Insert(true);
-
-        // [THEN] the No. is assigned from the series
-        LibraryAssert.AreNotEqual('', Asset."No.", 'Asset No. should be auto-numbered.');
-    end;
+        LibraryFixedAsset: Codeunit "Library - Fixed Asset";
 
     [TEST]
     procedure TestBlockedCategoryCannotBeUsedOnAsset()
     var
         AssetCategory: Record "Asset Category";
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
 
     begin
         // [GIVEN] A blocked asset category
@@ -36,33 +19,30 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetCategory.Blocked := true;
         AssetCategory.Insert(true);
 
-        // [WHEN] assigning it to an Asset
-        Asset.Init();
-        Asset.Insert(true);
+        // [WHEN] assigning it to an Fixed Asset
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
 
         // [THEN] validation fails
-        asserterror Asset.Validate("Category Code", AssetCategory.Code);
+        asserterror FixedAsset.Validate("Asset Category Code", AssetCategory.Code);
     end;
 
     [TEST]
     procedure TestSerialNoMustBeUnique()
     var
-        Asset1: Record Asset;
-        Asset2: Record Asset;
+        FixedAsset1: Record "Fixed Asset";
+        FixedAsset2: Record "Fixed Asset";
 
     begin
-        // [GIVEN] an asset with a Serial No.
-        Asset1.Init();
-        Asset1.Insert(true);
-        Asset1.Validate("Serial No.", 'SN-0001');
-        Asset1.Modify(true);
+        // [GIVEN] a fixed asset with a Serial No.
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset1);
+        FixedAsset1.Validate("IT Serial No.", 'SN-0001');
+        FixedAsset1.Modify(true);
 
         // [WHEN] another asset tries to use the same Serial No.
-        Asset2.Init();
-        Asset2.Insert(true);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset2);
 
         // [THEN] validation fails
-        asserterror Asset2.Validate("Serial No.", 'SN-0001');
+        asserterror FixedAsset2.Validate("IT Serial No.", 'SN-0001');
     end;
 
     [Test]
@@ -132,7 +112,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
     var
         AssetRequestHeader: Record "Asset Request Header";
         AssetRequestLine: Record "Asset Request Line";
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         AssetAssignmentManagement: Codeunit "Asset Assignment Management";
     begin
         // [GIVEN] an Open (not yet Approved) request with one line
@@ -149,13 +129,13 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetRequestLine.Validate("Approved Quantity", 1);
         AssetRequestLine.Modify(true);
 
-        Asset.Init();
-        Asset.Insert(true);
-        Asset.Modify(true);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
 
         // [WHEN] trying to assign an asset before the request is Approved
         // [THEN] it fails
-        asserterror AssetAssignmentManagement.AssignAsset(AssetRequestLine, Asset."No.");
+        asserterror AssetAssignmentManagement.AssignAsset(
+            AssetRequestLine,
+            FixedAsset."No.");
     end;
 
     [Test]
@@ -163,7 +143,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
     var
         AssetRequestHeader: Record "Asset Request Header";
         AssetRequestLine: Record "Asset Request Line";
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         AssetAssignmentManagement: Codeunit "Asset Assignment Management";
     begin
         // [GIVEN] an Approved request with one line requesting/approving quantity 1
@@ -181,25 +161,38 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetRequestLine.Validate("Approved Quantity", 1);
         AssetRequestLine.Modify(true);
 
-        Asset.Init();
-        Asset.Insert(true);
-        Asset.Modify(true);
-        LibraryAssert.AreEqual(Asset.Status::Available, Asset.Status, 'New asset should default to Available.');
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+        LibraryAssert.AreEqual(
+            FixedAsset."IT Asset Status"::Available, FixedAsset."IT Asset Status",
+            'New fixed asset should default to Available.');
 
         // [WHEN] the asset is assigned
-        AssetAssignmentManagement.AssignAsset(AssetRequestLine, Asset."No.");
+        AssetAssignmentManagement.AssignAsset(
+            AssetRequestLine,
+            FixedAsset."No.");
 
         // [THEN] the asset becomes Assigned
-        Asset.Get(Asset."No.");
-        LibraryAssert.AreEqual(Asset.Status::Assigned, Asset.Status, 'Asset should be Assigned after assignment.');
+        FixedAsset.Get(FixedAsset."No.");
+        LibraryAssert.AreEqual(
+            FixedAsset."IT Asset Status"::Assigned,
+            FixedAsset."IT Asset Status",
+            'Asset should be Assigned after assignment.');
 
         // [THEN] the line's Assigned Quantity reflects it
-        AssetRequestLine.Get(AssetRequestLine."Document No.", AssetRequestLine."Line No.");
-        LibraryAssert.AreEqual(1, AssetRequestLine."Assigned Quantity", 'Assigned Quantity should be 1.');
+        AssetRequestLine.Get(
+            AssetRequestLine."Document No.",
+            AssetRequestLine."Line No.");
+        LibraryAssert.AreEqual(
+            1,
+             AssetRequestLine."Assigned Quantity",
+             'Assigned Quantity should be 1.');
 
         // [THEN] the header auto-closes since every line is fully assigned
         AssetRequestHeader.Get(AssetRequestHeader."No.");
-        LibraryAssert.AreEqual(AssetRequestHeader.Status::Closed, AssetRequestHeader.Status, 'Header should auto-close once fully assigned.');
+        LibraryAssert.AreEqual(
+            AssetRequestHeader.Status::Closed,
+            AssetRequestHeader.Status,
+            'Header should auto-close once fully assigned.');
     end;
 
     [Test]
@@ -207,7 +200,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
     var
         AssetRequestHeader: Record "Asset Request Header";
         AssetRequestLine: Record "Asset Request Line";
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         AssetNotification: Record "Asset Notification";
         AssetAssignmentManagement: Codeunit "Asset Assignment Management";
     begin
@@ -226,70 +219,86 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetRequestLine.Validate("Approved Quantity", 1);
         AssetRequestLine.Modify(true);
 
-        Asset.Init();
-        Asset.Insert(true);
-        Asset.Modify(true);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
 
         // [WHEN] the asset is assigned
-        AssetAssignmentManagement.AssignAsset(AssetRequestLine, Asset."No.");
+        AssetAssignmentManagement.AssignAsset(
+            AssetRequestLine,
+            FixedAsset."No.");
 
         // [THEN] a notification was created for the requester referencing the request
-        AssetNotification.SetRange("Recipient User ID", AssetRequestHeader."Requested By");
-        AssetNotification.SetRange("Related Document No.", AssetRequestHeader."No.");
-        LibraryAssert.IsFalse(AssetNotification.IsEmpty(), 'Expected a notification for the requester after assignment.');
+        AssetNotification.SetRange(
+            "Recipient User ID",
+            AssetRequestHeader."Requested By");
+
+        AssetNotification.SetRange(
+            "Related Document No.",
+            AssetRequestHeader."No.");
+
+        LibraryAssert.IsFalse(
+            AssetNotification.IsEmpty(),
+            'Expected a notification for the requester after assignment.');
     end;
 
     [Test]
     procedure TestReturnAssetRequiresAssignedStatus()
     var
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         AssetReturnManagement: Codeunit "Asset Return Management";
     begin
-        // [GIVEN] an Available (not Assigned) asset
-        Asset.Init();
-        Asset.Insert(true);
-        Asset.Modify(true);
+        // [GIVEN] an Available (not Assigned) fixed asset
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
 
         // [WHEN] trying to return it
         // [THEN] it fails
-        asserterror AssetReturnManagement.ReturnAsset(Asset."No.", Asset.Condition::Good, '');
+        asserterror AssetReturnManagement.ReturnAsset(
+            FixedAsset."No.",
+            FixedAsset."IT Asset Condition"::Good,
+            '');
     end;
 
     [Test]
     procedure TestDisposeAssetBlocksAssetAndSetsStatus()
     var
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         AssetDisposalManagement: Codeunit "Asset Disposal Management";
     begin
-        // [GIVEN] an Available asset
-        Asset.Init();
-        Asset.Insert(true);
-        Asset.Modify(true);
+        // [GIVEN] an Available fixed asset
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
 
         // [WHEN] disposing of it
-        AssetDisposalManagement.DisposeAsset(Asset."No.", 'End of life.');
+        AssetDisposalManagement.DisposeAsset(
+            FixedAsset."No.",
+            'End of life.');
 
-        // [THEN] it is Disposed and Blocked
-        Asset.Get(Asset."No.");
-        LibraryAssert.AreEqual(Asset.Status::Disposed, Asset.Status, 'Asset should be Disposed.');
-        LibraryAssert.IsTrue(Asset.Blocked, 'Disposed asset should be Blocked.');
+        // [THEN] it is Disposed and IT Asset Blocked
+        FixedAsset.Get(FixedAsset."No.");
+        LibraryAssert.AreEqual(
+            FixedAsset."IT Asset Status"::Disposed,
+            FixedAsset."IT Asset Status",
+            'Asset should be Disposed.');
+
+        LibraryAssert.IsTrue(
+            FixedAsset."IT Asset Blocked",
+            'Disposed asset should be IT Asset Blocked.');
     end;
 
     [Test]
     procedure TestDisposeAssetFailsWhenAssigned()
     var
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         AssetDisposalManagement: Codeunit "Asset Disposal Management";
     begin
-        // [GIVEN] an Assigned asset
-        Asset.Init();
-        Asset.Insert(true);
-        Asset.Status := Asset.Status::Assigned;
-        Asset.Modify(true);
+        // [GIVEN] an Assigned fixed asset
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Assigned;
+        FixedAsset.Modify(true);
 
         // [WHEN] trying to dispose of it
         // [THEN] it fails
-        asserterror AssetDisposalManagement.DisposeAsset(Asset."No.", 'Attempted while assigned.');
+        asserterror AssetDisposalManagement.DisposeAsset(
+            FixedAsset."No.",
+            'Attempted while assigned.');
     end;
 
     [Test]
@@ -297,13 +306,13 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
     var
         AssetRequestHeader: Record "Asset Request Header";
         AssetRequestLine: Record "Asset Request Line";
-        Asset1: Record Asset;
-        Asset2: Record Asset;
-        Asset3: Record Asset;
+        FixedAsset1: Record "Fixed Asset";
+        FixedAsset2: Record "Fixed Asset";
+        FixedAsset3: Record "Fixed Asset";
         AssetAssignmentManagement: Codeunit "Asset Assignment Management";
         AssignedCount: Integer;
     begin
-        // [GIVEN] an Approved request needing 2 assets, and 3 Available assets in stock
+        // [GIVEN] an Approved request needing 2 assets, and 3 Available fixed assets in stock
         AssetRequestHeader.Init();
         AssetRequestHeader.Insert(true);
         AssetRequestHeader."Employee No." := GetAnyEmployeeNo();
@@ -318,15 +327,9 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetRequestLine.Validate("Approved Quantity", 2);
         AssetRequestLine.Modify(true);
 
-        Asset1.Init();
-        Asset1.Insert(true);
-        Asset1.Modify(true);
-        Asset2.Init();
-        Asset2.Insert(true);
-        Asset2.Modify(true);
-        Asset3.Init();
-        Asset3.Insert(true);
-        Asset3.Modify(true);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset1);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset2);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset3);
 
         // [WHEN] bulk-assigning from stock
         AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(AssetRequestLine);
@@ -336,17 +339,6 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
 
         AssetRequestLine.Get(AssetRequestLine."Document No.", AssetRequestLine."Line No.");
         LibraryAssert.AreEqual(2, AssetRequestLine."Assigned Quantity", 'Assigned Quantity should be 2.');
-    end;
-
-    local procedure EnsureAssetSetup(var AssetSetup: Record "Asset Setup")
-    var
-        AssetSetupManagement: Codeunit "Asset Setup Management";
-    begin
-        AssetSetup := AssetSetupManagement.GetSetup();
-        // NOTE: this test relies on No. Series already being configured in the test
-        // environment (e.g. via a demo-data or setup codeunit). If "Asset Nos." is
-        // blank, TestNewAssetDefaultsAndNumbering will fail with a clear setup error
-        // rather than a silent pass — set up a No. Series in your test company first.
     end;
 
     local procedure GetAnyEmployeeNo(): Code[20]

@@ -2,15 +2,15 @@ codeunit 50210 "Asset Transfer Management"
 {
     procedure TransferAsset(AssetNo: Code[20]; ToEmployeeNo: Code[20]; ToLocationCode: Code[20]; Remarks: Text[250])
     var
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         OldAssignment: Record "Asset Assignment";
         NewAssignment: Record "Asset Assignment";
         AssetTransfer: Record "Asset Transfer";
         Employee: Record Employee;
     begin
-        Asset.Get(AssetNo);
+        FixedAsset.Get(AssetNo);
 
-        if Asset.Status <> Asset.Status::Assigned then
+        if FixedAsset."IT Asset Status" <> FixedAsset."IT Asset Status"::Assigned then
             Error('Asset %1 is not currently Assigned and cannot be transferred.', AssetNo);
 
         Employee.Get(ToEmployeeNo);
@@ -27,7 +27,7 @@ codeunit 50210 "Asset Transfer Management"
         AssetTransfer."Asset No." := AssetNo;
         AssetTransfer."From Employee No." := OldAssignment."Employee No.";
         AssetTransfer."To Employee No." := ToEmployeeNo;
-        AssetTransfer."From Location Code" := Asset."Location Code";
+        AssetTransfer."From Location Code" := FixedAsset."IT Location Code";
         AssetTransfer."To Location Code" := ToLocationCode;
         AssetTransfer.Remarks := Remarks;
         AssetTransfer.Insert(true);
@@ -43,7 +43,7 @@ codeunit 50210 "Asset Transfer Management"
         NewAssignment.Insert(true);
 
         if ToLocationCode <> '' then
-            Asset."Location Code" := ToLocationCode;
-        Asset.Modify(true);
+            FixedAsset."IT Location Code" := ToLocationCode;
+        FixedAsset.Modify(true);
     end;
 }

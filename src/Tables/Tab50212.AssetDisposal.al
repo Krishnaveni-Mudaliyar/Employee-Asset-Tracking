@@ -12,7 +12,7 @@ table 50212 "Asset Disposal"
         field(2; "Asset No."; Code[20])
         {
             Caption = 'Asset No.';
-            TableRelation = Asset."No.";
+            TableRelation = "Fixed Asset"."No.";
         }
         field(3; "Disposal Date"; Date)
         {

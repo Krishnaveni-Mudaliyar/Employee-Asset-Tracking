@@ -84,11 +84,15 @@ table 50206 "Asset Request Header"
         {
             CaptionClass = '1,2,1';
             Caption = 'Shortcut Dimension 1 Code';
-            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1));
+            TableRelation = "Dimension Value".Code
+            where("Global Dimension No." = const(1));
 
             trigger OnValidate()
             begin
-                DimMgt.ValidateShortcutDimValues(1, "Shortcut Dimension 1 Code", "Dimension Set ID");
+                DimMgt.ValidateShortcutDimValues(
+                    1,
+                    "Shortcut Dimension 1 Code",
+                    "Dimension Set ID");
             end;
         }
         field(14; "Shortcut Dimension 2 Code"; Code[20])
@@ -99,7 +103,10 @@ table 50206 "Asset Request Header"
 
             trigger OnValidate()
             begin
-                DimMgt.ValidateShortcutDimValues(2, "Shortcut Dimension 2 Code", "Dimension Set ID");
+                DimMgt.ValidateShortcutDimValues(
+                    2,
+                    "Shortcut Dimension 2 Code",
+                    "Dimension Set ID");
             end;
         }
         field(15; "Dimension Set ID"; Integer)
@@ -134,7 +141,10 @@ table 50206 "Asset Request Header"
         if "Request Date" = 0D then
             "Request Date" := WorkDate();
 
-        "Requested By" := CopyStr(UserId(), 1, MaxStrLen("Requested By"));
+        "Requested By" := CopyStr(
+            UserId(),
+            1,
+            MaxStrLen("Requested By"));
         "Created Date-Time" := CurrentDateTime();
 
         Status := Status::Open;
@@ -145,10 +155,11 @@ table 50206 "Asset Request Header"
 
     procedure ShowDimensions()
     begin
-        // NOTE: see the same caveat as on the Asset table — verify EditDimensionSet's
-        // signature against your BC 28 symbols before relying on this.
-        "Dimension Set ID" :=
-            DimMgt.EditDimensionSet(Database::"Asset Request Header", "Dimension Set ID", "No.", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code");
+        "Dimension Set ID" := DimMgt.EditDimensionSet(
+            Database::"Asset Request Header",
+            "Dimension Set ID", "No.",
+            "Shortcut Dimension 1 Code",
+            "Shortcut Dimension 2 Code");
         Modify(true);
     end;
 

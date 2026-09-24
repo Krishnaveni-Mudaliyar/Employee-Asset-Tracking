@@ -1,9 +1,5 @@
 codeunit 50208 "Asset Request Approval Events"
 {
-    // Mirrors the pattern used in Customer Master Approval (CMA): subscribe to the
-    // standard Approvals Mgmt. events and react only when the entry belongs to
-    // Asset Request Header, then update the document's own Status field.
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.",
     'OnApproveApprovalRequest',
     '',
@@ -18,11 +14,11 @@ codeunit 50208 "Asset Request Approval Events"
     end;
 
     [EventSubscriber(ObjectType::Codeunit,
-    Codeunit::"Approvals Mgmt.",
-    'OnRejectApprovalRequest',
-    '',
-    false,
-    false)]
+       Codeunit::"Approvals Mgmt.",
+       'OnRejectApprovalRequest',
+       '',
+       false,
+       false)]
     local procedure OnRejectApprovalRequest(var ApprovalEntry: Record "Approval Entry")
     begin
         if ApprovalEntry."Table ID" <> Database::"Asset Request Header" then
@@ -40,7 +36,11 @@ codeunit 50208 "Asset Request Approval Events"
             exit;
 
         AssetRequestHeader.Status := AssetRequestHeader.Status::Approved;
-        AssetRequestHeader."Approved By" := CopyStr(UserId(), 1, MaxStrLen(AssetRequestHeader."Approved By"));
+        AssetRequestHeader."Approved By" := CopyStr(
+            UserId(),
+            1,
+MaxStrLen(
+    AssetRequestHeader."Approved By"));
         AssetRequestHeader."Approval Date-Time" := CurrentDateTime();
         AssetRequestHeader.Modify(true);
 
@@ -59,13 +59,19 @@ codeunit 50208 "Asset Request Approval Events"
             exit;
 
         AssetRequestHeader.Status := AssetRequestHeader.Status::Rejected;
-        AssetRequestHeader."Approved By" := CopyStr(UserId(), 1, MaxStrLen(AssetRequestHeader."Approved By"));
+        AssetRequestHeader."Approved By" := CopyStr(
+            UserId(),
+            1,
+            MaxStrLen(
+                AssetRequestHeader."Approved By"));
         AssetRequestHeader."Approval Date-Time" := CurrentDateTime();
         AssetRequestHeader.Modify(true);
 
         AssetNotificationManagement.Notify(
            AssetRequestHeader."Requested By",
-           StrSubstNo('Your asset request %1 has been rejected.', AssetRequestHeader."No."),
-           AssetRequestHeader."No.");
+                StrSubstNo(
+                 'Your asset request %1 has been rejected.',
+                 AssetRequestHeader."No."),
+                AssetRequestHeader."No.");
     end;
 }

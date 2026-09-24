@@ -12,6 +12,7 @@ codeunit 50205 "Asset Request Workflow Events"
         '',
         false,
         false)]
+
     local procedure AddAssetRequestWorkflowEventsToLibrary()
     var
         WorkFlowEventHandling: Codeunit "Workflow Event Handling";

@@ -12,7 +12,7 @@ table 50210 "Asset Transfer"
         field(2; "Asset No."; Code[20])
         {
             Caption = 'Asset No.';
-            TableRelation = Asset."No.";
+            TableRelation = "Fixed Asset"."No.";
         }
         field(3; "Transfer Date"; Date)
         {
@@ -75,7 +75,10 @@ table 50210 "Asset Transfer"
         if "Transfer Date" = 0D then
             "Transfer Date" := WorkDate();
 
-        "Transferred By" := CopyStr(UserId(), 1, MaxStrLen("Transferred By"));
+        "Transferred By" := CopyStr(
+            UserId(),
+            1,
+            MaxStrLen("Transferred By"));
         "Created Date-Time" := CurrentDateTime();
     end;
 }

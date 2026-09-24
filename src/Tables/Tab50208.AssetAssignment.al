@@ -21,7 +21,7 @@ table 50208 "Asset Assignment"
         field(4; "Asset No."; Code[20])
         {
             Caption = 'Asset No.';
-            TableRelation = Asset."No.";
+            TableRelation = "Fixed Asset"."No.";
         }
         field(5; "Employee No."; Code[20])
         {
