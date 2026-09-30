@@ -49,6 +49,10 @@ table 50208 "Asset Assignment"
             Caption = 'Active';
             InitValue = true;
         }
+        field(10; "Expected Return Date"; Date)
+        {
+            Caption = 'Expected Return Date';
+        }
     }
     keys
     {
@@ -60,6 +64,7 @@ table 50208 "Asset Assignment"
         key(Asset; "Asset No.") { }
         key(Employee; "Employee No.") { }
         key(ActiveAsset; "Asset No.", Active) { }
+        key(Overdue; Active, "Expected Return Date") { }
     }
 
     trigger OnInsert()

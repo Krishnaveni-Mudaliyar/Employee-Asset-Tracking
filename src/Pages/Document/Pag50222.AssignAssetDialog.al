@@ -27,11 +27,25 @@ page 50222 "Assign Asset Dialog"
                         Error('Asset %1 does not exist.', Rec."No.");
                 end;
             }
+            field(ExpectedReturnDate; ExpectedReturnDate)
+            {
+                ApplicationArea = All;
+                Caption = 'Expected Return Date';
+                ToolTip = 'Specifies when the asset is expected to be returned. Leave blank for an open-ended assignment.';
+            }
         }
     }
+
+    var
+        ExpectedReturnDate: Date;
 
     procedure GetAssetNo(): Code[20]
     begin
         exit(Rec."No.");
+    end;
+
+    procedure GetExpectedReturnDate(): Date
+    begin
+        exit(ExpectedReturnDate);
     end;
 }

@@ -78,7 +78,7 @@ page 50207 "Asset Request Subpage"
                     if AssetNo = '' then
                         exit;
 
-                    AssetAssignmentManagement.AssignAsset(Rec, AssetNo);
+                    AssetAssignmentManagement.AssignAsset(Rec, AssetNo, AssignAssetDialog.GetExpectedReturnDate());
                     CurrPage.Update(false);
                 end;
             }
@@ -103,7 +103,7 @@ page 50207 "Asset Request Subpage"
                     then
                         exit;
 
-                    AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(Rec);
+                    AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(Rec, 0D);
 
                     if AssignedCount = 0 then
                         Message('No matching Available assets were found in stock.')

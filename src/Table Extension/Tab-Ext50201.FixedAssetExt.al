@@ -59,7 +59,7 @@ tableextension 50201 "Fixed Asset Ext" extends "Fixed Asset"
                 end;
             end;
         }
-        field(50203; "Brand Code"; Code[20])
+        field(50203; "Asset Brand Code"; Code[20])
         {
             Caption = 'Asset Brand Code';
             TableRelation = "Asset Brand".Code;

@@ -1,6 +1,6 @@
 codeunit 50206 "Asset Assignment Management"
 {
-    procedure AssignAsset(var AssetRequestLine: Record "Asset Request Line"; AssetNo: Code[20])
+    procedure AssignAsset(var AssetRequestLine: Record "Asset Request Line"; AssetNo: Code[20]; ExpectedReturnDate: Date)
     var
         AssetRequestHeader: Record "Asset Request Header";
         FixedAsset: Record "Fixed Asset";
@@ -42,7 +42,7 @@ codeunit 50206 "Asset Assignment Management"
                 AssetRequestLine."Asset Category Code");
 
         if (AssetRequestLine."Asset Sub Category Code" <> '') and
-           (FixedAsset."Sub Category Code" <> AssetRequestLine."Asset Sub Category Code")
+           (FixedAsset."Asset Sub Category Code" <> AssetRequestLine."Asset Sub Category Code")
         then
             Error(
                 'Asset %1 does not belong to the requested sub category %2.',
@@ -54,6 +54,7 @@ codeunit 50206 "Asset Assignment Management"
         AssetAssignment."Document Line No." := AssetRequestLine."Line No.";
         AssetAssignment."Asset No." := AssetNo;
         AssetAssignment."Employee No." := AssetRequestHeader."Employee No.";
+        AssetAssignment."Expected Return Date" := ExpectedReturnDate;
         AssetAssignment.Insert(true);
 
         FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Assigned;
@@ -68,7 +69,7 @@ codeunit 50206 "Asset Assignment Management"
         CloseHeaderIfFullyAssigned(AssetRequestHeader);
     end;
 
-    procedure BulkAssignFromStock(var AssetRequestLine: Record "Asset Request Line"): Integer
+    procedure BulkAssignFromStock(var AssetRequestLine: Record "Asset Request Line"; ExpectedReturnDate: Date): Integer
     var
         FixedAsset: Record "Fixed Asset";
         RemainingToAssign: Integer;
@@ -100,7 +101,7 @@ codeunit 50206 "Asset Assignment Management"
 
         repeat
             if AssignedCount < RemainingToAssign then begin
-                AssignAsset(AssetRequestLine, FixedAsset."No.");
+                AssignAsset(AssetRequestLine, FixedAsset."No.", ExpectedReturnDate);
                 AssignedCount += 1;
             end;
         until (FixedAsset.Next() = 0) or (AssignedCount >= RemainingToAssign);

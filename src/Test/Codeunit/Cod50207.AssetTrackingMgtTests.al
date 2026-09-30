@@ -135,7 +135,8 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         // [THEN] it fails
         asserterror AssetAssignmentManagement.AssignAsset(
             AssetRequestLine,
-            FixedAsset."No.");
+            FixedAsset."No.",
+            WorkDate());
     end;
 
     [Test]
@@ -169,7 +170,8 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         // [WHEN] the asset is assigned
         AssetAssignmentManagement.AssignAsset(
             AssetRequestLine,
-            FixedAsset."No.");
+            FixedAsset."No.",
+            WorkDate());
 
         // [THEN] the asset becomes Assigned
         FixedAsset.Get(FixedAsset."No.");
@@ -189,6 +191,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
 
         // [THEN] the header auto-closes since every line is fully assigned
         AssetRequestHeader.Get(AssetRequestHeader."No.");
+
         LibraryAssert.AreEqual(
             AssetRequestHeader.Status::Closed,
             AssetRequestHeader.Status,
@@ -224,7 +227,8 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         // [WHEN] the asset is assigned
         AssetAssignmentManagement.AssignAsset(
             AssetRequestLine,
-            FixedAsset."No.");
+            FixedAsset."No.",
+            WorkDate());
 
         // [THEN] a notification was created for the requester referencing the request
         AssetNotification.SetRange(
@@ -332,7 +336,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         LibraryFixedAsset.CreateFixedAsset(FixedAsset3);
 
         // [WHEN] bulk-assigning from stock
-        AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(AssetRequestLine);
+        AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(AssetRequestLine, WorkDate());
 
         // [THEN] exactly 2 were assigned, not all 3
         LibraryAssert.AreEqual(2, AssignedCount, 'Should assign only up to the remaining approved quantity.');
