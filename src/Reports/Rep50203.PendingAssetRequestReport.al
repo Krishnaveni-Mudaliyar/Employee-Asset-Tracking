@@ -22,6 +22,25 @@ report 50203 "Pending Asset Request Report"
             column(HdrStatusText; Format(Status)) { }
             column(DaysPending; DaysPending) { }
 
+            dataitem("Asset Request Line"; "Asset Request Line")
+            {
+                DataItemLink = "Document No." = field("No.");
+                DataItemTableView = sorting("Document No.", "Line No.");
+
+                column(LineCategoryCode; "Asset Category Code") { }
+                column(LineSubCategoryCode; "Asset Sub Category Code") { }
+                column(LineDescription; Description) { }
+                column(LineQuantity; Quantity) { }
+                column(LineApprovedQuantity; "Approved Quantity") { }
+                column(LineAssignedQuantity; "Assigned Quantity") { }
+                column(LineRemainingQuantity; RemainingQuantity) { }
+
+                trigger OnAfterGetRecord()
+                begin
+                    RemainingQuantity := "Approved Quantity" - "Assigned Quantity";
+                end;
+            }
+
             trigger OnPreDataItem()
             begin
                 SetFilter(
@@ -47,32 +66,11 @@ report 50203 "Pending Asset Request Report"
                 else
                     DaysPending := 0;
             end;
-
-            dataitem("Asset Request Line"; "Asset Request Line")
-            {
-                DataItemLink = "Document No." = field("No.");
-                DataItemTableView = sorting("Document No.", "Line No.");
-
-                 column(LineCategoryCode; "Asset Category Code") { }
-                column(LineSubCategoryCode; "Asset Sub Category Code") { }
-                column(LineDescription; Description) { }
-                column(LineQuantity; Quantity) { }
-                column(LineApprovedQuantity; "Approved Quantity") { }
-                column(LineAssignedQuantity; "Assigned Quantity") { }
-                column(LineRemainingQuantity; RemainingQuantity) { }
-
-                trigger OnAfterGetRecord()
-                begin
-                    RemainingQuantity := "Approved Quantity" - "Assigned Quantity";
-                end;
-
-                var
-                    RemainingQuantity: Decimal;
-        }
         }
     }
 
     var
         EmployeeName: Text[150];
         DaysPending: Integer;
+        RemainingQuantity: Decimal;
 }
