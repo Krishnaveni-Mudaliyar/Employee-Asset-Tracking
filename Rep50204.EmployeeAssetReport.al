@@ -13,7 +13,7 @@ report 50204 "Employee Asset Report"
             RequestFilterFields = "No.", "Global Dimension 1 Code";
 
             column(EmployeeNo; "No.") { }
-            column(EmployeeName; EmployeeName) { }
+            column(EmployeeName; EmployeeNameText) { }
             column(DepartmentCode; "Global Dimension 1 Code") { }
             column(AssetCount; AssetCount) { }
 
@@ -30,12 +30,6 @@ report 50204 "Employee Asset Report"
                 column(AssignmentDate; Format("Assignment Date")) { }
                 column(ExpectedReturnDate; Format("Expected Return Date")) { }
 
-                var
-                    AssetDescription: Text[100];
-                    AssetCategoryCode: Code[20];
-                    AssetBrandCode: Code[20];
-                    AssetSerialNo: Code[50];
-
                 trigger OnAfterGetRecord()
                 var
                     FixedAsset: Record "Fixed Asset";
@@ -45,7 +39,7 @@ report 50204 "Employee Asset Report"
                     Clear(AssetBrandCode);
                     Clear(AssetSerialNo);
 
-                    if FixedAsset.Get("Asset No.") then begin
+                    if FixedAsset.Get("Asset Assignment"."Asset No.") then begin
                         AssetDescription := FixedAsset.Description;
                         AssetCategoryCode := FixedAsset."Asset Category Code";
                         AssetBrandCode := FixedAsset."Asset Brand Code";
@@ -56,10 +50,10 @@ report 50204 "Employee Asset Report"
 
             trigger OnAfterGetRecord()
             begin
-                EmployeeName :=
+                EmployeeNameText :=
                     CopyStr(
                         DelChr(Employee."First Name" + ' ' + Employee."Last Name", '<>', ' '),
-                        1, MaxStrLen(EmployeeName));
+                        1, MaxStrLen(EmployeeNameText));
 
                 AssetAssignment.SetRange("Employee No.", "No.");
                 AssetAssignment.SetRange(Active, true);
@@ -98,9 +92,13 @@ report 50204 "Employee Asset Report"
 
     var
         AssetAssignment: Record "Asset Assignment";
-        EmployeeName: Text[150];
         AssetCount: Integer;
         AssignedOnlyOpt: Boolean;
+        EmployeeNameText: Text[150];
+        AssetDescription: Text[100];
+        AssetCategoryCode: Code[20];
+        AssetBrandCode: Code[20];
+        AssetSerialNo: Code[50];
 
     local procedure GetEmployeesWithAssetsFilter(): Text
     var
