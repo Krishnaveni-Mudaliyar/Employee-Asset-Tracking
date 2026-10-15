@@ -45,6 +45,18 @@ table 50201 "Asset Setup"
             Caption = 'Disposal Nos.';
             TableRelation = "No. Series".Code;
         }
+        field(20; "Warranty Alert Days"; Integer)
+        {
+            Caption = 'Warranty Alert Days';
+            InitValue = 30;
+            MinValue = 0;
+        }
+        field(21; "Warranty Alert User ID"; Code[50])
+        {
+            Caption = 'Warranty Alert User ID';
+            TableRelation = User."User Name";
+            ValidateTableRelation = false;
+        }
     }
     keys
     {

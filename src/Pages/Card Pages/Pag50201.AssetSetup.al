@@ -50,6 +50,21 @@ page 50201 "Asset Setup"
                     ToolTip = 'Specifies the value of the Disposal Nos. field.', Comment = '%';
                 }
             }
+            group(Alerts)
+            {
+                Caption = 'Alerts';
+
+                field("Warranty Alert Days"; Rec."Warranty Alert Days")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies how many days before warranty end a notification is raised.';
+                }
+                field("Warranty Alert User ID"; Rec."Warranty Alert User ID")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the user who receives warranty expiry notifications.';
+                }
+            }
         }
     }
 }
