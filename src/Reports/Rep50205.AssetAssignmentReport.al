@@ -11,9 +11,10 @@ report 50205 "Asset Assignment Report"
         dataitem(AssetAssignment; "Asset Assignment")
         {
             RequestFilterFields = "No.", "Asset No.", "Employee No.", "Assignment Date", Active;
-            column(No; "No.") { }
+            column(AssignmentNo; "No.") { }
             column(DocumentNo; "Document No.") { }
-            column(Asset_No_; "Asset No.") { }
+            column(RequestNo; "Document No.") { }
+            column(AssetNo; "Asset No.") { }
             column(AssetDescription; AssetDescription) { }
             column(EmployeeNo; "Employee No.") { }
             column(EmployeeName; EmployeeName) { }

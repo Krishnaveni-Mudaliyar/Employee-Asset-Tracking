@@ -74,4 +74,35 @@ MaxStrLen(
                  AssetRequestHeader."No."),
                 AssetRequestHeader."No.");
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnPopulateApprovalEntryArgument', '', false, false)]
+    local procedure OnPopulateApprovalEntryArgument(var RecRef: RecordRef; var ApprovalEntryArgument: Record "Approval Entry"; WorkflowStepInstance: Record "Workflow Step Instance")
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+    begin
+        if RecRef.Number <> Database::"Asset Request Header" then
+            exit;
+
+        RecRef.SetTable(AssetRequestHeader);
+        ApprovalEntryArgument."Document No." := AssetRequestHeader."No.";
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Approval Entry", 'OnAfterInsertEvent', '', false, false)]
+    local procedure NotifyApproverOnApprovalEntryInsert(var Rec: Record "Approval Entry"; RunTrigger: Boolean)
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetNotificationManagement: Codeunit "Asset Notification Management";
+    begin
+        if Rec."Table ID" <> Database::"Asset Request Header" then
+            exit;
+        if Rec.Status <> Rec.Status::Open then
+            exit;
+        if not AssetRequestHeader.Get(Rec."Record ID to Approve") then
+            exit;
+
+        AssetNotificationManagement.Notify(
+            Rec."Approver ID",
+            StrSubstNo('Asset request %1 is waiting for your approval.', AssetRequestHeader."No."),
+            AssetRequestHeader."No.");
+    end;
 }

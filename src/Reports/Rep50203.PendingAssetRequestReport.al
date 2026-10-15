@@ -12,7 +12,7 @@ report 50203 "Pending Asset Request Report"
         {
             RequestFilterFields = "No.", "Employee No.", Status, "Department Code", "Location Code";
 
-            column(No; "No.") { }
+            column(RequestNo; "No.") { }
             column(EmployeeNo; "Employee No.") { }
             column(EmployeeName; EmployeeName) { }
             column(RequestDate; Format("Request Date")) { }
@@ -60,7 +60,6 @@ report 50203 "Pending Asset Request Report"
                     CopyStr(
                         DelChr(Employee."First Name" + '' + Employee."Last Name", '<>', ' '),
                         1, MaxStrLen(EmployeeName));
-
                 if "Request Date" <> 0D then
                     DaysPending := Today - "Request Date"
                 else

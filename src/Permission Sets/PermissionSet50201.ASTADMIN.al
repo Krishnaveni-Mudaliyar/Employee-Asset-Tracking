@@ -62,5 +62,12 @@ permissionset 50201 "AST-ADMIN"
         page "Asset Notifications" = X,
 
         // Reports
-        report "Asset Register" = X;
+        report "Asset Register" = X,
+        report "Overdue Asset Report" = X,
+        report "Pending Asset Request Report" = X,
+        report "Employee Asset Report" = X,
+        report "Asset Assignment Report" = X,
+        report "Asset Handover Report" = X,
+        report "Asset Return Report" = X,
+        report "Asset History Report" = X;
 }

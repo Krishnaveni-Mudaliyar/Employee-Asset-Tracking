@@ -5,9 +5,10 @@ codeunit 50209 "Asset Return Management"
         FixedAsset: Record "Fixed Asset";
         AssetAssignment: Record "Asset Assignment";
         AssetReturn: Record "Asset Return";
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetNotificationManagement: Codeunit "Asset Notification Management";
     begin
         FixedAsset.Get(AssetNo);
-
         if FixedAsset."IT Asset Status" <> FixedAsset."IT Asset Status"::Assigned then
             Error('Asset %1 is not currently Assigned and cannot be returned.', AssetNo);
 
@@ -39,5 +40,12 @@ codeunit 50209 "Asset Return Management"
         end;
 
         FixedAsset.Modify(true);
+        if AssetRequestHeader.Get(
+            AssetAssignment."Document No.")
+            then
+            AssetNotificationManagement.Notify(
+                AssetRequestHeader."Requested By", StrSubstNo(
+                    'Asset %1 has been returned (condition: %2).', AssetNo, Condition),
+                AssetRequestHeader."No.");
     end;
 }
