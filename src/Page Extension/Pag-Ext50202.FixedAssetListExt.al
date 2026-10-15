@@ -174,7 +174,6 @@ pageextension 50202 "Fixed Asset Card Ext" extends "Fixed Asset Card"
                 begin
                     if not Confirm('Do you want to dispose of asset %1?', false, Rec."No.") then
                         exit;
-
                     if DisposeAssetDialog.RunModal() <> Action::OK then
                         exit;
 
@@ -183,6 +182,39 @@ pageextension 50202 "Fixed Asset Card Ext" extends "Fixed Asset Card"
                         DisposeAssetDialog.GetReason());
                     CurrPage.Update(false);
                 end;
+            }
+            action(AssetHistoryReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Asset History';
+                Image = Report;
+                ToolTip = 'Runs the asset history report for this asset.';
+
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                begin
+                    FixedAsset.SetRange("No.", Rec."No.");
+                    Report.Run(Report::"Asset History Report", true, false, FixedAsset);
+                end;
+            }
+            action(ShowAssignments)
+            {
+                ApplicationArea = All;
+                Caption = 'Assignment History';
+                Image = History;
+                RunObject = page "Asset Assignment List";
+                RunPageLink = "Asset No." = field("No.");
+                ToolTip = 'Opens all assignments for this asset.';
+            }
+            action(ShowMaintenance)
+            {
+                ApplicationArea = All;
+                Caption = 'Maintenance History';
+                Image = History;
+                RunObject = page "Asset Maintenance List";
+                RunPageLink = "Asset No." = field("No.");
+                ToolTip = 'Opens all maintenance entries for this asset.';
             }
         }
     }

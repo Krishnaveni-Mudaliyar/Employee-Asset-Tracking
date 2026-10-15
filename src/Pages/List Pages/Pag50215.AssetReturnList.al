@@ -46,4 +46,26 @@ page 50215 "Asset Return List"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(PrintReturnReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Print Return Report';
+                Image = Report;
+                ToolTip = 'Runs the return report for the selected returns';
+
+
+                trigger OnAction()
+                var
+                    SelectedRec: Record "Asset Return";
+                begin
+                    CurrPage.SetSelectionFilter(SelectedRec);
+                    Report.Run(Report::"Asset Return Report", true, false, SelectedRec);
+                end;
+            }
+        }
+    }
 }

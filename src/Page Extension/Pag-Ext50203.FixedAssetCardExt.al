@@ -56,4 +56,33 @@ pageextension 50203 "Fixed Asset List Ext" extends "Fixed Asset List"
             }
         }
     }
+    actions
+    {
+        addlast(processing)
+        {
+            action(AssetHistoryReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Asset History';
+                Image = Report;
+                ToolTip = 'Runs the asset history report for the selected assets.';
+
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                begin
+                    CurrPage.SetSelectionFilter(FixedAsset);
+                    Report.Run(Report::"Asset History Report", true, false, FixedAsset);
+                end;
+            }
+            action(OverdueAssetReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Overdue Assets';
+                Image = Report;
+                RunObject = report "Overdue Asset Report";
+                ToolTip = 'Runs the overdue asset report';
+            }
+        }
+    }
 }

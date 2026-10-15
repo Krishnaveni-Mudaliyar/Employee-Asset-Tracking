@@ -34,6 +34,31 @@ pageextension 50201 "Employee Card Ext." extends "Employee Card"
                     PAGE.Run(PAGE::"Asset Request Card", AssetRequestHeader);
                 end;
             }
+            action(EmployeeAssetReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Employee Asset Report';
+                Image = Report;
+                ToolTip = 'Runs the employee asset report for this employee';
+
+                trigger OnAction()
+                var
+                    Employee: Record Employee;
+
+                begin
+                    Employee.SetRange("No.", Rec."No.");
+                    Report.Run(Report::"Employee Asset Report", true, false, Employee);
+                end;
+            }
+            action(EmployeeAssignments)
+            {
+                ApplicationArea = All;
+                Caption = 'Asset Assignments';
+                Image = History;
+                RunObject = page "Asset Assignment List";
+                RunPageLink = "Employee No." = field("No.");
+                ToolTip = 'Opens all asset assignments for this employee.';
+            }
         }
     }
 }
