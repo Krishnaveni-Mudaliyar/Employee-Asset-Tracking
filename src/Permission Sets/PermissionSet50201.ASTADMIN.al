@@ -36,6 +36,8 @@ permissionset 50201 "AST-ADMIN"
         codeunit "Asset Notification Management" = X,
         codeunit "Asset Alert Job" = X,
         codeunit "Asset Employee Events" = X,
+        codeunit "Asset Bulk Management" = X,
+        codeunit "Asset Excel Import" = X,
 
         // Pages — execute
         page "Asset Setup" = X,

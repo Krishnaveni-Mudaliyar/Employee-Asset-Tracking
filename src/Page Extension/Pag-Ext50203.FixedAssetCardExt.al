@@ -75,13 +75,100 @@ pageextension 50203 "Fixed Asset List Ext" extends "Fixed Asset List"
                     Report.Run(Report::"Asset History Report", true, false, FixedAsset);
                 end;
             }
+
+            action(BulkReturnAssets)
+            {
+                ApplicationArea = All;
+                Caption = 'Return Selected Assets';
+                Image = ReturnOrder;
+                ToolTip = 'Returns all selected assigned assets with the same condition and remarks.';
+
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                    ReturnAssetDialog: Page "Return Asset Dialog";
+                    AssetBulkManagement: Codeunit "Asset Bulk Management";
+                    Processed: Integer;
+                    Skipped: Integer;
+
+                begin
+                    CurrPage.SetSelectionFilter(FixedAsset);
+                    if ReturnAssetDialog.RunModal() <>
+                    Action::OK then
+                        exit;
+
+                    Processed := AssetBulkManagement.BulkReturn(FixedAsset,
+                    ReturnAssetDialog.GetCondition(),
+                    ReturnAssetDialog.GetRemarks(),
+                    Skipped);
+                    CurrPage.Update(false);
+                end;
+            }
+
+            action(BulkTransferAssets)
+            {
+                ApplicationArea = All;
+                Caption = 'Transfer Selected Assets';
+                Image = TransferOrder;
+                ToolTip = 'Transfers all selected assigned assets to the same employee.';
+
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                    TransferAssetDialog: Page "Transfer Asset Dialog";
+                    AssetBulkManagement: "Asset Bulk Management";
+                    Processed: Integer;
+                    Skipped: Integer;
+
+                begin
+                    CurrPage.SetSelectionFilter(FixedAsset);
+                    if TransferAssetDialog.RunModal() <> Action::OK then
+                        exit;
+
+                    Processed := AssetBulkManagement.BulkTransfer(
+                        FixedAsset,
+                        TransferAssetDialog.GetToEmployeeNo(),
+                        TransferAssetDialog.GetToLocationCode(),
+                        TransferAssetDialog.GetRemarks(),
+                        Skipped);
+
+                    Message('%1 asset(s) transferred. %2 skipped because they are not assigned',
+                    Processed, Skipped);
+                    CurrPage.Update(false);
+                end;
+            }
+
+            action(ImportAssetsFromExcel)
+            {
+                ApplicationArea = All;
+                Caption = 'Import Assets from Excel';
+                Image = ImportExcel;
+                ToolTip = 'Creates assets from an Excel File.Columns: Description,Category, Sub Category, Brand, Model, Serial No., Tag No., Location, Warranty Start, Warranty End';
+
+                trigger OnAction()
+                var
+                    AssetExcelImport: Codeunit "Asset Excel Import";
+                    InStr: InStream;
+                    FileName: Text;
+                    Created: Integer;
+                begin
+                    if not UploadIntoStream('Select the Excel file', '', 'Excel Files (*.xlsx)|*.xlsx',
+                    FileName, InStr) then
+                        exit;
+
+                    Created := AssetExcelImport.ImportFromStream(InStr);
+                    Message('%1 asset(s) imported.', Created);
+                    CurrPage.Update(false);
+                end;
+            }
+
             action(OverdueAssetReport)
             {
                 ApplicationArea = All;
                 Caption = 'Overdue Assets';
                 Image = Report;
                 RunObject = report "Overdue Asset Report";
-                ToolTip = 'Runs the overdue asset report';
+                ToolTip = 'Runs the overdue asset report.';
             }
         }
     }
