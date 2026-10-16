@@ -6,12 +6,12 @@ codeunit 50212 "Asset Disposal Management"
         AssetDisposal: Record "Asset Disposal";
     begin
         FixedAsset.Get(AssetNo);
-
         if FixedAsset."IT Asset Status" = FixedAsset."IT Asset Status"::Assigned then
             Error('Asset %1 is currently assigned. Return or transfer it before disposing of it.', AssetNo);
-
         if FixedAsset."IT Asset Status" = FixedAsset."IT Asset Status"::Disposed then
             Error('Asset %1 has already been disposed.', AssetNo);
+        if FixedAsset."IT Asset Status" = FixedAsset."IT Asset Status"::"Under Maintenance" then
+            Error('Asset %1 is under maintenance.Complete the maintenance before disposing of it.', AssetNo);
 
         AssetDisposal.Init();
         AssetDisposal."Asset No." := AssetNo;
