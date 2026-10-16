@@ -18,6 +18,7 @@ permissionset 50201 "AST-ADMIN"
         tabledata "Asset Maintenance" = RIMD,
         tabledata "Asset Disposal" = RIMD,
         tabledata "Asset Notification" = RIMD,
+        tabledata "Asset Cue" = RIMD,
 
         // Codeunits — execute
         codeunit "Asset Setup Management" = X,
@@ -33,6 +34,7 @@ permissionset 50201 "AST-ADMIN"
         codeunit "Asset Disposal Management" = X,
         codeunit "Asset Tracking Mgt. Tests" = X,
         codeunit "Asset Notification Management" = X,
+        codeunit "Asset Alert Job" = X,
 
         // Pages — execute
         page "Asset Setup" = X,
@@ -60,9 +62,11 @@ permissionset 50201 "AST-ADMIN"
         page "Asset Maintenance Hist. FctBox" = X,
         page "Emp. Active Asset Assgn." = X,
         page "Asset Notifications" = X,
+        page "Asset Cues" = X,
+        page "Asset Role Center" = X,
 
-        // Reports
-        report "Asset Register" = X,
+// Reports
+report "Asset Register" = X,
         report "Overdue Asset Report" = X,
         report "Pending Asset Request Report" = X,
         report "Employee Asset Report" = X,

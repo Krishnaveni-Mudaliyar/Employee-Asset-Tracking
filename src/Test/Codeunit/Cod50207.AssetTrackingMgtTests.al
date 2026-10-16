@@ -345,12 +345,208 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         LibraryAssert.AreEqual(2, AssetRequestLine."Assigned Quantity", 'Assigned Quantity should be 2.');
     end;
 
+    [Test]
+    procedure TestAssignAssetFailsForInactiveEmployee()
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetRequestLine: Record "Asset Request Line";
+        FixedAsset: Record "Fixed Asset";
+        Employee: Record Employee;
+        AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+    begin
+        CreateApprovedRequest(AssetRequestHeader, AssetRequestLine, 1);
+        Employee.Get(AssetRequestHeader."Employee No.");
+        Employee.Status := Employee.Status::Inactive;
+        Employee.Modify();
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+
+        asserterror AssetAssignmentManagement.AssignAsset(AssetRequestLine, FixedAsset."No.", WorkDate());
+
+        LibraryAssert.ExpectedError('is not active');
+    end;
+
+    [Test]
+    procedure TestAssignFailsForPastReturnDate()
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetRequestLine: Record "Asset Request Line";
+        FixedAsset: Record "Fixed Asset";
+        AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+    begin
+        CreateApprovedRequest(AssetRequestHeader, AssetRequestLine, 1);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+
+        asserterror AssetAssignmentManagement.AssignAsset(AssetRequestLine, FixedAsset."No.", CalcDate('<-1D>', WorkDate()));
+        LibraryAssert.ExpectedError('cannot be in the past');
+    end;
+
+    [Test]
+    procedure TestDisposeAssetFailsWhenUnderMaintenance()
+    var
+        FixedAsset: Record "Fixed Asset";
+        AssetDisposalManagement: Codeunit "Asset Disposal Management";
+    begin
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::"Under Maintenance";
+        FixedAsset.Modify(true);
+
+        asserterror AssetDisposalManagement.DisposeAsset(FixedAsset."No.", 'Attempted during maintenace.');
+
+        LibraryAssert.ExpectedError('under maintenance');
+    end;
+
+    [Test]
+    procedure TestTransferAssetFailsForInactiveEmployee()
+    var
+        FixedAsset: Record "Fixed Asset";
+        Employee: Record Employee;
+        AssetTransferManagement: Codeunit "Asset Transfer Management";
+    begin
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Assigned;
+        FixedAsset.Modify(true);
+        Employee.Init();
+        Employee.Insert(true);
+        Employee.Status := Employee.Status::Inactive;
+        Employee.Modify();
+
+        asserterror AssetTransferManagement.TransferAsset(FixedAsset."No.", Employee."No.", '', '');
+        LibraryAssert.ExpectedError('is not active');
+    end;
+
+    [Test]
+    procedure TestReturnAssetNotifiesRequester()
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetRequestLine: Record "Asset Request Line";
+        FixedAsset: Record "Fixed Asset";
+        AssetNotification: Record "Asset Notification";
+        AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+        AssetReturnManagement: Codeunit "Asset Return Management";
+    begin
+        CreateApprovedRequest(AssetRequestHeader, AssetRequestLine, 1);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+        AssetAssignmentManagement.AssignAsset(AssetRequestLine, FixedAsset."No.", WorkDate());
+
+        // [WHEN] the asset is returned
+        AssetReturnManagement.ReturnAsset(FixedAsset."No.", FixedAsset."IT Asset Condition"::Good, '');
+
+        // [THEN] the requester is notified about the return
+        AssetNotification.SetRange("Recipient User ID", AssetRequestHeader."Requested By");
+        AssetNotification.SetRange("Related Document No.", AssetRequestHeader."No.");
+        AssetNotification.SetFilter(Message, '*returned*');
+        LibraryAssert.IsFalse(AssetNotification.IsEmpty(), 'Expected a return notification for the requester.');
+    end;
+
+    [Test]
+    procedure TestApprovalEntryNotfiesApprover()
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        ApprovalEntry: Record "Approval Entry";
+        AssetNotification: Record "Asset Notification";
+    begin
+        AssetRequestHeader.Init();
+        AssetRequestHeader.Insert(true);
+
+        // [WHEN] an open approval entry is created for it
+        ApprovalEntry.Init();
+        ApprovalEntry."Table ID" := Database::"Asset Request Header";
+        ApprovalEntry."Record ID to Approve" := AssetRequestHeader.RecordId;
+        ApprovalEntry."Approver ID" := 'TESTAPPR';
+        ApprovalEntry.Status := ApprovalEntry.Status::Open;
+        ApprovalEntry.Insert();
+
+        // [THEN] the approver is notified
+        AssetNotification.SetRange("Recipient User ID", 'TESTAPPR');
+        AssetNotification.SetRange("Related Document No.", AssetRequestHeader."No.");
+        LibraryAssert.IsFalse(AssetNotification.IsEmpty(), 'Expected a notification for the approver.');
+    end;
+
+    [Test]
+    procedure TestAlertJobNotifiesOverdueReturnOnlyOnce()
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetRequestLine: Record "Asset Request Line";
+        FixedAsset: Record "Fixed Asset";
+        AssetAssignment: Record "Asset Assignment";
+        AssetNotification: Record "Asset Notification";
+        AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+
+    begin
+        CreateApprovedRequest(AssetRequestHeader, AssetRequestLine, 1);
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+        AssetAssignmentManagement.AssignAsset(AssetRequestline, FixedAsset."No.", WorkDate());
+        AssetAssignment.SetRange("Asset No.", FixedAsset."No.");
+        AssetAssignment.FindFirst();
+        AssetAssignment."Expected Return Date" := CalcDate('<-1D>', Today());
+        AssetAssignment.Modify();
+
+        // [WHEN] the alert job runs twice
+        Codeunit.Run(Codeunit::"Asset Alert Job");
+        Codeunit.Run(Codeunit::"Asset Alert Job");
+
+        // [THEN] the requester has exactly one overdue notification for the asset
+        AssetNotification.SetRange("Recipient User ID", AssetRequestHeader."Requested By");
+        AssetNotification.SetRange("Related Document No.", FixedAsset."No.");
+        AssetNotification.SetFilter(Message, '*overdue*');
+        LibraryAssert.AreEqual(1, AssetNotification.Count(), 'Expected exactly one overdue notification.');
+    end;
+
+    [Test]
+    procedure TestAlertJobNotifiesExpiringWarranty()
+    var
+        FixedAsset: Record "Fixed Asset";
+        AssetSetup: Record "Asset Setup";
+        AssetNotification: Record "Asset Notification";
+    begin
+        if not AssetSetup.Get() then
+            AssetSetup.Insert();
+        AssetSetup."Warranty Alert Days" := 30;
+        AssetSetup."Warranty Alert User ID" := 'WARRUSER';
+        AssetSetup.Modify();
+
+        LibraryFixedAsset.CreateFixedAsset(FixedAsset);
+        FixedAsset."Warranty End Date" := CalcDate('<+5D>', Today());
+        FixedAsset.Modify();
+
+        Codeunit.Run(Codeunit::"Asset Alert Job");
+
+        AssetNotification.SetRange("Recipient User ID", 'WARRUSER');
+        AssetNotification.SetRange("Related Document No.", FixedAsset."No.");
+        LibraryAssert.IsFalse(AssetNotification.IsEmpty(), 'Expected a warranty expiry notification');
+    end;
+
+    local procedure CreateApprovedRequest(
+        var
+        AssetRequestHeader: Record "Asset Request Header";
+        var
+        AssetRequestLine: Record "Asset Request Line";
+        Qty: Integer)
+    begin
+        AssetRequestHeader.Init();
+        AssetRequestHeader.Insert(true);
+        AssetRequestHeader."Employee No." := GetAnyEmployeeNo();
+        AssetRequestHeader.Status := AssetRequestHeader.Status::Approved;
+        AssetRequestHeader.Modify(true);
+
+        AssetRequestLine.Init();
+        AssetRequestLine."Document No." := AssetRequestHeader."No.";
+        AssetRequestLine."Line No." := 10000;
+        AssetRequestLine.Insert(true);
+        AssetRequestLine.Validate(Quantity, Qty);
+        AssetRequestLine.Validate("Approved Quantity", Qty);
+        AssetRequestLine.Modify(true);
+    end;
+
     local procedure GetAnyEmployeeNo(): Code[20]
     var
         Employee: Record Employee;
     begin
+        Employee.SetRange(Status, Employee.Status::Active);
         if Employee.FindFirst() then
             exit(Employee."No.");
+
+        Employee.SetRange(Status);
 
         Employee.Init();
         Employee.Insert(true);
