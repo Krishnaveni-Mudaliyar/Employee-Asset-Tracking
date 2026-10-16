@@ -19,6 +19,8 @@ permissionset 50201 "AST-ADMIN"
         tabledata "Asset Disposal" = RIMD,
         tabledata "Asset Notification" = RIMD,
         tabledata "Asset Cue" = RIMD,
+        tabledata "Asset Stocktake Header" = RIMD,
+        tabledata "Asset Stocktake Line" = RIMD,
 
         // Codeunits — execute
         codeunit "Asset Setup Management" = X,
@@ -38,6 +40,7 @@ permissionset 50201 "AST-ADMIN"
         codeunit "Asset Employee Events" = X,
         codeunit "Asset Bulk Management" = X,
         codeunit "Asset Excel Import" = X,
+        codeunit "Asset Stocktake Management" = X,
 
         // Pages — execute
         page "Asset Setup" = X,
@@ -67,6 +70,9 @@ permissionset 50201 "AST-ADMIN"
         page "Asset Notifications" = X,
         page "Asset Cues" = X,
         page "Asset Role Center" = X,
+        page "Asset Stocktake List" = X,
+        page "Asset Stocktake Card" = X,
+        page "Asset Stocktake Subpage" = X,
 
         // Reports
         report "Asset Register" = X,
