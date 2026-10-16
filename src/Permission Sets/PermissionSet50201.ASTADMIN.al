@@ -35,6 +35,7 @@ permissionset 50201 "AST-ADMIN"
         codeunit "Asset Tracking Mgt. Tests" = X,
         codeunit "Asset Notification Management" = X,
         codeunit "Asset Alert Job" = X,
+        codeunit "Asset Employee Events" = X,
 
         // Pages — execute
         page "Asset Setup" = X,
@@ -65,8 +66,8 @@ permissionset 50201 "AST-ADMIN"
         page "Asset Cues" = X,
         page "Asset Role Center" = X,
 
-// Reports
-report "Asset Register" = X,
+        // Reports
+        report "Asset Register" = X,
         report "Overdue Asset Report" = X,
         report "Pending Asset Request Report" = X,
         report "Employee Asset Report" = X,

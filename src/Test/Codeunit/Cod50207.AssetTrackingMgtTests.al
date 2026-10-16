@@ -516,6 +516,32 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         LibraryAssert.IsFalse(AssetNotification.IsEmpty(), 'Expected a warranty expiry notification');
     end;
 
+    [Test]
+    procedure TestCountActiveAssetsForEmployee()
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetRequestLine: Record "Asset Request Line";
+        FixedAssets: Record "Fixed Asset";
+        AssetAssignmentManagement: Codeunit "Asset Assignment Management";
+        AssetEmployeeEvents: Codeunit "Asset Employee Events";
+        CountBefore: Integer;
+    begin
+        // [GIVEN] an employee and the number of assets they hold
+        CreateApprovedRequest(AssetRequestHeader, AssetRequestLine, 1);
+        CountBefore := AssetEmployeeEvents.CountActiveAssets(AssetRequestHeader."Employee No.");
+        LibraryFixedAsset.CreateFixedAsset(FixedAssets);
+
+        // [WHEN] an asset is assigned to them
+        AssetAssignmentManagement.AssignAsset(AssetRequestLine, FixedAssets."No.", WorkDate());
+
+        // [THEN] their active asset count goes up by one
+        LibraryAssert.AreEqual(
+            CountBefore + 1,
+            AssetEmployeeEvents.CountActiveAssets
+                    (AssetRequestHeader."Employee No."),
+                    'Active asset count should increase after assignment.');
+    end;
+
     local procedure CreateApprovedRequest(
         var
         AssetRequestHeader: Record "Asset Request Header";
