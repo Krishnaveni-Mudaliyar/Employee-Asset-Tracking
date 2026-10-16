@@ -13,9 +13,7 @@ codeunit 50215 "Asset Employee Events"
             exit;
         if GuiAllowed() then
             if not confirm(
-                'Employee %1 still holds %2 active asset(s).
-                Return or transfer them before deactivating.
-                \\Deactivate the employee anyway?',
+                'Employee %1 still holds %2 active asset(s).\Return or transfer them before deactivating.\Deactivate the employee anyway?',
                 false, Rec."No.", ActiveAssetCount)
                 then
                 Error('');
