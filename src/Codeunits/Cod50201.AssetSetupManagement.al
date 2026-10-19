@@ -19,7 +19,6 @@ codeunit 50201 "Asset Setup Management"
 
     begin
         AssetSetup := GetSetup();
-
         if AssetSetup."Asset Request Nos." = '' then
             Error(
                 'Asset No. Series must be specified in Asset Setup.');
@@ -38,7 +37,6 @@ codeunit 50201 "Asset Setup Management"
 
     begin
         AssetSetup := GetSetup();
-
         if AssetSetup."Assignment Nos." = '' then
             Error(
                 'Assignment No. Series must be specified in Asset Setup.');
@@ -56,7 +54,6 @@ codeunit 50201 "Asset Setup Management"
         NoSeries: Codeunit "No. Series";
     begin
         AssetSetup := GetSetup();
-
         if AssetSetup."Return Nos." = '' then
             Error(
                 'Return No. Series must be specified in Asset Setup.');
@@ -73,7 +70,6 @@ codeunit 50201 "Asset Setup Management"
         NoSeries: Codeunit "No. Series";
     begin
         AssetSetup := GetSetup();
-
         if AssetSetup."Transfer Nos." = '' then
             Error(
                 'Transfer No. Series must be specified in Asset Setup.');
@@ -90,7 +86,6 @@ codeunit 50201 "Asset Setup Management"
         NoSeries: Codeunit "No. Series";
     begin
         AssetSetup := GetSetup();
-
         if AssetSetup."Maintenance Nos." = '' then
             Error(
                 'Maintenance No. Series must be specified in Asset Setup.');
@@ -108,7 +103,6 @@ codeunit 50201 "Asset Setup Management"
         NoSeries: Codeunit "No. Series";
     begin
         AssetSetup := GetSetup();
-
         if AssetSetup."Disposal Nos." = '' then
             Error(
                 'Disposal No. Series must be specified in Asset Setup.');
@@ -116,6 +110,23 @@ codeunit 50201 "Asset Setup Management"
         exit(
             NoSeries.GetNextNo(
                 AssetSetup."Disposal Nos.",
+                WorkDate(),
+                true));
+    end;
+
+    procedure GetStocktakeNo(): code[20]
+    var
+        AssetSetup: Record "Asset Setup";
+        NoSeries: Codeunit "No. Series";
+    begin
+        AssetSetup := GetSetup();
+        if AssetSetup."Stocktake Nos." = '' then
+            Error(
+                'Stocktake No. Series must be specified in Asset Setup.');
+
+        exit(
+            NoSeries.GetNextNo(
+                AssetSetup."Stocktake Nos.",
                 WorkDate(),
                 true));
     end;
