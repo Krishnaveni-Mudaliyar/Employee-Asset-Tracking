@@ -70,6 +70,13 @@ page 50211 "Asset Role Center"
                     RunObject = page "Asset Maintenance List";
                     ToolTip = 'Opens Maintenance.';
                 }
+                action(Stocktakes)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Stocktakes';
+                    RunObject = page "Asset Stocktake List";
+                    ToolTip = 'Opens the asset stocktakes.';
+                }
 
                 action(Disposals)
                 {

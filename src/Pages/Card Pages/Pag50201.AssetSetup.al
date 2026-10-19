@@ -50,6 +50,16 @@ page 50201 "Asset Setup"
                     ToolTip = 'Specifies the value of the Disposal Nos. field.', Comment = '%';
                 }
             }
+            group(StocktakeSetup)
+            {
+                Caption = 'Stocktake';
+
+                field("Stocktake Nos."; Rec."Stocktake Nos.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the number series used for asset stocktakes.';
+                }
+            }
             group(Alerts)
             {
                 Caption = 'Alerts';
