@@ -45,6 +45,11 @@ table 50201 "Asset Setup"
             Caption = 'Disposal Nos.';
             TableRelation = "No. Series".Code;
         }
+        field(17; "Stocktake Nos."; Code[20])
+        {
+            Caption = 'Stocktake Nos.';
+            TableRelation = "No. Series".Code;
+        }
         field(20; "Warranty Alert Days"; Integer)
         {
             Caption = 'Warranty Alert Days';
