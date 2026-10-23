@@ -3,7 +3,7 @@ page 50230 "Asset Stocktake Subpage"
     ApplicationArea = All;
     Caption = 'Asset Stocktake Subpage';
     PageType = ListPart;
-    SourceTable = "Asset Stocktake Header";
+    SourceTable = "Asset Stocktake Line";
 
     layout
     {
