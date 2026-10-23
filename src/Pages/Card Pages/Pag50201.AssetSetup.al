@@ -77,4 +77,33 @@ page 50201 "Asset Setup"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(EnableChangeLog)
+            {
+                ApplicationArea = All;
+                Caption = 'Enable Change Log';
+                Image = Setup;
+                ToolTip = 'Activates the change log and logs inserts, changes and deletes on all asset tracking tables.';
+
+                trigger OnAction()
+                var
+                    AssetChangeLogMgt: Codeunit "Asset Change Log Management";
+                begin
+                    AssetChangeLogMgt.EnableChangeLog();
+                    Message('Change log enabled for asset tracking tables.');
+                end;
+            }
+            action(ChangeLogEntries)
+            {
+                ApplicationArea = All;
+                Caption = 'Change Log Entries';
+                Image = ChangeLog;
+                RunObject = page "Change Log Entries";
+                ToolTip = 'Opens the change log entries.';
+            }
+        }
+    }
 }
