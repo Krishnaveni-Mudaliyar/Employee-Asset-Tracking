@@ -82,5 +82,6 @@ permissionset 50201 "AST-ADMIN"
         report "Asset Assignment Report" = X,
         report "Asset Handover Report" = X,
         report "Asset Return Report" = X,
-        report "Asset History Report" = X;
+        report "Asset History Report" = X,
+        report "Asset Label Report" = X;
 }

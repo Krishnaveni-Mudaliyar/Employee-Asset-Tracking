@@ -116,7 +116,7 @@ pageextension 50203 "Fixed Asset List Ext" extends "Fixed Asset List"
                 var
                     FixedAsset: Record "Fixed Asset";
                     TransferAssetDialog: Page "Transfer Asset Dialog";
-                    AssetBulkManagement: "Asset Bulk Management";
+                    AssetBulkManagement: Codeunit "Asset Bulk Management";
                     Processed: Integer;
                     Skipped: Integer;
 
@@ -169,6 +169,15 @@ pageextension 50203 "Fixed Asset List Ext" extends "Fixed Asset List"
                 Image = Report;
                 RunObject = report "Overdue Asset Report";
                 ToolTip = 'Runs the overdue asset report.';
+            }
+
+            action(PrintAssetLabels)
+            {
+                ApplicationArea = All;
+                Caption = 'Print Asset Labels';
+                Image = BarCode;
+                RunObject = report "Asset Label Report";
+                ToolTip = 'Prints asset labels with a code 39 barcode of the asset tag (or asset no. if no tag).';
             }
         }
     }
