@@ -21,6 +21,9 @@ permissionset 50201 "AST-ADMIN"
         tabledata "Asset Cue" = RIMD,
         tabledata "Asset Stocktake Header" = RIMD,
         tabledata "Asset Stocktake Line" = RIMD,
+        tabledata "Change Log Setup" = RIMD,
+        tabledata "Change Log Setup (Table)" = RIMD,
+        tabledata "Change Log Entry" = R,
 
         // Codeunits — execute
         codeunit "Asset Setup Management" = X,
@@ -41,6 +44,7 @@ permissionset 50201 "AST-ADMIN"
         codeunit "Asset Bulk Management" = X,
         codeunit "Asset Excel Import" = X,
         codeunit "Asset Stocktake Management" = X,
+        codeunit "Asset Change Log Management" = X,
 
         // Pages — execute
         page "Asset Setup" = X,
