@@ -43,7 +43,7 @@ report 50204 "Employee Assets"
                         AssetDescription := FixedAsset.Description;
                         AssetCategoryCode := FixedAsset."Asset Category Code";
                         AssetBrandCode := FixedAsset."Brand Code";
-                        AssetSerialNo := FixedAsset."IT Serial No.";
+                        AssetSerialNo := FixedAsset."Serial No.";
                     end;
                 end;
             }

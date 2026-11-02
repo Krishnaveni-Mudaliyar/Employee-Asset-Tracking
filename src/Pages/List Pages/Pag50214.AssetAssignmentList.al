@@ -62,7 +62,7 @@ page 50214 "Asset Assignment List"
                     SelectedRec: Record "Asset Assignment";
                 begin
                     CurrPage.SetSelectionFilter(SelectedRec);
-                    Report.Run(Report::"Asset Handover Report", true, false, SelectedRec);
+                    Report.Run(Report::"Asset Handover", true, false, SelectedRec);
                 end;
             }
         }

@@ -63,7 +63,7 @@ page 50215 "Asset Return List"
                     SelectedRec: Record "Asset Return";
                 begin
                     CurrPage.SetSelectionFilter(SelectedRec);
-                    Report.Run(Report::"Asset Return Report", true, false, SelectedRec);
+                    Report.Run(Report::"Asset Return", true, false, SelectedRec);
                 end;
             }
         }

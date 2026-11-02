@@ -81,12 +81,12 @@ permissionset 50201 "AST-ADMIN"
 
         // Reports
         report "Asset Register" = X,
-        report "Pending Asset Request Report" = X,
-        report "Asset Assignment Report" = X,
-        report "Overdue Asset Report" = X,
-        report "Asset Handover Report" = X,
-        report "Asset Return Report" = X,
-        report "Asset History Report" = X;
+        report "Pending Asset Requests" = X,
+        report "Asset Assignments" = X,
+        report "Overdue Assets" = X,
+        report "Asset Handover" = X,
+        report "Asset Return" = X,
+        report "Asset History" = X;
     // report "Employee Asset Report" = X,
     // report "Asset Label Report" = X;
 }

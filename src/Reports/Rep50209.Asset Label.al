@@ -13,7 +13,7 @@ report 50209 "Asset Label"
             column(AssetNo; "No.") { }
             column(Description; Description) { }
             column(AssetTagNo; "Asset Tag No.") { }
-            column(SerialNo; "IT Serial No.") { }
+            column(SerialNo; "Serial No.") { }
             column(BarCodeValue; BarcodeValue) { }
             column(BarcodeText; BarcodeText) { }
 

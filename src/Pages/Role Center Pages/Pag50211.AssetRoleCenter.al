@@ -156,7 +156,7 @@ page 50211 "Asset Role Center"
             {
                 ApplicationArea = All;
                 Caption = 'Overdue Assets';
-                RunObject = report "Overdue Asset Report";
+                RunObject = report "Overdue Assets";
                 ToolTip = 'Opens Overdue Assets.';
             }
 
@@ -164,7 +164,7 @@ page 50211 "Asset Role Center"
             {
                 ApplicationArea = All;
                 Caption = 'Pending Requests';
-                RunObject = report "Pending Asset Request Report";
+                RunObject = report "Pending Asset Requests";
                 ToolTip = 'Opens Pending Requests.';
             }
 
@@ -172,7 +172,7 @@ page 50211 "Asset Role Center"
             {
                 ApplicationArea = All;
                 Caption = 'Employee Assets';
-                RunObject = report "Employee Asset Report";
+                RunObject = report "Employee Assets";
                 ToolTip = 'Opens Employee Assets.';
             }
 
@@ -180,7 +180,7 @@ page 50211 "Asset Role Center"
             {
                 ApplicationArea = All;
                 Caption = 'Assignments';
-                RunObject = report "Asset Assignment Report";
+                RunObject = report "Asset Assignments";
                 ToolTip = 'Opens Assignments.';
             }
 
@@ -188,7 +188,7 @@ page 50211 "Asset Role Center"
             {
                 ApplicationArea = All;
                 Caption = 'Handover';
-                RunObject = report "Asset Handover Report";
+                RunObject = report "Asset Handover";
                 ToolTip = 'Opens Handover.';
             }
 
@@ -196,7 +196,7 @@ page 50211 "Asset Role Center"
             {
                 ApplicationArea = All;
                 Caption = 'Returns';
-                RunObject = report "Asset Return Report";
+                RunObject = report "Asset Return";
                 ToolTip = 'Opens Returns.';
             }
 
@@ -204,7 +204,7 @@ page 50211 "Asset Role Center"
             {
                 ApplicationArea = All;
                 Caption = 'Asset History';
-                RunObject = report "Asset History Report";
+                RunObject = report "Asset History";
                 ToolTip = 'Opens Asset History.';
             }
         }

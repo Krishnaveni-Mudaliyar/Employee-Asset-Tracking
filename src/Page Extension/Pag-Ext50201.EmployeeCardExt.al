@@ -47,7 +47,7 @@ pageextension 50201 "Employee Card Ext." extends "Employee Card"
 
                 begin
                     Employee.SetRange("No.", Rec."No.");
-                    Report.Run(Report::"Employee Asset Report", true, false, Employee);
+                    Report.Run(Report::"Employee Assets", true, false, Employee);
                 end;
             }
             action(EmployeeAssignments)
