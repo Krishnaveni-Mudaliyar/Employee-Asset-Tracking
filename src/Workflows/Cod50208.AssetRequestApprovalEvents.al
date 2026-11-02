@@ -1,9 +1,5 @@
 codeunit 50208 "Asset Request Approval Events"
 {
-    // Mirrors the pattern used in Customer Master Approval (CMA): subscribe to the
-    // standard Approvals Mgmt. events and react only when the entry belongs to
-    // Asset Request Header, then update the document's own Status field.
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.",
     'OnApproveApprovalRequest',
     '',
@@ -18,11 +14,11 @@ codeunit 50208 "Asset Request Approval Events"
     end;
 
     [EventSubscriber(ObjectType::Codeunit,
-    Codeunit::"Approvals Mgmt.",
-    'OnRejectApprovalRequest',
-    '',
-    false,
-    false)]
+       Codeunit::"Approvals Mgmt.",
+       'OnRejectApprovalRequest',
+       '',
+       false,
+       false)]
     local procedure OnRejectApprovalRequest(var ApprovalEntry: Record "Approval Entry")
     begin
         if ApprovalEntry."Table ID" <> Database::"Asset Request Header" then
@@ -40,7 +36,11 @@ codeunit 50208 "Asset Request Approval Events"
             exit;
 
         AssetRequestHeader.Status := AssetRequestHeader.Status::Approved;
-        AssetRequestHeader."Approved By" := CopyStr(UserId(), 1, MaxStrLen(AssetRequestHeader."Approved By"));
+        AssetRequestHeader."Approved By" := CopyStr(
+            UserId(),
+            1,
+MaxStrLen(
+    AssetRequestHeader."Approved By"));
         AssetRequestHeader."Approval Date-Time" := CurrentDateTime();
         AssetRequestHeader.Modify(true);
 
@@ -59,13 +59,50 @@ codeunit 50208 "Asset Request Approval Events"
             exit;
 
         AssetRequestHeader.Status := AssetRequestHeader.Status::Rejected;
-        AssetRequestHeader."Approved By" := CopyStr(UserId(), 1, MaxStrLen(AssetRequestHeader."Approved By"));
+        AssetRequestHeader."Approved By" := CopyStr(
+            UserId(),
+            1,
+            MaxStrLen(
+                AssetRequestHeader."Approved By"));
         AssetRequestHeader."Approval Date-Time" := CurrentDateTime();
         AssetRequestHeader.Modify(true);
 
         AssetNotificationManagement.Notify(
            AssetRequestHeader."Requested By",
-           StrSubstNo('Your asset request %1 has been rejected.', AssetRequestHeader."No."),
-           AssetRequestHeader."No.");
+                StrSubstNo(
+                 'Your asset request %1 has been rejected.',
+                 AssetRequestHeader."No."),
+                AssetRequestHeader."No.");
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnPopulateApprovalEntryArgument', '', false, false)]
+    local procedure OnPopulateApprovalEntryArgument(var RecRef: RecordRef; var ApprovalEntryArgument: Record "Approval Entry"; WorkflowStepInstance: Record "Workflow Step Instance")
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+    begin
+        if RecRef.Number <> Database::"Asset Request Header" then
+            exit;
+
+        RecRef.SetTable(AssetRequestHeader);
+        ApprovalEntryArgument."Document No." := AssetRequestHeader."No.";
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Approval Entry", 'OnAfterInsertEvent', '', false, false)]
+    local procedure NotifyApproverOnApprovalEntryInsert(var Rec: Record "Approval Entry"; RunTrigger: Boolean)
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetNotificationManagement: Codeunit "Asset Notification Management";
+    begin
+        if Rec."Table ID" <> Database::"Asset Request Header" then
+            exit;
+        if Rec.Status <> Rec.Status::Open then
+            exit;
+        if not AssetRequestHeader.Get(Rec."Record ID to Approve") then
+            exit;
+
+        AssetNotificationManagement.Notify(
+            Rec."Approver ID",
+            StrSubstNo('Asset request %1 is waiting for your approval.', AssetRequestHeader."No."),
+            AssetRequestHeader."No.");
     end;
 }

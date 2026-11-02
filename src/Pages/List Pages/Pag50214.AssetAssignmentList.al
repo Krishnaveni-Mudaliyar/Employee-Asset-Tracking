@@ -46,4 +46,25 @@ page 50214 "Asset Assignment List"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(PrintHandover)
+            {
+                ApplicationArea = All;
+                Caption = 'Print Handover';
+                Image = Report;
+                ToolTip = 'Runs the handover report for the selected assignments.';
+
+                trigger OnAction()
+                var
+                    SelectedRec: Record "Asset Assignment";
+                begin
+                    CurrPage.SetSelectionFilter(SelectedRec);
+                    Report.Run(Report::"Asset Handover Report", true, false, SelectedRec);
+                end;
+            }
+        }
+    }
 }

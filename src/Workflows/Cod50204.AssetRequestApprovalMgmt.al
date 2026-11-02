@@ -24,9 +24,16 @@ codeunit 50204 "Asset Request Approval Mgmt."
 
         RecRef.GetTable(AssetRequestHeader);
 
-        ApprovalEntry.SetRange("Table ID", Database::"Asset Request Header");
-        ApprovalEntry.SetRange("Document No.", AssetRequestHeader."No.");
-        ApprovalEntry.SetRange(Status, ApprovalEntry.Status::Open);
+        ApprovalEntry.SetRange(
+            "Table ID",
+            Database::"Asset Request Header");
+        ApprovalEntry.SetRange(
+            "Document No.",
+            AssetRequestHeader."No.");
+
+        ApprovalEntry.SetRange(
+            Status,
+        ApprovalEntry.Status::Open);
 
         if ApprovalEntry.FindSet(true) then
             repeat
@@ -37,12 +44,5 @@ codeunit 50204 "Asset Request Approval Mgmt."
 
         AssetRequestHeader.Status := AssetRequestHeader.Status::Open;
         AssetRequestHeader.Modify(true);
-
-        // NOTE: this cancels the Approval Entry records directly rather than calling
-        // Codeunit "Approvals Mgmt." internally, since its cancellation procedure name
-        // varies across BC versions. If your environment exposes a public cancel
-        // procedure on Approvals Mgmt. (e.g. for approver notifications), prefer
-        // calling that instead of the manual loop above — verify against your BC 28
-        // symbol package before shipping.
     end;
 }

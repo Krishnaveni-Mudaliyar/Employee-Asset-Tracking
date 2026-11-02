@@ -17,6 +17,10 @@ table 50204 "Asset Brand"
         {
             Caption = 'Blocked';
         }
+        field(4; "Asset Brand Code"; Code[10])
+        {
+            Caption = 'Asset Brand Code';
+        }
     }
     keys
     {

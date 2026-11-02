@@ -9,7 +9,7 @@ permissionset 50202 "AST-USER"
         tabledata "Asset Category" = R,
         tabledata "Asset Sub Category" = R,
         tabledata "Asset Brand" = R,
-        tabledata Asset = R,
+        tabledata "Fixed Asset" = R,
 
         // Own requests — full rights to create/edit/send/cancel their own requests
         tabledata "Asset Request Header" = RIMD,
@@ -35,8 +35,6 @@ permissionset 50202 "AST-USER"
         codeunit "Asset Notification Management" = X,
 
         // Pages
-        page "Asset Card" = X,
-        page "Asset List" = X,
         page "Asset Request Card" = X,
         page "Asset Request Subpage" = X,
         page "Asset Request List" = X,

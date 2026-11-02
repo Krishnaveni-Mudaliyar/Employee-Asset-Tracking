@@ -1,18 +1,18 @@
 codeunit 50206 "Asset Assignment Management"
 {
-    procedure AssignAsset(var AssetRequestLine: Record "Asset Request Line"; AssetNo: Code[20])
+    procedure AssignAsset(var AssetRequestLine: Record "Asset Request Line"; AssetNo: Code[20]; ExpectedReturnDate: Date)
     var
         AssetRequestHeader: Record "Asset Request Header";
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         AssetAssignment: Record "Asset Assignment";
+        Employee: Record Employee;
+
     begin
         AssetRequestHeader.Get(AssetRequestLine."Document No.");
-
         if AssetRequestHeader.Status <> AssetRequestHeader.Status::Approved then
             Error(
                 'Asset request %1 must be Approved before assets can be assigned.',
                 AssetRequestHeader."No.");
-
         if AssetRequestLine."Assigned Quantity" >= AssetRequestLine."Approved Quantity" then
             Error(
                 'Asset request line for %1 is already fully assigned (%2 of %3).',
@@ -20,53 +20,71 @@ codeunit 50206 "Asset Assignment Management"
                 AssetRequestLine."Assigned Quantity",
                 AssetRequestLine."Approved Quantity");
 
-        Asset.Get(AssetNo);
+        FixedAsset.Get(AssetNo);
+        if FixedAsset."IT Asset Blocked" then
+            Error(
+                'Asset %1 is blocked and cannot be assigned.',
+                AssetNo);
+        if FixedAsset.Blocked or FixedAsset.Inactive then
+            Error(
+                'Asset %1 is inactive or blocked in Fixed Assets and cannot be assigned.',
+                AssetNo);
 
-        if Asset.Blocked then
-            Error('Asset %1 is blocked and cannot be assigned.', AssetNo);
-
-        if Asset.Status <> Asset.Status::Available then
-            Error('Asset %1 is not Available (current status: %2).', AssetNo, Asset.Status);
-
+        Employee.Get(AssetRequestHeader."Employee No.");
+        if Employee.Status <> Employee.Status::Active then
+            Error(
+                'Employee %1 is not active and cannot receive assets.',
+                Employee."No.");
+        if (ExpectedReturnDate <> 0D) and (ExpectedReturnDate < Today()) then
+            Error(
+                'The Expected return date cannot be in the past.');
+        if FixedAsset."IT Asset Status" <> FixedAsset."IT Asset Status"::Available then
+            Error(
+                'Asset %1 is not Available (current status: %2).',
+                AssetNo,
+                FixedAsset."IT Asset Status");
         if (AssetRequestLine."Asset Category Code" <> '') and
-           (Asset."Category Code" <> AssetRequestLine."Asset Category Code")
+           (FixedAsset."Asset Category Code" <> AssetRequestLine."Asset Category Code")
         then
             Error(
                 'Asset %1 does not belong to the requested category %2.',
-                AssetNo, AssetRequestLine."Asset Category Code");
-
+                AssetNo,
+                AssetRequestLine."Asset Category Code");
         if (AssetRequestLine."Asset Sub Category Code" <> '') and
-           (Asset."Sub Category Code" <> AssetRequestLine."Asset Sub Category Code")
+           (FixedAsset."Asset Sub Category Code" <> AssetRequestLine."Asset Sub Category Code")
         then
             Error(
                 'Asset %1 does not belong to the requested sub category %2.',
-                AssetNo, AssetRequestLine."Asset Sub Category Code");
+                AssetNo,
+                AssetRequestLine."Asset Sub Category Code");
 
         AssetAssignment.Init();
         AssetAssignment."Document No." := AssetRequestLine."Document No.";
         AssetAssignment."Document Line No." := AssetRequestLine."Line No.";
         AssetAssignment."Asset No." := AssetNo;
         AssetAssignment."Employee No." := AssetRequestHeader."Employee No.";
+        AssetAssignment."Expected Return Date" := ExpectedReturnDate;
         AssetAssignment.Insert(true);
 
-        Asset.Status := Asset.Status::Assigned;
-        Asset.Modify(true);
+        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Assigned;
+        FixedAsset.Modify(true);
 
-        AssetRequestLine.Validate("Assigned Quantity", AssetRequestLine."Assigned Quantity" + 1);
+        AssetRequestLine.Validate(
+            "Assigned Quantity",
+            AssetRequestLine."Assigned Quantity" + 1);
         AssetRequestLine.Modify(true);
 
         NotifyRequesterOfAssignment(AssetRequestHeader, AssetNo);
         CloseHeaderIfFullyAssigned(AssetRequestHeader);
     end;
 
-    procedure BulkAssignFromStock(var AssetRequestLine: Record "Asset Request Line"): Integer
+    procedure BulkAssignFromStock(var AssetRequestLine: Record "Asset Request Line"; ExpectedReturnDate: Date): Integer
     var
-        Asset: Record Asset;
+        FixedAsset: Record "Fixed Asset";
         RemainingToAssign: Integer;
         AssignedCount: Integer;
     begin
         RemainingToAssign := AssetRequestLine."Approved Quantity" - AssetRequestLine."Assigned Quantity";
-
         if RemainingToAssign <= 0 then
             Error(
                 'Asset request line for %1 is already fully assigned (%2 of %3).',
@@ -74,26 +92,23 @@ codeunit 50206 "Asset Assignment Management"
                 AssetRequestLine."Assigned Quantity",
                 AssetRequestLine."Approved Quantity");
 
-        Asset.SetRange(Status, Asset.Status::Available);
-        Asset.SetRange(Blocked, false);
-
-        if AssetRequestLine."Asset Category Code" <> '' then
-            Asset.SetRange("Category Code", AssetRequestLine."Asset Category Code");
-
+        FixedAsset.SetRange("IT Asset Status", FixedAsset."IT Asset Status"::Available);
+        FixedAsset.SetRange("IT Asset Blocked", false);
+        if AssetRequestLine."Asset Category Code" <> ''
+        then
+            FixedAsset.SetRange("Asset Category Code", AssetRequestLine."Asset Category Code");
         if AssetRequestLine."Asset Sub Category Code" <> '' then
-            Asset.SetRange("Sub Category Code", AssetRequestLine."Asset Sub Category Code");
-
-        if not Asset.FindSet() then
+            FixedAsset.SetRange("Asset Sub Category Code", AssetRequestLine."Asset Sub Category Code");
+        if not FixedAsset.FindSet() then
             exit(0);
 
         AssignedCount := 0;
-
         repeat
             if AssignedCount < RemainingToAssign then begin
-                AssignAsset(AssetRequestLine, Asset."No.");
+                AssignAsset(AssetRequestLine, FixedAsset."No.", ExpectedReturnDate);
                 AssignedCount += 1;
             end;
-        until (Asset.Next() = 0) or (AssignedCount >= RemainingToAssign);
+        until (FixedAsset.Next() = 0) or (AssignedCount >= RemainingToAssign);
 
         exit(AssignedCount);
     end;
@@ -104,10 +119,12 @@ codeunit 50206 "Asset Assignment Management"
     begin
         AssetNotificationManagement.Notify(
             AssetRequestHeader."Requested By",
-            StrSubstNo('Asset %1 has been assigned to you for request %2.', AssetNo, AssetRequestHeader."No."),
+            StrSubstNo(
+                'Asset %1 has been assigned to you for request %2.',
+                AssetNo,
+                AssetRequestHeader."No."),
             AssetRequestHeader."No.");
     end;
-
 
     local procedure CloseHeaderIfFullyAssigned(var AssetRequestHeader: Record "Asset Request Header")
     var
@@ -115,17 +132,14 @@ codeunit 50206 "Asset Assignment Management"
         AllLinesFullyAssigned: Boolean;
     begin
         AssetRequestLine.SetRange("Document No.", AssetRequestHeader."No.");
-
         if not AssetRequestLine.FindSet() then
             exit;
 
         AllLinesFullyAssigned := true;
-
         repeat
             if AssetRequestLine."Assigned Quantity" < AssetRequestLine."Approved Quantity" then
                 AllLinesFullyAssigned := false;
         until AssetRequestLine.Next() = 0;
-
         if AllLinesFullyAssigned then begin
             AssetRequestHeader.Status := AssetRequestHeader.Status::Closed;
             AssetRequestHeader.Modify(true);

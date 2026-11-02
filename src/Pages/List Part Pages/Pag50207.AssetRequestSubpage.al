@@ -78,7 +78,7 @@ page 50207 "Asset Request Subpage"
                     if AssetNo = '' then
                         exit;
 
-                    AssetAssignmentManagement.AssignAsset(Rec, AssetNo);
+                    AssetAssignmentManagement.AssignAsset(Rec, AssetNo, AssignAssetDialog.GetExpectedReturnDate());
                     CurrPage.Update(false);
                 end;
             }
@@ -98,11 +98,12 @@ page 50207 "Asset Request Subpage"
 
                     if not Confirm(
                         'Automatically assign up to %1 available matching assets to this line?',
-                        false, Rec."Approved Quantity" - Rec."Assigned Quantity")
+                        false,
+                        Rec."Approved Quantity" - Rec."Assigned Quantity")
                     then
                         exit;
 
-                    AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(Rec);
+                    AssignedCount := AssetAssignmentManagement.BulkAssignFromStock(Rec, 0D);
 
                     if AssignedCount = 0 then
                         Message('No matching Available assets were found in stock.')

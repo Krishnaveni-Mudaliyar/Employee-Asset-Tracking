@@ -12,7 +12,7 @@ table 50211 "Asset Maintenance"
         field(2; "Asset No."; Code[20])
         {
             Caption = 'Asset No.';
-            TableRelation = Asset."No.";
+            TableRelation = "Fixed Asset"."No.";
         }
         field(3; "Start Date"; Date)
         {
