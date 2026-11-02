@@ -1,4 +1,4 @@
-report 50209 "Asset Label Report"
+report 50209 "Asset Label"
 {
     ApplicationArea = All;
     Caption = 'Asset Labels';
@@ -8,7 +8,7 @@ report 50209 "Asset Label Report"
     {
         dataitem(FixedAsset; "Fixed Asset")
         {
-            RequestFilterFields = "No.", "Asset Category Code", "IT Location Code", "Asset Status";
+            RequestFilterFields = "No.", "Asset Category Code", "FA Location Code", "Asset Status";
 
             column(AssetNo; "No.") { }
             column(Description; Description) { }

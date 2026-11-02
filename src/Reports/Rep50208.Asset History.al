@@ -1,4 +1,4 @@
-report 50208 "Asset History Report"
+report 50208 "Asset History"
 {
     ApplicationArea = All;
     Caption = 'Asset History Report';
