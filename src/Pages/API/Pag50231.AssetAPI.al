@@ -38,11 +38,11 @@ page 50231 "Asset API"
                 {
                     Caption = 'Asset Sub Category Code';
                 }
-                field(brandCode; Rec."Asset Brand Code")
+                field(brandCode; Rec."Brand Code")
                 {
                     Caption = 'Asset Brand Code';
                 }
-                field(modelNo; Rec."IT Model No.")
+                field(modelNo; Rec."Model No.")
                 {
                     Caption = 'IT Model No.';
                 }
@@ -50,15 +50,15 @@ page 50231 "Asset API"
                 {
                     Caption = 'IT Serial No.';
                 }
-                field(assetTagNo; Rec."IT Asset Tag No.")
+                field(assetTagNo; Rec."Asset Tag No.")
                 {
                     Caption = 'IT Asset Tag No.';
                 }
-                field(condition; Rec."IT Asset Condition")
+                field(condition; Rec."Asset Condition")
                 {
                     Caption = 'IT Asset Condition';
                 }
-                field(status; Rec."IT Asset Status")
+                field(status; Rec."Asset Status")
                 {
                     Caption = 'IT Asset Status';
                 }

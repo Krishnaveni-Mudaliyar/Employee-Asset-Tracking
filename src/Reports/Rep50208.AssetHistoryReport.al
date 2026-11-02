@@ -10,7 +10,7 @@ report 50208 "Asset History Report"
     {
         dataitem(FixedAsset; "Fixed Asset")
         {
-            RequestFilterFields = "No.", "Asset Category Code", "IT Asset Status";
+            RequestFilterFields = "No.", "Asset Category Code", "Asset Status";
 
             column(AssetNo; "No.") { }
             column(AssetDescription; Description) { }

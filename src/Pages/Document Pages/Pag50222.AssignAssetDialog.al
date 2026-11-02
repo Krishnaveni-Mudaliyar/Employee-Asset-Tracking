@@ -14,38 +14,38 @@ page 50222 "Assign Asset Dialog"
                 ApplicationArea = All;
                 Caption = 'Asset No.';
                 ToolTip = 'Specifies the available asset to assign.';
-                TableRelation = "Fixed Asset"."No." where("IT Asset Status" = const(Available), "IT Asset Blocked" = const(false));
+                TableRelation = "Fixed Asset"."No." where("Asset Status" = const(Available), "Blocked" = const(false));
 
                 trigger OnValidate()
                 var
-                    FixedAsset: Record "Fixed Asset";
+                    Asset: Record "Fixed Asset";
                 begin
                     if Rec."No." = '' then
                         exit;
 
-                    if not FixedAsset.Get(Rec."No.") then
+                    if not Asset.Get(Rec."No.") then
                         Error('Asset %1 does not exist.', Rec."No.");
                 end;
             }
-            field(ExpectedReturnDate; ExpectedReturnDate)
-            {
-                ApplicationArea = All;
-                Caption = 'Expected Return Date';
-                ToolTip = 'Specifies when the asset is expected to be returned. Leave blank for an open-ended assignment.';
-            }
+            // field(ExpectedReturnDate; ExpectedReturnDate)
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Expected Return Date';
+            //     ToolTip = 'Specifies when the asset is expected to be returned. Leave blank for an open-ended assignment.';
+            // }
         }
     }
 
-    var
-        ExpectedReturnDate: Date;
+    // var
+    //     ExpectedReturnDate: Date;
 
     procedure GetAssetNo(): Code[20]
     begin
         exit(Rec."No.");
     end;
 
-    procedure GetExpectedReturnDate(): Date
-    begin
-        exit(ExpectedReturnDate);
-    end;
+    // procedure GetExpectedReturnDate(): Date
+    // begin
+    //     exit(ExpectedReturnDate);
+    // end;
 }

@@ -164,7 +164,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
 
         LibraryFixedAsset.CreateFixedAsset(FixedAsset);
         LibraryAssert.AreEqual(
-            FixedAsset."IT Asset Status"::Available, FixedAsset."IT Asset Status",
+            FixedAsset."Asset Status"::Available, FixedAsset."Asset Status",
             'New fixed asset should default to Available.');
 
         // [WHEN] the asset is assigned
@@ -176,8 +176,8 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         // [THEN] the asset becomes Assigned
         FixedAsset.Get(FixedAsset."No.");
         LibraryAssert.AreEqual(
-            FixedAsset."IT Asset Status"::Assigned,
-            FixedAsset."IT Asset Status",
+            FixedAsset."Asset Status"::Assigned,
+            FixedAsset."Asset Status",
             'Asset should be Assigned after assignment.');
 
         // [THEN] the line's Assigned Quantity reflects it
@@ -257,7 +257,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         // [THEN] it fails
         asserterror AssetReturnManagement.ReturnAsset(
             FixedAsset."No.",
-            FixedAsset."IT Asset Condition"::Good,
+            FixedAsset."Asset Condition"::Good,
             '');
     end;
 
@@ -278,8 +278,8 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         // [THEN] it is Disposed and IT Asset Blocked
         FixedAsset.Get(FixedAsset."No.");
         LibraryAssert.AreEqual(
-            FixedAsset."IT Asset Status"::Disposed,
-            FixedAsset."IT Asset Status",
+            FixedAsset."Asset Status"::Disposed,
+            FixedAsset."Asset Status",
             'Asset should be Disposed.');
 
         LibraryAssert.IsTrue(
@@ -295,7 +295,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
     begin
         // [GIVEN] an Assigned fixed asset
         LibraryFixedAsset.CreateFixedAsset(FixedAsset);
-        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Assigned;
+        FixedAsset."Asset Status" := FixedAsset."Asset Status"::Assigned;
         FixedAsset.Modify(true);
 
         // [WHEN] trying to dispose of it
@@ -387,7 +387,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetDisposalManagement: Codeunit "Asset Disposal Management";
     begin
         LibraryFixedAsset.CreateFixedAsset(FixedAsset);
-        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::"Under Maintenance";
+        FixedAsset."Asset Status" := FixedAsset."Asset Status"::"Under Maintenance";
         FixedAsset.Modify(true);
 
         asserterror AssetDisposalManagement.DisposeAsset(FixedAsset."No.", 'Attempted during maintenace.');
@@ -403,7 +403,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetTransferManagement: Codeunit "Asset Transfer Management";
     begin
         LibraryFixedAsset.CreateFixedAsset(FixedAsset);
-        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Assigned;
+        FixedAsset."Asset Status" := FixedAsset."Asset Status"::Assigned;
         FixedAsset.Modify(true);
         Employee.Init();
         Employee.Insert(true);
@@ -429,7 +429,7 @@ codeunit 50207 "Asset Tracking Mgt. Tests"
         AssetAssignmentManagement.AssignAsset(AssetRequestLine, FixedAsset."No.", WorkDate());
 
         // [WHEN] the asset is returned
-        AssetReturnManagement.ReturnAsset(FixedAsset."No.", FixedAsset."IT Asset Condition"::Good, '');
+        AssetReturnManagement.ReturnAsset(FixedAsset."No.", FixedAsset."Asset Condition"::Good, '');
 
         // [THEN] the requester is notified about the return
         AssetNotification.SetRange("Recipient User ID", AssetRequestHeader."Requested By");

@@ -10,19 +10,19 @@ report 50201 "Asset Register"
     {
         dataitem("Fixed Asset"; "Fixed Asset")
         {
-            RequestFilterFields = "No.", "Asset Category Code", "Asset Sub Category Code", "Asset Brand Code", "IT Asset Status", "IT Location Code", "IT Asset Blocked";
+            RequestFilterFields = "No.", "Asset Category Code", "Asset Sub Category Code", "Brand Code", "Asset Status", "IT Location Code", "IT Asset Blocked";
 
             column(AssetNo; "No.") { }
             column(Description; Description) { }
             column(CategoryCode; "Asset Category Code") { }
             column(SubCategoryCode; "Asset Sub Category Code") { }
-            column(BrandCode; "Asset Brand Code") { }
-            column(ModelNo; "IT Model No.") { }
+            column(BrandCode; "Brand Code") { }
+            column(ModelNo; "Model No.") { }
             column(SerialNo; "IT Serial No.") { }
-            column(AssetTagNo; "IT Asset Tag No.") { }
+            column(AssetTagNo; "Asset Tag No.") { }
             column(LocationCode; "IT Location Code") { }
-            column(StatusText; Format("IT Asset Status")) { }
-            column(ConditionText; Format("IT Asset Condition")) { }
+            column(StatusText; Format("Asset Status")) { }
+            column(ConditionText; Format("Asset Condition")) { }
             column(WarrantyStartDate; Format("Warranty Start Date")) { }
             column(WarrantyEndDate; Format("Warranty End Date")) { }
             column(BlockedText; Format("IT Asset Blocked")) { }

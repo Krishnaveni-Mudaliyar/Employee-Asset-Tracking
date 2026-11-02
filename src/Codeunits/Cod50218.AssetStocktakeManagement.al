@@ -32,7 +32,7 @@ codeunit 50218 "Asset Stocktake Management"
         end else begin
             FixedAsset.SetRange("IT Location Code",
             AssetStocktakeHeader."Location Code");
-            FixedAsset.SetRange("IT Asset Status", FixedAsset."IT Asset Status"::Disposed);
+            FixedAsset.SetRange("Asset Status", FixedAsset."Asset Status"::Disposed);
             if FixedAsset.FindSet() then
                 repeat
                     LineNo += 10000;

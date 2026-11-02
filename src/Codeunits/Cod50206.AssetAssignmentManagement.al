@@ -38,11 +38,11 @@ codeunit 50206 "Asset Assignment Management"
         if (ExpectedReturnDate <> 0D) and (ExpectedReturnDate < Today()) then
             Error(
                 'The Expected return date cannot be in the past.');
-        if FixedAsset."IT Asset Status" <> FixedAsset."IT Asset Status"::Available then
+        if FixedAsset."Asset Status" <> FixedAsset."Asset Status"::Available then
             Error(
                 'Asset %1 is not Available (current status: %2).',
                 AssetNo,
-                FixedAsset."IT Asset Status");
+                FixedAsset."Asset Status");
         if (AssetRequestLine."Asset Category Code" <> '') and
            (FixedAsset."Asset Category Code" <> AssetRequestLine."Asset Category Code")
         then
@@ -66,7 +66,7 @@ codeunit 50206 "Asset Assignment Management"
         AssetAssignment."Expected Return Date" := ExpectedReturnDate;
         AssetAssignment.Insert(true);
 
-        FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Assigned;
+        FixedAsset."Asset Status" := FixedAsset."Asset Status"::Assigned;
         FixedAsset.Modify(true);
 
         AssetRequestLine.Validate(
@@ -92,7 +92,7 @@ codeunit 50206 "Asset Assignment Management"
                 AssetRequestLine."Assigned Quantity",
                 AssetRequestLine."Approved Quantity");
 
-        FixedAsset.SetRange("IT Asset Status", FixedAsset."IT Asset Status"::Available);
+        FixedAsset.SetRange("Asset Status", FixedAsset."Asset Status"::Available);
         FixedAsset.SetRange("IT Asset Blocked", false);
         if AssetRequestLine."Asset Category Code" <> ''
         then

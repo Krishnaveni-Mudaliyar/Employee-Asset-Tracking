@@ -9,7 +9,7 @@ codeunit 50209 "Asset Return Management"
         AssetNotificationManagement: Codeunit "Asset Notification Management";
     begin
         FixedAsset.Get(AssetNo);
-        if FixedAsset."IT Asset Status" <> FixedAsset."IT Asset Status"::Assigned then
+        if FixedAsset."Asset Status" <> FixedAsset."Asset Status"::Assigned then
             Error('Asset %1 is not currently Assigned and cannot be returned.', AssetNo);
 
         AssetAssignment.SetRange("Asset No.", AssetNo);
@@ -27,16 +27,16 @@ codeunit 50209 "Asset Return Management"
         AssetAssignment.Active := false;
         AssetAssignment.Modify(true);
 
-        FixedAsset."IT Asset Condition" := Condition;
+        FixedAsset."Asset Condition" := Condition;
 
         // A returned asset in New/Good/Fair condition goes straight back into the
         // available pool; Damaged/Beyond Repair routes it to maintenance instead of
         // silently becoming assignable again.
         case Condition of
             Condition::New, Condition::Good, Condition::Fair:
-                FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::Available;
+                FixedAsset."Asset Status" := FixedAsset."Asset Status"::Available;
             Condition::Damaged, Condition::"Under Repair", Condition::"Beyond Repair":
-                FixedAsset."IT Asset Status" := FixedAsset."IT Asset Status"::"Under Maintenance";
+                FixedAsset."Asset Status" := FixedAsset."Asset Status"::"Under Maintenance";
         end;
 
         FixedAsset.Modify(true);

@@ -37,8 +37,8 @@ report 50206 "Asset Handover Report"
                 then begin
                     AssetDescription := FixedAsset.Description;
                     AssetSerialNo := FixedAsset."IT Serial No.";
-                    AssetTagNo := FixedAsset."IT Asset Tag No.";
-                    AssetCondition := Format(FixedAsset."IT Asset Condition");
+                    AssetTagNo := FixedAsset."Asset Tag No.";
+                    AssetCondition := Format(FixedAsset."Asset Condition");
                 end;
 
                 Clear(EmployeeName);

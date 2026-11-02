@@ -2,65 +2,57 @@ pageextension 50202 "Fixed Asset Card Ext" extends "Fixed Asset Card"
 {
     layout
     {
-        addlast(General)
+        addafter(General)
         {
-            field("Asset Category Code"; Rec."Asset Category Code")
+            group(AssetTracking)
             {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the IT asset category of this fixed asset.', Comment = '%';
-            }
-            field("Asset Sub Category Code"; Rec."Asset Sub Category Code")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the IT asset sub category of this fixed asset.', Comment = '%';
-            }
-            field("Asset Brand Code"; Rec."Asset Brand Code")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the brand of this fixed asset.', Comment = '%';
-            }
-            field("IT Model No."; Rec."IT Model No.")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the model number of this fixed asset.', Comment = '%';
-            }
-            field("IT Serial No."; Rec."IT Serial No.")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the serial number of this fixed asset.', Comment = '%';
-            }
-            field("IT Asset Tag No."; Rec."IT Asset Tag No.")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the internal asset tag number of this fixed asset.', Comment = '%';
-            }
-            field("IT Asset Status"; Rec."IT Asset Status")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the IT asset lifecycle status of this fixed asset.', Comment = '%';
-            }
-            field("IT Asset Condition"; Rec."IT Asset Condition")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the physical condition of this fixed asset.', Comment = '%';
-            }
-            field("IT Location Code"; Rec."IT Location Code")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies where this fixed asset is physically located.', Comment = '%';
-            }
-            field("IT Asset Blocked"; Rec."IT Asset Blocked")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies whether this fixed asset is blocked from IT asset requests/assignment.', Comment = '%';
-            }
-        }
-        addlast(General)
-        {
-            group("IT Warranty")
-            {
-                Caption = 'IT Warranty';
+                Caption = 'Asset Tracking';
 
+                field("Asset Category Code"; Rec."Asset Category Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the IT asset category of this fixed asset.', Comment = '%';
+                }
+                field("Asset Sub Category Code"; Rec."Asset Sub Category Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the IT asset sub category of this fixed asset.', Comment = '%';
+                }
+                field("Brand Code"; Rec."Brand Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the brand of this fixed asset.', Comment = '%';
+                }
+                field("Model No."; Rec."Model No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the model number of this fixed asset.', Comment = '%';
+                }
+                field("Asset Tag No."; Rec."Asset Tag No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the internal asset tag number of this fixed asset.', Comment = '%';
+                }
+                field("Asset Status"; Rec."Asset Status")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the IT asset lifecycle status of this fixed asset.', Comment = '%';
+                }
+                field("Asset Condition"; Rec."Asset Condition")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the physical condition of this fixed asset.', Comment = '%';
+                }
+                field("Purchase Date"; Rec."Purchase Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the purchase date of the asset.';
+                }
+                field("Purchase Cost"; Rec."Purchase Cost")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the purchase cost of the asset.';
+                }
                 field("Warranty Start Date"; Rec."Warranty Start Date")
                 {
                     ApplicationArea = All;
@@ -73,7 +65,7 @@ pageextension 50202 "Fixed Asset Card Ext" extends "Fixed Asset Card"
                 }
             }
         }
-        addlast(FactBoxes)
+        addlast(factboxes)
         {
             part(AssignmentHistory; "Asset Assignment Hist. FactBox")
             {
@@ -174,6 +166,7 @@ pageextension 50202 "Fixed Asset Card Ext" extends "Fixed Asset Card"
                 begin
                     if not Confirm('Do you want to dispose of asset %1?', false, Rec."No.") then
                         exit;
+
                     if DisposeAssetDialog.RunModal() <> Action::OK then
                         exit;
 
@@ -183,39 +176,39 @@ pageextension 50202 "Fixed Asset Card Ext" extends "Fixed Asset Card"
                     CurrPage.Update(false);
                 end;
             }
-            action(AssetHistoryReport)
-            {
-                ApplicationArea = All;
-                Caption = 'Asset History';
-                Image = Report;
-                ToolTip = 'Runs the asset history report for this asset.';
+            // action(AssetHistoryReport)
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Asset History';
+            //     Image = Report;
+            //     ToolTip = 'Runs the asset history report for this asset.';
 
-                trigger OnAction()
-                var
-                    FixedAsset: Record "Fixed Asset";
-                begin
-                    FixedAsset.SetRange("No.", Rec."No.");
-                    Report.Run(Report::"Asset History Report", true, false, FixedAsset);
-                end;
-            }
-            action(ShowAssignments)
-            {
-                ApplicationArea = All;
-                Caption = 'Assignment History';
-                Image = History;
-                RunObject = page "Asset Assignment List";
-                RunPageLink = "Asset No." = field("No.");
-                ToolTip = 'Opens all assignments for this asset.';
-            }
-            action(ShowMaintenance)
-            {
-                ApplicationArea = All;
-                Caption = 'Maintenance History';
-                Image = History;
-                RunObject = page "Asset Maintenance List";
-                RunPageLink = "Asset No." = field("No.");
-                ToolTip = 'Opens all maintenance entries for this asset.';
-            }
+            //     trigger OnAction()
+            //     var
+            //         FixedAsset: Record "Fixed Asset";
+            //     begin
+            //         FixedAsset.SetRange("No.", Rec."No.");
+            //         Report.Run(Report::"Asset History Report", true, false, FixedAsset);
+            //     end;
+            // }
+            // action(ShowAssignments)
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Assignment History';
+            //     Image = History;
+            //     RunObject = page "Asset Assignment List";
+            //     RunPageLink = "Asset No." = field("No.");
+            //     ToolTip = 'Opens all assignments for this asset.';
+            // }
+            // action(ShowMaintenance)
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Maintenance History';
+            //     Image = History;
+            //     RunObject = page "Asset Maintenance List";
+            //     RunPageLink = "Asset No." = field("No.");
+            //     ToolTip = 'Opens all maintenance entries for this asset.';
+            // }
         }
     }
 }

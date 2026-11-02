@@ -8,11 +8,11 @@ report 50209 "Asset Label Report"
     {
         dataitem(FixedAsset; "Fixed Asset")
         {
-            RequestFilterFields = "No.", "Asset Category Code", "IT Location Code", "IT Asset Status";
+            RequestFilterFields = "No.", "Asset Category Code", "IT Location Code", "Asset Status";
 
             column(AssetNo; "No.") { }
             column(Description; Description) { }
-            column(AssetTagNo; "IT Asset Tag No.") { }
+            column(AssetTagNo; "Asset Tag No.") { }
             column(SerialNo; "IT Serial No.") { }
             column(BarCodeValue; BarcodeValue) { }
             column(BarcodeText; BarcodeText) { }
@@ -22,7 +22,7 @@ report 50209 "Asset Label Report"
                 BarcodeFontProvider: Interface "Barcode Font Provider";
                 BarcodeSymbology: Enum "Barcode Symbology";
             begin
-                BarcodeValue := "IT Asset Tag No.";
+                BarcodeValue := "Asset Tag No.";
                 if BarcodeValue = '' then
                     BarcodeValue := "No.";
 

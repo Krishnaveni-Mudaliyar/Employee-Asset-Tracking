@@ -64,7 +64,6 @@ table 50208 "Asset Assignment"
         key(Asset; "Asset No.") { }
         key(Employee; "Employee No.") { }
         key(ActiveAsset; "Asset No.", Active) { }
-        key(Overdue; Active, "Expected Return Date") { }
     }
 
     trigger OnInsert()

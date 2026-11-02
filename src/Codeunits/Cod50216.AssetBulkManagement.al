@@ -10,7 +10,7 @@ codeunit 50216 "Asset Bulk Management"
         Skipped := 0;
         if FixedAsset.FindSet() then
             repeat
-                if FixedAsset."IT Asset Status" = FixedAsset."IT Asset Status"::Assigned then begin
+                if FixedAsset."Asset Status" = FixedAsset."Asset Status"::Assigned then begin
                     AssetReturnManagement.ReturnAsset(FixedAsset."No.", Condition, Remarks);
                     Processed += 1;
                 end else
@@ -27,7 +27,7 @@ codeunit 50216 "Asset Bulk Management"
         Skipped := 0;
         if FixedAsset.FindSet() then
             repeat
-                if FixedAsset."IT Asset Status" = FixedAsset."IT Asset Status"::Assigned then begin
+                if FixedAsset."Asset Status" = FixedAsset."Asset Status"::Assigned then begin
                     AssetTransferManagement.TransferAsset(FixedAsset."No.", ToEmployeeNo, ToLocationCode, Remarks);
                     Processed += 1;
                 end else

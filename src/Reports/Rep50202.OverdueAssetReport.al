@@ -39,7 +39,7 @@ report 50202 "Overdue Asset Report"
                 if FixedAsset.Get("Asset No.") then begin
                     AssetDescription := FixedAsset.Description;
                     LocationCode := FixedAsset."IT Location Code";
-                    StatusText := Format(FixedAsset."IT Asset Status");
+                    StatusText := Format(FixedAsset."Asset Status");
                 end;
 
                 Clear(EmployeeName);

@@ -34,10 +34,10 @@ codeunit 50217 "Asset Excel Import"
                 FixedAsset.Validate(Description, CopyStr(Description, 1, MaxStrLen(FixedAsset.Description)));
                 FixedAsset.Validate("Asset Category Code", CopyStr(GetCell(TempExcelBuffer, RowNo, 2), 1, MaxStrLen(FixedAsset."Asset Category Code")));
                 FixedAsset.Validate("Asset Sub Category Code", CopyStr(GetCell(TempExcelBuffer, RowNo, 3), 1, MaxStrLen(FixedAsset."Asset Sub Category Code")));
-                FixedAsset.Validate("Asset Brand Code", CopyStr(GetCell(TempExcelBuffer, RowNo, 4), 1, MaxStrLen(FixedAsset."Asset Brand Code")));
-                FixedAsset.Validate("IT Model No.", CopyStr(GetCell(TempExcelBuffer, RowNo, 5), 1, MaxStrLen(FixedAsset."IT Model No.")));
+                FixedAsset.Validate("Brand Code", CopyStr(GetCell(TempExcelBuffer, RowNo, 4), 1, MaxStrLen(FixedAsset."Brand Code")));
+                FixedAsset.Validate("Model No.", CopyStr(GetCell(TempExcelBuffer, RowNo, 5), 1, MaxStrLen(FixedAsset."Model No.")));
                 FixedAsset.Validate("IT Serial No.", CopyStr(GetCell(TempExcelBuffer, RowNo, 6), 1, MaxStrLen(FixedAsset."IT Serial No.")));
-                FixedAsset.Validate("IT Asset Tag No.", CopyStr(GetCell(TempExcelBuffer, RowNo, 7), 1, MaxStrLen(FixedAsset."IT Asset Tag No.")));
+                FixedAsset.Validate("Asset Tag No.", CopyStr(GetCell(TempExcelBuffer, RowNo, 7), 1, MaxStrLen(FixedAsset."Asset Tag No.")));
                 FixedAsset.Validate("IT Location Code", CopyStr(GetCell(TempExcelBuffer, RowNo, 8), 1, MaxStrLen(FixedAsset."IT Location Code")));
                 FixedAsset.Validate("Warranty Start Date", GetDateCell(TempExcelBuffer, RowNo, 9));
                 FixedAsset.Validate("Warranty End Date", GetDateCell(TempExcelBuffer, RowNo, 10));

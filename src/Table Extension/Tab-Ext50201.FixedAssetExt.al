@@ -5,6 +5,7 @@ tableextension 50201 "Fixed Asset Ext" extends "Fixed Asset"
         field(50201; "Asset Category Code"; Code[20])
         {
             Caption = 'Asset Category Code';
+            DataClassification = CustomerContent;
             TableRelation = "Asset Category".Code;
 
             trigger OnValidate()
@@ -25,6 +26,7 @@ tableextension 50201 "Fixed Asset Ext" extends "Fixed Asset"
         field(50202; "Asset Sub Category Code"; Code[20])
         {
             Caption = 'Asset Sub Category Code';
+            DataClassification = CustomerContent;
             TableRelation = "Asset Sub Category".Code;
 
             trigger OnValidate()
@@ -59,54 +61,33 @@ tableextension 50201 "Fixed Asset Ext" extends "Fixed Asset"
                 end;
             end;
         }
-        field(50203; "Asset Brand Code"; Code[20])
+        field(50203; "Brand Code"; Code[20])
         {
-            Caption = 'Asset Brand Code';
+            Caption = 'Brand Code';
+            DataClassification = CustomerContent;
             TableRelation = "Asset Brand".Code;
 
             trigger OnValidate()
             var
                 AssetBrand: Record "Asset Brand";
             begin
-                if "Asset Brand Code" = '' then
+                if "Brand Code" = '' then
                     exit;
 
-                AssetBrand.Get("Asset Brand Code");
+                AssetBrand.Get("Brand Code");
 
                 if AssetBrand.Blocked then
                     Error(
                         'Asset brand %1 is blocked and cannot be used.',
-                        "Asset Brand Code");
+                        "Brand Code");
             end;
         }
-        field(50212; "IT Model No."; Code[50])
+        field(50204; "Model No."; Code[50])
         {
             Caption = 'Model No.';
+            DataClassification = CustomerContent;
         }
-        field(50204; "IT Serial No."; Code[50])
-        {
-            Caption = 'Serial No.';
-
-            trigger OnValidate()
-            var
-                FixedAsset: Record "Fixed Asset";
-            begin
-                if "IT Serial No." = '' then
-                    exit;
-
-                FixedAsset.SetRange("IT Serial No.", "IT Serial No.");
-                FixedAsset.SetFilter("No.", '<>%1', "No.");
-
-                if not FixedAsset.IsEmpty() then begin
-                    FixedAsset.FindFirst();
-                    Error(
-                        'Serial No. %1 is already used on asset %2.',
-                        "IT Serial No.",
-                        FixedAsset."No.");
-                end;
-            end;
-        }
-        field(50205; "IT Asset Tag No."; Code[50])
+        field(50205; "Asset Tag No."; Code[50])
         {
             Caption = 'Asset Tag No.';
 
@@ -114,52 +95,72 @@ tableextension 50201 "Fixed Asset Ext" extends "Fixed Asset"
             var
                 FixedAsset: Record "Fixed Asset";
             begin
-                if "IT Asset Tag No." = '' then
+                if "Asset Tag No." = '' then
                     exit;
 
-                FixedAsset.SetRange("IT Asset Tag No.", "IT Asset Tag No.");
+                FixedAsset.SetRange("Asset Tag No.", "Asset Tag No.");
                 FixedAsset.SetFilter("No.", '<>%1', "No.");
 
-                if not FixedAsset.IsEmpty() then begin
-                    FixedAsset.FindFirst();
+                if FixedAsset.FindFirst() then
                     Error(
                         'Asset Tag No. %1 is already used on asset %2.',
-                        "IT Asset Tag No.",
+                        "Asset Tag No.",
                         FixedAsset."No.");
-                end;
             end;
         }
-        field(50206; "IT Asset Condition"; Enum "Asset Condition")
+        field(50206; "Purchase Date"; Date)
         {
-            Caption = 'Condition';
+            Caption = 'Purchase Date';
+            DataClassification = CustomerContent;
         }
-        field(50207; "IT Asset Status"; Enum "Asset Status")
+        field(50207; "Purchase Cost"; Decimal)
         {
-            Caption = 'Status';
+            Caption = 'Purchase Cost';
+            DataClassification = CustomerContent;
+            DecimalPlaces = 0 : 2;
         }
-        field(50208; "Warranty Start Date"; Date)
+        field(50208; "Asset Status"; Enum "Asset Status")
+        {
+            Caption = 'Asset Status';
+            DataClassification = CustomerContent;
+        }
+        field(50209; "Asset Condition"; Enum "Asset Condition")
+        {
+            Caption = 'Asset Condition';
+            DataClassification = CustomerContent;
+        }
+        field(50210; "Warranty Start Date"; Date)
         {
             Caption = 'Warranty Start Date';
+            DataClassification = CustomerContent;
         }
-        field(50209; "Warranty End Date"; Date)
+        field(50211; "Warranty End Date"; Date)
         {
             Caption = 'Warranty End Date';
+            DataClassification = CustomerContent;
         }
-        field(50210; "IT Location Code"; Code[10])
+
+        modify("Serial No.")
         {
-            Caption = 'IT Location Code';
-        }
-        field(50211; "IT Asset Blocked"; Boolean)
-        {
-            Caption = 'IT Asset Blocked';
+            trigger OnAfterValidate()
+            var
+                FixedAsset: Record "Fixed Asset";
+            begin
+                if "Serial No." = '' then
+                    exit;
+
+                FixedAsset.SetRange("Serial No.", "Serial No.");
+                FixedAsset.SetFilter("No.", '<>%1', "No.");
+
+                if FixedAsset.FindFirst() then
+                    Error('Serial No. %1 is already used on asset %2.', "Serial No.", FixedAsset."No.");
+            end;
         }
     }
-
     keys
     {
-        key(ITAssetCategory; "Asset Category Code", "Asset Sub Category Code") { }
-        key(ITAssetSerialNo; "IT Serial No.") { }
-        key(ITAssetTagNo; "IT Asset Tag No.") { }
-        key(ITAssetStatus; "IT Asset Status") { }
+        key(AssetCategory; "Asset Category Code", "Asset Sub Category Code") { }
+        key(AssetStatus; "Asset Status") { }
+        key(AssetTagNo; "Asset Tag No.") { }
     }
 }

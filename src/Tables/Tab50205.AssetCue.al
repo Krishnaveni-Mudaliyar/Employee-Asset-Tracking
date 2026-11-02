@@ -15,21 +15,21 @@ table 50205 "Asset Cue"
             Caption = 'Available Assets';
             FieldClass = FlowField;
             CalcFormula = count("Fixed Asset"
-                           where("IT Asset Status" = const(Assigned)));
+                           where("Asset Status" = const(Assigned)));
             Editable = false;
         }
         field(11; "Assigned Assets"; Integer)
         {
             Caption = 'Assigned Assets';
             FieldClass = FlowField;
-            CalcFormula = count("Fixed Asset" where("IT Asset Status" = const(Assigned)));
+            CalcFormula = count("Fixed Asset" where("Asset Status" = const(Assigned)));
             Editable = false;
         }
         field(12; "Assets Under Maintenance"; Integer)
         {
             Caption = 'Assets Under Maintenance';
             FieldClass = FlowField;
-            CalcFormula = count("Fixed Asset" where("IT Asset Status" = const("Under Maintenance")));
+            CalcFormula = count("Fixed Asset" where("Asset Status" = const("Under Maintenance")));
             Editable = false;
         }
         field(13; "Pending Requests"; Integer)

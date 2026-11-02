@@ -9,7 +9,7 @@ codeunit 50210 "Asset Transfer Management"
         Employee: Record Employee;
     begin
         FixedAsset.Get(AssetNo);
-        if FixedAsset."IT Asset Status" <> FixedAsset."IT Asset Status"::Assigned then
+        if FixedAsset."Asset Status" <> FixedAsset."Asset Status"::Assigned then
             Error('Asset %1 is not currently Assigned and cannot be transferred.', AssetNo);
 
         Employee.Get(ToEmployeeNo);

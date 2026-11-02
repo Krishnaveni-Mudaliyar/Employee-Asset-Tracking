@@ -42,7 +42,7 @@ report 50204 "Employee Asset Report"
                     if FixedAsset.Get("Asset Assignment"."Asset No.") then begin
                         AssetDescription := FixedAsset.Description;
                         AssetCategoryCode := FixedAsset."Asset Category Code";
-                        AssetBrandCode := FixedAsset."Asset Brand Code";
+                        AssetBrandCode := FixedAsset."Brand Code";
                         AssetSerialNo := FixedAsset."IT Serial No.";
                     end;
                 end;
