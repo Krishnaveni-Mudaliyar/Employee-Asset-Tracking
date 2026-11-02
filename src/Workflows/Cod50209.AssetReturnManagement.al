@@ -48,5 +48,24 @@ codeunit 50209 "Asset Return Management"
         //         AssetRequestHeader."Requested By", StrSubstNo(
         //             'Asset %1 has been returned (condition: %2).', AssetNo, Condition),
         //         AssetRequestHeader."No.");
+
+        NotifyRequesterOfReturn(AssetAssignment, AssetNo, Condition);
+    end;
+
+    local procedure NotifyRequesterOfReturn(AssetAssignment: Record "Asset Assignment"; AssetNo: Code[20]; Condition: Enum "Asset Condition")
+    var
+        AssetRequestHeader: Record "Asset Request Header";
+        AssetNotificationManagement: Codeunit "Asset Notification Management";
+    begin
+        if AssetAssignment."Document No." = '' then
+            exit;
+
+        if not AssetRequestHeader.Get(AssetAssignment."Document No.") then
+            exit;
+
+        AssetNotificationManagement.Notify(
+            AssetRequestHeader."Requested By",
+            StrSubstNo('Asset %1 has been returned (condition: %2).', AssetNo, Condition),
+            AssetRequestHeader."No.");
     end;
 }
