@@ -50,15 +50,16 @@ table 50201 "Asset Setup"
             Caption = 'Stocktake Nos.';
             TableRelation = "No. Series".Code;
         }
-        field(20; "Warranty Alert Days"; Integer)
+        field(20; "Warranty Alert Lead Days"; Integer)
         {
-            Caption = 'Warranty Alert Days';
+            Caption = 'Warranty Alert Lead Days';
             InitValue = 30;
             MinValue = 0;
         }
-        field(21; "Warranty Alert User ID"; Code[50])
+        field(21; "Alert Recipient User ID"; Code[50])
         {
-            Caption = 'Warranty Alert User ID';
+            Caption = 'Alert Recipient User ID';
+            DataClassification = EndUserIdentifiableInformation;
             TableRelation = User."User Name";
             ValidateTableRelation = false;
         }

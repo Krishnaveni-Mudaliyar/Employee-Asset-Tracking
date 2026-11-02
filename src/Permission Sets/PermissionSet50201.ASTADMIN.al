@@ -40,6 +40,7 @@ permissionset 50201 "AST-ADMIN"
         codeunit "Asset Disposal Management" = X,
         codeunit "Asset Tracking Mgt. Tests" = X,
         codeunit "Asset Notification Management" = X,
+        codeunit "Asset Overdue Warranty Job" = X,
         // codeunit "Asset Alert Job" = X,
         // codeunit "Asset Employee Events" = X,
         // codeunit "Asset Bulk Management" = X,
