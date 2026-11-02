@@ -64,12 +64,12 @@ page 50201 "Asset Setup"
             {
                 Caption = 'Alerts';
 
-                field("Warranty Alert Days"; Rec."Warranty Alert Days")
+                field("Warranty Alert Lead Days"; Rec."Warranty Alert Lead Days")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies how many days before warranty end a notification is raised.';
                 }
-                field("Warranty Alert User ID"; Rec."Warranty Alert User ID")
+                field("Alert Recipient User ID"; Rec."Alert Recipient User ID")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the user who receives warranty expiry notifications.';
