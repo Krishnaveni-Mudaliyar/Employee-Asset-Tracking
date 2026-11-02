@@ -23,14 +23,14 @@ codeunit 50218 "Asset Stocktake Management"
                 repeat
                     if FixedAsset.Get(AssetAssignment."Asset No.")
                     then
-                        if (AssetStocktakeHeader."Location Code" = '') or (FixedAsset."IT Location Code" = AssetStocktakeHeader."Location Code") then begin
+                        if (AssetStocktakeHeader."Location Code" = '') or (FixedAsset."FA Location Code" = AssetStocktakeHeader."Location Code") then begin
                             LineNo += 10000;
                             InsertLine(AssetStocktakeHeader."No.", LineNo, FixedAsset, AssetStocktakeHeader."Employee No.");
                             Added += 1;
                         end;
                 until AssetAssignment.Next() = 0;
         end else begin
-            FixedAsset.SetRange("IT Location Code",
+            FixedAsset.SetRange("FA Location Code",
             AssetStocktakeHeader."Location Code");
             FixedAsset.SetRange("Asset Status", FixedAsset."Asset Status"::Disposed);
             if FixedAsset.FindSet() then
@@ -93,7 +93,7 @@ codeunit 50218 "Asset Stocktake Management"
         AssetStocktakeLine."Asset No." := FixedAsset."No.";
         AssetStocktakeLine.Description := CopyStr(FixedAsset.Description, 1, MaxStrLen(AssetStocktakeLine.Description));
         AssetStocktakeLine."Expected Employee No." := ExpectedEmployeeNo;
-        AssetStocktakeLine."Expected Location Code" := FixedAsset."IT Location Code";
+        AssetStocktakeLine."Expected Location Code" := FixedAsset."FA Location Code";
         AssetStocktakeLine.Insert(true);
     end;
 

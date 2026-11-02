@@ -2,26 +2,29 @@ codeunit 50210 "Asset Transfer Management"
 {
     procedure TransferAsset(AssetNo: Code[20]; ToEmployeeNo: Code[20]; ToLocationCode: Code[20]; Remarks: Text[250])
     var
-        FixedAsset: Record "Fixed Asset";
+        Asset: Record "Fixed Asset";
         OldAssignment: Record "Asset Assignment";
         NewAssignment: Record "Asset Assignment";
         AssetTransfer: Record "Asset Transfer";
         Employee: Record Employee;
     begin
-        FixedAsset.Get(AssetNo);
-        if FixedAsset."Asset Status" <> FixedAsset."Asset Status"::Assigned then
+        Asset.Get(AssetNo);
+
+        if Asset."Asset Status" <> Asset."Asset Status"::Assigned then
             Error('Asset %1 is not currently Assigned and cannot be transferred.', AssetNo);
 
         Employee.Get(ToEmployeeNo);
-        if Employee.Status <> Employee.Status::Active then
-            Error('Employee %1 is not active and cannot receive assets.', ToEmployeeNo);
-        if FixedAsset."IT Asset Blocked" then
-            Error('Asset %1 is blocked and cannot be transferred.', AssetNo);
+
+        // if Employee.Status <> Employee.Status::Active then
+        //     Error('Employee %1 is not active and cannot receive assets.', ToEmployeeNo);
+        // if Asset."Blocked" then
+        //     Error('Asset %1 is blocked and cannot be transferred.', AssetNo);
 
         OldAssignment.SetRange("Asset No.", AssetNo);
         OldAssignment.SetRange(Active, true);
         if not OldAssignment.FindLast() then
             Error('No active assignment was found for asset %1.', AssetNo);
+
         if OldAssignment."Employee No." = ToEmployeeNo then
             Error('Asset %1 is already assigned to employee %2.', AssetNo, ToEmployeeNo);
 
@@ -29,7 +32,7 @@ codeunit 50210 "Asset Transfer Management"
         AssetTransfer."Asset No." := AssetNo;
         AssetTransfer."From Employee No." := OldAssignment."Employee No.";
         AssetTransfer."To Employee No." := ToEmployeeNo;
-        AssetTransfer."From Location Code" := FixedAsset."IT Location Code";
+        AssetTransfer."From Location Code" := Asset."FA Location Code";
         AssetTransfer."To Location Code" := ToLocationCode;
         AssetTransfer.Remarks := Remarks;
         AssetTransfer.Insert(true);
@@ -43,8 +46,9 @@ codeunit 50210 "Asset Transfer Management"
         NewAssignment."Asset No." := AssetNo;
         NewAssignment."Employee No." := ToEmployeeNo;
         NewAssignment.Insert(true);
+
         if ToLocationCode <> '' then
-            FixedAsset."IT Location Code" := ToLocationCode;
-        FixedAsset.Modify(true);
+            Asset."FA Location Code" := ToLocationCode;
+        Asset.Modify(true);
     end;
 }

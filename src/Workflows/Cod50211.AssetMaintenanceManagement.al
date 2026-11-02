@@ -2,18 +2,18 @@ codeunit 50211 "Asset Maintenance Management"
 {
     procedure SendToMaintenance(AssetNo: Code[20]; VendorNo: Code[20]; Description: Text[250])
     var
-        FixedAsset: Record "Fixed Asset";
+        Asset: Record "Fixed Asset";
         AssetMaintenance: Record "Asset Maintenance";
     begin
-        FixedAsset.Get(AssetNo);
+        Asset.Get(AssetNo);
 
-        if FixedAsset."IT Asset Blocked" then
+        if Asset."Blocked" then
             Error('Asset %1 is blocked.', AssetNo);
 
-        if FixedAsset."Asset Status" <> FixedAsset."Asset Status"::Available then
+        if Asset."Asset Status" <> Asset."Asset Status"::Available then
             Error(
                 'Asset %1 must be Available before it can be sent to maintenance (current status: %2). Return or transfer it first if it is assigned.',
-                AssetNo, FixedAsset."Asset Status");
+                AssetNo, Asset."Asset Status");
 
         AssetMaintenance.Init();
         AssetMaintenance."Asset No." := AssetNo;
@@ -21,13 +21,13 @@ codeunit 50211 "Asset Maintenance Management"
         AssetMaintenance.Description := Description;
         AssetMaintenance.Insert(true);
 
-        FixedAsset."Asset Status" := FixedAsset."Asset Status"::"Under Maintenance";
-        FixedAsset.Modify(true);
+        Asset."Asset Status" := Asset."Asset Status"::"Under Maintenance";
+        Asset.Modify(true);
     end;
 
     procedure CompleteMaintenance(var AssetMaintenance: Record "Asset Maintenance"; Cost: Decimal)
     var
-        FixedAsset: Record "Fixed Asset";
+        Asset: Record "Fixed Asset";
     begin
         if AssetMaintenance.Completed then
             Error('Maintenance record %1 is already completed.', AssetMaintenance."No.");
@@ -36,8 +36,9 @@ codeunit 50211 "Asset Maintenance Management"
         AssetMaintenance.Cost := Cost;
         AssetMaintenance.Completed := true;
         AssetMaintenance.Modify(true);
-        FixedAsset.Get(AssetMaintenance."Asset No.");
-        FixedAsset."Asset Status" := FixedAsset."Asset Status"::Available;
-        FixedAsset.Modify(true);
+
+        Asset.Get(AssetMaintenance."Asset No.");
+        Asset."Asset Status" := Asset."Asset Status"::Available;
+        Asset.Modify(true);
     end;
 }

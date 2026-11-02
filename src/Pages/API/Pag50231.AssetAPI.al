@@ -46,7 +46,7 @@ page 50231 "Asset API"
                 {
                     Caption = 'IT Model No.';
                 }
-                field(serialNo; Rec."IT Serial No.")
+                field(serialNo; Rec."Serial No.")
                 {
                     Caption = 'IT Serial No.';
                 }
@@ -70,11 +70,7 @@ page 50231 "Asset API"
                 {
                     Caption = 'Warranty End Date';
                 }
-                field(locationCode; Rec."IT Location Code")
-                {
-                    Caption = 'IT Location Code';
-                }
-                field(blocked; Rec."IT Asset Blocked")
+                field(blocked; Rec."Blocked")
                 {
                     Caption = 'IT Asset Blocked';
                 }

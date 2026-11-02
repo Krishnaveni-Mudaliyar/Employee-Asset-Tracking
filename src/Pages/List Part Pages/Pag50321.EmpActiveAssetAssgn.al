@@ -1,4 +1,4 @@
-page 50221 "Emp. Active Asset Assgn."
+page 50321 "Employee Active Asset Assign"
 {
     PageType = ListPart;
     Caption = 'Assigned Assets';

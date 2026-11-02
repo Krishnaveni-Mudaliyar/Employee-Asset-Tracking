@@ -78,7 +78,7 @@ page 50207 "Asset Request Subpage"
                     if AssetNo = '' then
                         exit;
 
-                    AssetAssignmentManagement.AssignAsset(Rec, AssetNo, AssignAssetDialog.GetExpectedReturnDate());
+                    AssetAssignmentManagement.AssignAsset(Rec, AssetNo);
                     CurrPage.Update(false);
                 end;
             }

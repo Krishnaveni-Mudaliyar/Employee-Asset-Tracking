@@ -1,4 +1,4 @@
-codeunit 50221 "Asset Uprade"
+codeunit 50221 "Asset Upgrade"
 {
     Subtype = Upgrade;
     trigger OnUpgradePerCompany()
