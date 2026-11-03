@@ -24,6 +24,7 @@ permissionset 50202 "AST-USER"
         tabledata "Asset Maintenance" = R,
         tabledata "Asset Disposal" = R,
         tabledata "Asset Notification" = RIMD,
+         tabledata "Asset Cue" = RIMD,
 
         // Codeunits needed to send/cancel their own approval request
         codeunit "Asset Setup Management" = X,
@@ -40,6 +41,9 @@ permissionset 50202 "AST-USER"
         page "Asset Request List" = X,
         page "Asset Assignment List" = X,
         page "Asset Assignment Hist. FactBox" = X,
-        page "Emp. Active Asset Assgn." = X,
-        page "Asset Notifications" = X;
+        page "Employee Active Asset Assign" = X,
+        page "Asset Notifications" = X,
+        page "Asset Activities" = X,
+        page "Asset Headline" = X,
+        page "Asset Role Center" = X;
 }

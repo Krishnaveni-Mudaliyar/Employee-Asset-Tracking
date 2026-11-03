@@ -12,6 +12,14 @@ page 50211 "Asset Role Center"
             {
                 ApplicationArea = All;
             }
+            part(Headline; "Asset Headline")
+            {
+                ApplicationArea = All;
+            }
+            part(Activities; "Asset Activities")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
@@ -19,16 +27,16 @@ page 50211 "Asset Role Center"
     {
         area(Sections)
         {
-            group(Assets)
+            group(AssetsSection)
             {
                 Caption = 'Assets';
 
-                action(FixedAssets)
+                action(Assets)
                 {
                     ApplicationArea = All;
-                    Caption = 'Fixed Assets';
+                    Caption = 'Assets';
                     RunObject = page "Fixed Asset List";
-                    ToolTip = 'Opens Fixed Assets.';
+                    ToolTip = 'Open the list of assets.';
                 }
 
                 action(Requests)
@@ -85,9 +93,17 @@ page 50211 "Asset Role Center"
                     RunObject = page "Asset Disposal List";
                     ToolTip = 'Opens Disposals.';
                 }
+
+                action(Notifications)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Notifications';
+                    RunObject = page "Asset Notifications";
+                    ToolTip = 'Open your asset notifications.';
+                }
             }
 
-            group(Setup)
+            group(SetupSection)
             {
                 Caption = 'Setup';
 
@@ -107,6 +123,14 @@ page 50211 "Asset Role Center"
                     ToolTip = 'Opens Categories.';
                 }
 
+                action(SubCategories)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Sub Categories';
+                    RunObject = page "Asset Sub Category List";
+                    ToolTip = 'Open the list of asset sub categories.';
+                }
+
                 action(Brands)
                 {
                     ApplicationArea = All;
@@ -116,6 +140,20 @@ page 50211 "Asset Role Center"
                 }
             }
         }
+
+        area(Creation)
+        {
+            action(NewRequest)
+            {
+                ApplicationArea = All;
+                Caption = 'New Asset Request';
+                Image = NewDocument;
+                RunObject = page "Asset Request Card";
+                RunPageMode = Create;
+                ToolTip = 'Create a new asset request.';
+            }
+        }
+
         area(Embedding)
         {
             action(EmbedFixedAssets)
@@ -206,6 +244,42 @@ page 50211 "Asset Role Center"
                 Caption = 'Asset History';
                 RunObject = report "Asset History";
                 ToolTip = 'Opens Asset History.';
+            }
+        }
+
+        area(Processing)
+        {
+            action(RegisterReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Asset Register';
+                Image = Report;
+                RunObject = report "Asset Register";
+                ToolTip = 'Run the asset register report.';
+            }
+            action(OverdueReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Overdue Assets';
+                Image = Report;
+                RunObject = report "Overdue Assets";
+                ToolTip = 'Run the overdue assets report.';
+            }
+            action(AssignmentsReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Asset Assignments';
+                Image = Report;
+                RunObject = report "Asset Assignments";
+                ToolTip = 'Run the asset assignments report.';
+            }
+            action(PendingReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Pending Asset Requests';
+                Image = Report;
+                RunObject = report "Pending Asset Requests";
+                ToolTip = 'Run the pending asset requests report.';
             }
         }
     }

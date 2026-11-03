@@ -1,7 +1,7 @@
 table 50205 "Asset Cue"
 {
     Caption = 'Asset Cue';
-    DataClassification = CustomerContent;
+    DataClassification = SystemMetadata;
 
     fields
     {
@@ -10,6 +10,7 @@ table 50205 "Asset Cue"
             Caption = 'Primary Key';
             DataClassification = SystemMetadata;
         }
+
         field(10; "Available Assets"; Integer)
         {
             Caption = 'Available Assets';
@@ -60,6 +61,13 @@ table 50205 "Asset Cue"
             CalcFormula = count("Asset Notification" where(Read = const(false), "Recipient User ID" = field("User ID Filter")));
             Editable = false;
         }
+        field(20; "Pending Approvals"; Integer)
+        {
+            Caption = 'Pending Approvals';
+            FieldClass = FlowField;
+            CalcFormula = count("Asset Request Header" where(Status = const("Pending Approval")));
+            Editable = false;
+        }
         field(30; "Overdue Date Filter"; Date)
         {
             Caption = 'Overdue Date Filter';
@@ -70,6 +78,7 @@ table 50205 "Asset Cue"
             Caption = 'User ID Filter';
             FieldClass = FlowFilter;
         }
+
     }
     keys
     {
