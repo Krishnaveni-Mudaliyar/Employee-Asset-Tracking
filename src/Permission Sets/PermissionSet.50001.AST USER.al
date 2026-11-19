@@ -1,0 +1,49 @@
+permissionset 50001 "AST-USER"
+{
+    Assignable = true;
+    Caption = 'Asset Tracking - Employee Self-Service';
+
+    Permissions =
+        // Master data — read only, employees don't manage categories/brands/setup
+        tabledata "Asset Setup" = R,
+        tabledata "Asset Category" = R,
+        tabledata "Asset Sub Category" = R,
+        tabledata "Asset Brand" = R,
+        tabledata "Fixed Asset" = R,
+
+        // Own requests — full rights to create/edit/send/cancel their own requests
+        tabledata "Asset Request Header" = RIMD,
+        tabledata "Asset Request Line" = RIMD,
+
+        // Assignment/return/transfer/maintenance/disposal history — read only;
+        // the actual state-changing actions (Assign/Return/Transfer/Send to
+        // Maintenance/Dispose) are intended for AST-ADMIN, not self-service.
+        tabledata "Asset Assignment" = R,
+        tabledata "Asset Return" = R,
+        tabledata "Asset Transfer" = R,
+        tabledata "Asset Maintenance" = R,
+        tabledata "Asset Disposal" = R,
+        tabledata "Asset Notification" = RIMD,
+         tabledata "Asset Cue" = RIMD,
+
+        // Codeunits needed to send/cancel their own approval request
+        codeunit "Asset Setup Management" = X,
+        codeunit "Asset Request Management" = X,
+        codeunit "Asset Request Workflow Respons" = X,
+        codeunit "Asset Request Approval Mgmt." = X,
+        codeunit "Asset Request Workflow Events" = X,
+        codeunit "Asset Request Approval Events" = X,
+        codeunit "Asset Notification Management" = X,
+
+        // Pages
+        page "Asset Request Card" = X,
+        page "Asset Request Subpage" = X,
+        page "Asset Request List" = X,
+        page "Asset Assignment List" = X,
+        page "Asset Assignment Hist. FactBox" = X,
+        page "Employee Active Asset Assign" = X,
+        page "Asset Notifications" = X,
+        page "Asset Activities" = X,
+        page "Asset Headline" = X,
+        page "Asset Role Center" = X;
+}
