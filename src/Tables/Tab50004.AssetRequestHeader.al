@@ -1,4 +1,4 @@
-table 50206 "Asset Request Header"
+table 50004 "Asset Request Header"
 {
     Caption = 'Asset Request Header';
     DataClassification = CustomerContent;

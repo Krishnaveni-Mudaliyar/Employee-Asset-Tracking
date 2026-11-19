@@ -1,4 +1,4 @@
-codeunit 50207 "Asset Tracking Mgt. Tests"
+codeunit 50050 "Asset Tracking Mgt. Tests"
 {
     Subtype = Test;
 

@@ -1,6 +1,6 @@
-table 50204 "Asset Brand"
+table 50001 "Asset Category"
 {
-    Caption = 'Asset Brand';
+    Caption = 'Asset Category';
     DataClassification = CustomerContent;
 
     fields
@@ -16,10 +16,6 @@ table 50204 "Asset Brand"
         field(3; Blocked; Boolean)
         {
             Caption = 'Blocked';
-        }
-        field(4; "Brand Code"; Code[10])
-        {
-            Caption = 'Asset Brand Code';
         }
     }
     keys

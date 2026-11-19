@@ -1,4 +1,4 @@
-report 50204 "Employee Assets"
+report 50004 "Employee Assets"
 {
     ApplicationArea = All;
     Caption = 'Employee Asset Report';

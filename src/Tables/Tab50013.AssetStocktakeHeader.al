@@ -1,4 +1,4 @@
-table 50214 "Asset Stocktake Header"
+table 50013 "Asset Stocktake Header"
 {
     Caption = 'Asset Stocktake Header';
     DataClassification = CustomerContent;

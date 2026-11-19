@@ -1,4 +1,4 @@
-table 50209 "Asset Return"
+table 50007 "Asset Return"
 {
     Caption = 'Asset Return';
     DataClassification = CustomerContent;

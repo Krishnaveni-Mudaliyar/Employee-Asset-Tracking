@@ -1,4 +1,4 @@
-table 50207 "Asset Request Line"
+table 50005 "Asset Request Line"
 {
     Caption = 'Asset Request Line';
     DataClassification = CustomerContent;

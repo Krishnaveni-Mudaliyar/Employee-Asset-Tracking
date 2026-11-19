@@ -1,6 +1,6 @@
-table 50202 "Asset Category"
+table 50002 "Asset Sub Category"
 {
-    Caption = 'Asset Category';
+    Caption = 'Asset Sub Category';
     DataClassification = CustomerContent;
 
     fields
@@ -13,7 +13,12 @@ table 50202 "Asset Category"
         {
             Caption = 'Description';
         }
-        field(3; Blocked; Boolean)
+        field(3; "Category Code"; Code[20])
+        {
+            Caption = 'Category Code';
+            TableRelation = "Asset Category".Code;
+        }
+        field(4; "Blocked"; Boolean)
         {
             Caption = 'Blocked';
         }
@@ -24,5 +29,6 @@ table 50202 "Asset Category"
         {
             Clustered = true;
         }
+        key(Category; "Category Code") { }
     }
 }

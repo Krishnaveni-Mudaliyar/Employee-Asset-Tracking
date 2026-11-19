@@ -1,4 +1,4 @@
-report 50209 "Asset Label"
+report 50013 "Asset Label"
 {
     ApplicationArea = All;
     Caption = 'Asset Labels';

@@ -1,4 +1,4 @@
-table 50205 "Asset Cue"
+table 50011 "Asset Cue"
 {
     Caption = 'Asset Cue';
     DataClassification = SystemMetadata;

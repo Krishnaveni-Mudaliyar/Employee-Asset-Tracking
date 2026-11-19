@@ -1,4 +1,4 @@
-report 50205 "Asset Assignments"
+report 50002 "Asset Assignments"
 {
     ApplicationArea = All;
     Caption = 'Asset Assignments';
