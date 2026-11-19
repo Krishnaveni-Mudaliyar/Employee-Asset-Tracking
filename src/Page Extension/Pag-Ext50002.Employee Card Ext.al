@@ -4,7 +4,7 @@ pageextension 50002 "Employee Card Ext." extends "Employee Card"
     {
         addlast(FactBoxes)
         {
-            part(AssignedAssets; "Emp. Active Asset Assgn.")
+            part(AssignedAssets; "Employee Active Asset Assign")
             {
                 ApplicationArea = All;
                 Caption = 'Assigned Assets';

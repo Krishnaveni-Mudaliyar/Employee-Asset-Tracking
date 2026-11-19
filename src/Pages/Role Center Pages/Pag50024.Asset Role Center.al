@@ -8,10 +8,10 @@ page 50024 "Asset Role Center"
     {
         area(RoleCenter)
         {
-            part(Cues; "Asset Cues")
-            {
-                ApplicationArea = All;
-            }
+            // part(Cues; "Asset Cues")
+            // {
+            //     ApplicationArea = All;
+            // }
             part(Headline; "Asset Headline")
             {
                 ApplicationArea = All;

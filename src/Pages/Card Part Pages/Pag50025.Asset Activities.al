@@ -48,7 +48,7 @@ page 50025 "Asset Activities"
                     DrillDownPageId = "Asset Assignment List";
                     ToolTip = 'Specifies the number of assignments that are past their expected return date.';
                 }
-                field("Under Maintenance"; Rec."Under Maintenance")
+                field("Under Maintenance"; Rec."Assets Under Maintenance")
                 {
                     ApplicationArea = All;
                     DrillDownPageId = "Asset Maintenance List";

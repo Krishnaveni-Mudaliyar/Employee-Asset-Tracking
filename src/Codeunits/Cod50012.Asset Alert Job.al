@@ -36,10 +36,10 @@ codeunit 50012 "Asset Alert Job"
     begin
         if not AssetSetup.Get() then
             exit;
-        if AssetSetup."Warranty Alert User ID" = '' then
+        if AssetSetup."Alert Recipient User ID" = '' then
             exit;
 
-        AlertDays := AssetSetup."Warranty Alert Days";
+        AlertDays := AssetSetup."Warranty Alert Lead Days";
         if AlertDays = 0 then
             AlertDays := 30;
 
@@ -47,7 +47,7 @@ codeunit 50012 "Asset Alert Job"
         if FixedAsset.FindSet() then
             repeat
                 SendOnce(
-                    AssetSetup."Warranty Alert User ID",
+                    AssetSetup."Alert Recipient User ID",
                     StrSubstNo('Warranty for asset %1 expires on %2.', FixedAsset."No.", FixedAsset."Warranty End Date"),
                     FixedAsset."No.");
             until FixedAsset.Next() = 0;
