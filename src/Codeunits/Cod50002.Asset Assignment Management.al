@@ -21,16 +21,24 @@ codeunit 50002 "Asset Assignment Management"
                 AssetRequestLine."Approved Quantity");
 
         Asset.Get(AssetNo);
-        if Asset."Blocked" then
+
+        if Asset.Blocked then
             Error('Asset %1 is blocked and cannot be assigned.', AssetNo);
+
+        if Asset.Inactive then
+            Error('Asset %1 is inactive in Fixed Assets and cannot be assigned.', AssetNo);
+
+        case Asset."Asset Status" of
+            Asset."Asset Status"::Assigned:
+                Error('Asset %1 is already assigned to another employee.', AssetNo);
+            Asset."Asset Status"::"Under Maintenance":
+                Error('Asset %1 is under maintenance and cannot be assigned.', AssetNo);
+            Asset."Asset Status"::Disposed:
+                Error('Asset %1 has been disposed and cannot be assigned.', AssetNo);
+        end;
 
         if Asset."Asset Status" <> Asset."Asset Status"::Available then
             Error('Asset %1 is not Available (current status: %2).', AssetNo, Asset."Asset Status");
-
-        if Asset.Blocked or Asset.Inactive then
-            Error(
-                'Asset %1 is inactive or blocked in Fixed Assets and cannot be assigned.',
-                AssetNo);
 
         if (AssetRequestLine."Asset Category Code" <> '') and
      (Asset."Asset Category Code" <> AssetRequestLine."Asset Category Code")

@@ -119,7 +119,7 @@ table 50005 "Asset Request Line"
     }
     keys
     {
-        key(PK; "Document No.")
+        key(PK; "Document No.", "Line No.")
         {
             Clustered = true;
         }

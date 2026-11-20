@@ -31,129 +31,150 @@ pageextension 50001 "Fixed Asset List Ext" extends "Fixed Asset List"
             }
         }
     }
-    // actions
-    // {
-    //     addlast(processing)
-    //     {
-    //         action(AssetHistoryReport)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Asset History';
-    //             Image = Report;
-    //             ToolTip = 'Runs the asset history report for the selected assets.';
+    actions
+    {
+        addlast(Processing)
+        {
+            action(AssetRegisterReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Asset Register';
+                Image = Report;
+                ToolTip = 'Runs the asset register for all assets.';
 
-    //             trigger OnAction()
-    //             var
-    //                 FixedAsset: Record "Fixed Asset";
-    //             begin
-    //                 CurrPage.SetSelectionFilter(FixedAsset);
-    //                 Report.Run(Report::"Asset History Report", true, false, FixedAsset);
-    //             end;
-    //         }
+                trigger OnAction()
+                begin
+                    Report.Run(Report::"Asset Register", true, false);
+                end;
+            }
+            action(AssetHistoryReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Asset History';
+                Image = Report;
+                ToolTip = 'Runs the asset history report for the selected assets.';
 
-    //         action(BulkReturnAssets)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Return Selected Assets';
-    //             Image = ReturnOrder;
-    //             ToolTip = 'Returns all selected assigned assets with the same condition and remarks.';
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                begin
+                    CurrPage.SetSelectionFilter(FixedAsset);
+                    Report.Run(Report::"Asset History", true, false, FixedAsset);
+                end;
+            }
+            action(OverdueAssetReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Overdue Assets';
+                Image = Report;
+                RunObject = report "Overdue Assets";
+                ToolTip = 'Runs the overdue assets report.';
+            }
+            action(PrintAssetLabels)
+            {
+                ApplicationArea = All;
+                Caption = 'Print Asset Labels';
+                Image = BarCode;
+                ToolTip = 'Prints labels for the selected assets.';
 
-    //             trigger OnAction()
-    //             var
-    //                 FixedAsset: Record "Fixed Asset";
-    //                 ReturnAssetDialog: Page "Return Asset Dialog";
-    //                 AssetBulkManagement: Codeunit "Asset Bulk Management";
-    //                 Processed: Integer;
-    //                 Skipped: Integer;
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                begin
+                    CurrPage.SetSelectionFilter(FixedAsset);
+                    Report.Run(Report::"Asset Label", true, false, FixedAsset);
+                end;
+            }
+            action(ShowAssignments)
+            {
+                ApplicationArea = All;
+                Caption = 'Assignment History';
+                Image = History;
+                RunObject = page "Asset Assignment List";
+                RunPageLink = "Asset No." = field("No.");
+                ToolTip = 'Opens all assignments for the selected asset.';
+            }
+            action(BulkReturnAssets)
+            {
+                ApplicationArea = All;
+                Caption = 'Return Selected Assets';
+                Image = ReturnOrder;
+                ToolTip = 'Returns all selected assigned assets with the same condition and remarks.';
 
-    //             begin
-    //                 CurrPage.SetSelectionFilter(FixedAsset);
-    //                 if ReturnAssetDialog.RunModal() <>
-    //                 Action::OK then
-    //                     exit;
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                    ReturnAssetDialog: Page "Return Asset Dialog";
+                    AssetBulkManagement: Codeunit "Asset Bulk Management";
+                    Processed: Integer;
+                    Skipped: Integer;
+                begin
+                    CurrPage.SetSelectionFilter(FixedAsset);
+                    if ReturnAssetDialog.RunModal() <> Action::OK then
+                        exit;
 
-    //                 Processed := AssetBulkManagement.BulkReturn(FixedAsset,
-    //                 ReturnAssetDialog.GetCondition(),
-    //                 ReturnAssetDialog.GetRemarks(),
-    //                 Skipped);
-    //                 CurrPage.Update(false);
-    //             end;
-    //         }
+                    Processed := AssetBulkManagement.BulkReturn(
+                        FixedAsset,
+                        ReturnAssetDialog.GetCondition(),
+                        ReturnAssetDialog.GetRemarks(),
+                        Skipped);
 
-    //         action(BulkTransferAssets)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Transfer Selected Assets';
-    //             Image = TransferOrder;
-    //             ToolTip = 'Transfers all selected assigned assets to the same employee.';
+                    Message('%1 asset(s) returned. %2 skipped because they are not assigned.', Processed, Skipped);
+                    CurrPage.Update(false);
+                end;
+            }
+            action(BulkTransferAssets)
+            {
+                ApplicationArea = All;
+                Caption = 'Transfer Selected Assets';
+                Image = TransferOrder;
+                ToolTip = 'Transfers all selected assigned assets to the same employee.';
 
-    //             trigger OnAction()
-    //             var
-    //                 FixedAsset: Record "Fixed Asset";
-    //                 TransferAssetDialog: Page "Transfer Asset Dialog";
-    //                 AssetBulkManagement: Codeunit "Asset Bulk Management";
-    //                 Processed: Integer;
-    //                 Skipped: Integer;
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                    TransferAssetDialog: Page "Transfer Asset Dialog";
+                    AssetBulkManagement: Codeunit "Asset Bulk Management";
+                    Processed: Integer;
+                    Skipped: Integer;
+                begin
+                    CurrPage.SetSelectionFilter(FixedAsset);
+                    if TransferAssetDialog.RunModal() <> Action::OK then
+                        exit;
 
-    //             begin
-    //                 CurrPage.SetSelectionFilter(FixedAsset);
-    //                 if TransferAssetDialog.RunModal() <> Action::OK then
-    //                     exit;
+                    Processed := AssetBulkManagement.BulkTransfer(
+                        FixedAsset,
+                        TransferAssetDialog.GetToEmployeeNo(),
+                        TransferAssetDialog.GetToLocationCode(),
+                        TransferAssetDialog.GetRemarks(),
+                        Skipped);
 
-    //                 Processed := AssetBulkManagement.BulkTransfer(
-    //                     FixedAsset,
-    //                     TransferAssetDialog.GetToEmployeeNo(),
-    //                     TransferAssetDialog.GetToLocationCode(),
-    //                     TransferAssetDialog.GetRemarks(),
-    //                     Skipped);
+                    Message('%1 asset(s) transferred. %2 skipped because they are not assigned.', Processed, Skipped);
+                    CurrPage.Update(false);
+                end;
+            }
+            action(ImportAssetsFromExcel)
+            {
+                ApplicationArea = All;
+                Caption = 'Import Assets from Excel';
+                Image = ImportExcel;
+                ToolTip = 'Creates assets from an Excel file. Columns: Description, Category, Sub Category, Brand, Model, Serial No., Tag No., Location, Warranty Start, Warranty End.';
 
-    //                 Message('%1 asset(s) transferred. %2 skipped because they are not assigned',
-    //                 Processed, Skipped);
-    //                 CurrPage.Update(false);
-    //             end;
-    //         }
+                trigger OnAction()
+                var
+                    AssetExcelImport: Codeunit "Asset Excel Import";
+                    InStr: InStream;
+                    FileName: Text;
+                    Created: Integer;
+                begin
+                    if not UploadIntoStream('Select the Excel file', '', 'Excel Files (*.xlsx)|*.xlsx', FileName, InStr) then
+                        exit;
 
-    //         action(ImportAssetsFromExcel)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Import Assets from Excel';
-    //             Image = ImportExcel;
-    //             ToolTip = 'Creates assets from an Excel File.Columns: Description,Category, Sub Category, Brand, Model, Serial No., Tag No., Location, Warranty Start, Warranty End';
-
-    //             trigger OnAction()
-    //             var
-    //                 AssetExcelImport: Codeunit "Asset Excel Import";
-    //                 InStr: InStream;
-    //                 FileName: Text;
-    //                 Created: Integer;
-    //             begin
-    //                 if not UploadIntoStream('Select the Excel file', '', 'Excel Files (*.xlsx)|*.xlsx',
-    //                 FileName, InStr) then
-    //                     exit;
-
-    //                 Created := AssetExcelImport.ImportFromStream(InStr);
-    //                 Message('%1 asset(s) imported.', Created);
-    //                 CurrPage.Update(false);
-    //             end;
-    //         }
-
-    //         action(OverdueAssetReport)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Overdue Assets';
-    //             Image = Report;
-    //             RunObject = report "Overdue Asset Report";
-    //             ToolTip = 'Runs the overdue asset report.';
-    //         }
-
-    //         action(PrintAssetLabels)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Print Asset Labels';
-    //             Image = BarCode;
-    //             RunObject = report "Asset Label Report";
-    //             ToolTip = 'Prints asset labels with a code 39 barcode of the asset tag (or asset no. if no tag).';
-    //         }
-    //     }
-    // }
+                    Created := AssetExcelImport.ImportFromStream(InStr);
+                    Message('%1 asset(s) imported.', Created);
+                    CurrPage.Update(false);
+                end;
+            }
+        }
+    }
 }

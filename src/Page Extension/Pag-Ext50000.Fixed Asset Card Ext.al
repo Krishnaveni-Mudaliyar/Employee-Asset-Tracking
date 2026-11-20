@@ -65,7 +65,7 @@ pageextension 50000 "Fixed Asset Card Ext" extends "Fixed Asset Card"
                 }
             }
         }
-        addlast(factboxes)
+        addlast(FactBoxes)
         {
             part(AssignmentHistory; "Asset Assignment Hist. FactBox")
             {
@@ -176,39 +176,39 @@ pageextension 50000 "Fixed Asset Card Ext" extends "Fixed Asset Card"
                     CurrPage.Update(false);
                 end;
             }
-            // action(AssetHistoryReport)
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Asset History';
-            //     Image = Report;
-            //     ToolTip = 'Runs the asset history report for this asset.';
+            action(AssetHistoryReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Asset History';
+                Image = Report;
+                ToolTip = 'Runs the asset history report for this asset.';
 
-            //     trigger OnAction()
-            //     var
-            //         FixedAsset: Record "Fixed Asset";
-            //     begin
-            //         FixedAsset.SetRange("No.", Rec."No.");
-            //         Report.Run(Report::"Asset History Report", true, false, FixedAsset);
-            //     end;
-            // }
-            // action(ShowAssignments)
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Assignment History';
-            //     Image = History;
-            //     RunObject = page "Asset Assignment List";
-            //     RunPageLink = "Asset No." = field("No.");
-            //     ToolTip = 'Opens all assignments for this asset.';
-            // }
-            // action(ShowMaintenance)
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Maintenance History';
-            //     Image = History;
-            //     RunObject = page "Asset Maintenance List";
-            //     RunPageLink = "Asset No." = field("No.");
-            //     ToolTip = 'Opens all maintenance entries for this asset.';
-            // }
+                trigger OnAction()
+                var
+                    FixedAsset: Record "Fixed Asset";
+                begin
+                    FixedAsset.SetRange("No.", Rec."No.");
+                    Report.Run(Report::"Asset History", true, false, FixedAsset);
+                end;
+            }
+            action(ShowAssignments)
+            {
+                ApplicationArea = All;
+                Caption = 'Assignment History';
+                Image = History;
+                RunObject = page "Asset Assignment List";
+                RunPageLink = "Asset No." = field("No.");
+                ToolTip = 'Opens all assignments for this asset.';
+            }
+            action(ShowMaintenance)
+            {
+                ApplicationArea = All;
+                Caption = 'Maintenance History';
+                Image = History;
+                RunObject = page "Asset Maintenance List";
+                RunPageLink = "Asset No." = field("No.");
+                ToolTip = 'Opens all maintenance entries for this asset.';
+            }
         }
     }
 }

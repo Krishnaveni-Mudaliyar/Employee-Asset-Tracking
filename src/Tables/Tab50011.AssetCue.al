@@ -15,8 +15,7 @@ table 50011 "Asset Cue"
         {
             Caption = 'Available Assets';
             FieldClass = FlowField;
-            CalcFormula = count("Fixed Asset"
-                           where("Asset Status" = const(Assigned)));
+            CalcFormula = count("Fixed Asset" where("Asset Status" = const(Available), Blocked = const(false)));
             Editable = false;
         }
         field(11; "Assigned Assets"; Integer)
@@ -61,11 +60,39 @@ table 50011 "Asset Cue"
             CalcFormula = count("Asset Notification" where(Read = const(false), "Recipient User ID" = field("User ID Filter")));
             Editable = false;
         }
+        field(17; "Open Requests"; Integer)
+        {
+            Caption = 'Open Requests';
+            FieldClass = FlowField;
+            CalcFormula = count("Asset Request Header" where(Status = const(Open)));
+            Editable = false;
+        }
+        field(18; "Disposed Assets"; Integer)
+        {
+            Caption = 'Disposed Assets';
+            FieldClass = FlowField;
+            CalcFormula = count("Fixed Asset" where("Asset Status" = const(Disposed)));
+            Editable = false;
+        }
+        field(19; "Due This Week"; Integer)
+        {
+            Caption = 'Due This Week';
+            FieldClass = FlowField;
+            CalcFormula = count("Asset Assignment" where(Active = const(true), "Expected Return Date" = field("Due Date Filter")));
+            Editable = false;
+        }
         field(20; "Pending Approvals"; Integer)
         {
             Caption = 'Pending Approvals';
             FieldClass = FlowField;
             CalcFormula = count("Asset Request Header" where(Status = const("Pending Approval")));
+            Editable = false;
+        }
+        field(21; "Expiring Warranties"; Integer)
+        {
+            Caption = 'Expiring Warranties';
+            FieldClass = FlowField;
+            CalcFormula = count("Fixed Asset" where(Blocked = const(false), "Warranty End Date" = field("Warranty Date Filter")));
             Editable = false;
         }
         field(30; "Overdue Date Filter"; Date)
@@ -78,7 +105,16 @@ table 50011 "Asset Cue"
             Caption = 'User ID Filter';
             FieldClass = FlowFilter;
         }
-
+        field(32; "Due Date Filter"; Date)
+        {
+            Caption = 'Due Date Filter';
+            FieldClass = FlowFilter;
+        }
+        field(33; "Warranty Date Filter"; Date)
+        {
+            Caption = 'Warranty Date Filter';
+            FieldClass = FlowFilter;
+        }
     }
     keys
     {

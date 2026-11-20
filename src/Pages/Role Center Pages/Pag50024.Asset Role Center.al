@@ -8,10 +8,6 @@ page 50024 "Asset Role Center"
     {
         area(RoleCenter)
         {
-            // part(Cues; "Asset Cues")
-            // {
-            //     ApplicationArea = All;
-            // }
             part(Headline; "Asset Headline")
             {
                 ApplicationArea = All;
@@ -245,41 +241,22 @@ page 50024 "Asset Role Center"
                 RunObject = report "Asset History";
                 ToolTip = 'Opens Asset History.';
             }
-        }
+            action(RepAssignmentHistory)
+            {
+                ApplicationArea = All;
+                Caption = 'Assignment History';
+                Image = Report;
+                RunObject = report "Asset Assignment History";
+                ToolTip = 'Opens the asset assignment history report.';
+            }
 
-        area(Processing)
-        {
-            action(RegisterReport)
+            action(RepLabel)
             {
                 ApplicationArea = All;
-                Caption = 'Asset Register';
-                Image = Report;
-                RunObject = report "Asset Register";
-                ToolTip = 'Run the asset register report.';
-            }
-            action(OverdueReport)
-            {
-                ApplicationArea = All;
-                Caption = 'Overdue Assets';
-                Image = Report;
-                RunObject = report "Overdue Assets";
-                ToolTip = 'Run the overdue assets report.';
-            }
-            action(AssignmentsReport)
-            {
-                ApplicationArea = All;
-                Caption = 'Asset Assignments';
-                Image = Report;
-                RunObject = report "Asset Assignments";
-                ToolTip = 'Run the asset assignments report.';
-            }
-            action(PendingReport)
-            {
-                ApplicationArea = All;
-                Caption = 'Pending Asset Requests';
-                Image = Report;
-                RunObject = report "Pending Asset Requests";
-                ToolTip = 'Run the pending asset requests report.';
+                Caption = 'Asset Labels';
+                Image = BarCode;
+                RunObject = report "Asset Label";
+                ToolTip = 'Prints asset labels.';
             }
         }
     }
