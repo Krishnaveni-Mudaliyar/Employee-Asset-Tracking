@@ -1,7 +1,7 @@
 codeunit 50050 "Asset Tracking Mgt. Tests"
 {
     Subtype = Test;
-    TestIsolation = Function;
+    // TestIsolation = Function;
 
     var
         LibraryAssert: Codeunit "Library Assert";
