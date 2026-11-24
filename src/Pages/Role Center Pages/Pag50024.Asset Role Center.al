@@ -20,6 +20,10 @@ page 50024 "Asset Role Center"
             {
                 ApplicationArea = All;
             }
+            part(CategoryChart; "Asset Category Chart")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

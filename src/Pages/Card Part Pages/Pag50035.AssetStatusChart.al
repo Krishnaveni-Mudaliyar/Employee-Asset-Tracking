@@ -48,7 +48,7 @@ page 50035 "Asset Status Chart"
     begin
         Rec.Initialize();
         Rec.AddMeasure('Assets', 1, Rec."Data Type"::Integer, Rec."Chart Type"::Column);
-        Rec.SetXDimension('Status', Rec."Data Type"::String);
+        Rec.SetXAxis('Status', Rec."Data Type"::String);
 
         StatusNames := Enum::"Asset Status".Names();
         StatusOrdinals := Enum::"Asset Status".Ordinals();
@@ -59,6 +59,6 @@ page 50035 "Asset Status Chart"
             Rec.SetValueByIndex(0, i - 1, FixedAsset.Count());
         end;
 
-        Rec.Update(CurrPage.StatusChart);
+        Rec.UpdateChart(CurrPage.StatusChart);
     end;
 }
