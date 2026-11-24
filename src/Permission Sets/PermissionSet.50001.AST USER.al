@@ -48,5 +48,6 @@ permissionset 50001 "AST-USER"
         page "Asset Headline" = X,
         page "Asset Category List" = X,
         page "Asset Sub Category List" = X,
+        page "Asset Status Chart" = X,
         page "Asset Role Center" = X;
 }

@@ -16,6 +16,10 @@ page 50024 "Asset Role Center"
             {
                 ApplicationArea = All;
             }
+            part(StatusChart; "Asset Status Chart")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
