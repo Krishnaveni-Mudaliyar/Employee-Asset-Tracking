@@ -10,6 +10,7 @@ permissionset 50001 "AST-USER"
         tabledata "Asset Sub Category" = R,
         tabledata "Asset Brand" = R,
         tabledata "Fixed Asset" = R,
+        tabledata "Employee" = R,
 
         // Own requests — full rights to create/edit/send/cancel their own requests
         tabledata "Asset Request Header" = RIMD,
@@ -24,7 +25,7 @@ permissionset 50001 "AST-USER"
         tabledata "Asset Maintenance" = R,
         tabledata "Asset Disposal" = R,
         tabledata "Asset Notification" = RIMD,
-         tabledata "Asset Cue" = RIMD,
+        tabledata "Asset Cue" = RIMD,
 
         // Codeunits needed to send/cancel their own approval request
         codeunit "Asset Setup Management" = X,
@@ -45,5 +46,7 @@ permissionset 50001 "AST-USER"
         page "Asset Notifications" = X,
         page "Asset Activities" = X,
         page "Asset Headline" = X,
+        page "Asset Category List" = X,
+        page "Asset Sub Category List" = X,
         page "Asset Role Center" = X;
 }
