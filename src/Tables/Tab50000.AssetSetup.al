@@ -63,6 +63,11 @@ table 50000 "Asset Setup"
             TableRelation = User."User Name";
             ValidateTableRelation = false;
         }
+        field(22; "Clearance Nos."; Code[20])
+        {
+            Caption = 'Clearance Nos.';
+            TableRelation = "No. Series".Code;
+        }
     }
     keys
     {

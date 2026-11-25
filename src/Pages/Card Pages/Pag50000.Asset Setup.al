@@ -49,6 +49,11 @@ page 50000 "Asset Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Disposal Nos. field.', Comment = '%';
                 }
+                field("Clearance Nos."; Rec."Clearance Nos.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the number series used for asset clearance documents.';
+                }
             }
             // group(StocktakeSetup)
             // {
