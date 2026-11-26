@@ -11,8 +11,7 @@
             Error('Asset %1 is blocked.', AssetNo);
 
         if Asset."Asset Status" <> Asset."Asset Status"::Available then
-            Error(
-                'Asset %1 must be Available before it can be sent to maintenance (current status: %2). Return or transfer it first if it is assigned.',
+            Error('Asset %1 must be Available before it can be sent to maintenance (current status: %2). Return or transfer it first if it is assigned.',
                 AssetNo, Asset."Asset Status");
 
         AssetMaintenance.Init();

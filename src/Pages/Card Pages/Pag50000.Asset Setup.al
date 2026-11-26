@@ -55,16 +55,6 @@ page 50000 "Asset Setup"
                     ToolTip = 'Specifies the number series used for asset clearance documents.';
                 }
             }
-            // group(StocktakeSetup)
-            // {
-            //     Caption = 'Stocktake';
-
-            //     field("Stocktake Nos."; Rec."Stocktake Nos.")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the number series used for asset stocktakes.';
-            //     }
-            // }
             group(Alerts)
             {
                 Caption = 'Alerts';
@@ -82,33 +72,4 @@ page 50000 "Asset Setup"
             }
         }
     }
-    // actions
-    // {
-    //     area(Processing)
-    //     {
-    //         action(EnableChangeLog)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Enable Change Log';
-    //             Image = Setup;
-    //             ToolTip = 'Activates the change log and logs inserts, changes and deletes on all asset tracking tables.';
-
-    //             trigger OnAction()
-    //             var
-    //                 AssetChangeLogMgt: Codeunit "Asset Change Log Management";
-    //             begin
-    //                 AssetChangeLogMgt.EnableChangeLog();
-    //                 Message('Change log enabled for asset tracking tables.');
-    //             end;
-    //         }
-    //         action(ChangeLogEntries)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Change Log Entries';
-    //             Image = ChangeLog;
-    //             RunObject = page "Change Log Entries";
-    //             ToolTip = 'Opens the change log entries.';
-    //         }
-    // }
-    // }
 }

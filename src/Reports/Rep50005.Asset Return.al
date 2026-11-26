@@ -10,7 +10,6 @@ report 50005 "Asset Return"
     {
         dataitem(AssetReturn; "Asset Return")
         {
-            // RequestFilterFields = "No.", "Asset No.", "Employee No.", "Return Date", Condition;
             RequestFilterFields = "Return Date", "Asset No.", "Employee No.";
 
             column(ReturnNo; "No.") { }
@@ -22,23 +21,6 @@ report 50005 "Asset Return"
             column(ConditionText; Format(Condition)) { }
             column(Remarks; Remarks) { }
             column(ReturnedBy; "Returned By") { }
-
-            // trigger OnAfterGetRecord()
-            // var
-            //     FixedAsset: Record "Fixed Asset";
-            //     Employee: Record Employee;
-            // begin
-            //     Clear(AssetDescription);
-            //     if FixedAsset.Get("Asset No.")
-            //     then
-            //         AssetDescription := FixedAsset.Description;
-
-            //     Clear(EmployeeName);
-            //     if Employee.Get("Employee No.")
-            //     then
-            //         EmployeeName := CopyStr(DelChr(Employee."First Name" + ' ' + Employee."Last Name", '<>', ' '), 1, MaxStrLen(EmployeeName));
-            // end;
-
 
             trigger OnAfterGetRecord()
             begin

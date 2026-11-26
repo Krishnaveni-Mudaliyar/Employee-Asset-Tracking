@@ -20,11 +20,6 @@ permissionset 50000 "AST-ADMIN"
         tabledata "Asset Disposal" = RIMD,
         tabledata "Asset Notification" = RIMD,
         tabledata "Asset Cue" = RIMD,
-        // tabledata "Asset Stocktake Header" = RIMD,
-        // tabledata "Asset Stocktake Line" = RIMD,
-        // tabledata "Change Log Setup" = RIMD,
-        // tabledata "Change Log Setup (Table)" = RIMD,
-        // tabledata "Change Log Entry" = R,
 
         // Codeunits — execute
         codeunit "Asset Setup Management" = X,
@@ -40,13 +35,7 @@ permissionset 50000 "AST-ADMIN"
         codeunit "Asset Disposal Management" = X,
         codeunit "Asset Tracking Mgt. Tests" = X,
         codeunit "Asset Notification Management" = X,
-        // codeunit "Asset Overdue Warranty Job" = X,
-        codeunit "Asset Alert Job" = X,
-        // codeunit "Asset Employee Events" = X,
-        // codeunit "Asset Bulk Management" = X,
-        // codeunit "Asset Excel Import" = X,
-        // codeunit "Asset Stocktake Management" = X,
-        // codeunit "Asset Change Log Management" = X,
+              codeunit "Asset Alert Job" = X,
 
         // Pages — execute
         page "Asset Setup" = X,
@@ -77,11 +66,6 @@ permissionset 50000 "AST-ADMIN"
          page "Asset Activities" = X,
         page "Asset Headline" = X,
         page "Asset Role Center" = X,
-        // page "Asset Cues" = X,
-        // page "Asset Role Center" = X,
-        // page "Asset Stocktake List" = X,
-        // page "Asset Stocktake Card" = X,
-        // page "Asset Stocktake Subpage" = X,
 
         // Reports
         report "Asset Register" = X,
@@ -91,6 +75,4 @@ permissionset 50000 "AST-ADMIN"
         report "Asset Handover" = X,
         report "Asset Return" = X,
         report "Asset History" = X;
-    // report "Employee Asset Report" = X,
-    // report "Asset Label Report" = X;
 }

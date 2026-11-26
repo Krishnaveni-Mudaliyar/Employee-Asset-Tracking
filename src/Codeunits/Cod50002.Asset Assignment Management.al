@@ -9,13 +9,11 @@ codeunit 50002 "Asset Assignment Management"
     begin
         AssetRequestHeader.Get(AssetRequestLine."Document No.");
         if AssetRequestHeader.Status <> AssetRequestHeader.Status::Approved then
-            Error(
-                'Asset request %1 must be Approved before assets can be assigned.',
+            Error('Asset request %1 must be Approved before assets can be assigned.',
                 AssetRequestHeader."No.");
 
         if AssetRequestLine."Assigned Quantity" >= AssetRequestLine."Approved Quantity" then
-            Error(
-                'Asset request line for %1 is already fully assigned (%2 of %3).',
+            Error('Asset request line for %1 is already fully assigned (%2 of %3).',
                 AssetRequestLine."Asset Category Code",
                 AssetRequestLine."Assigned Quantity",
                 AssetRequestLine."Approved Quantity");
@@ -43,16 +41,14 @@ codeunit 50002 "Asset Assignment Management"
         if (AssetRequestLine."Asset Category Code" <> '') and
      (Asset."Asset Category Code" <> AssetRequestLine."Asset Category Code")
   then
-            Error(
-                'Asset %1 does not belong to the requested category %2.',
+            Error('Asset %1 does not belong to the requested category %2.',
                 AssetNo,
                 AssetRequestLine."Asset Category Code");
 
         if (AssetRequestLine."Asset Sub Category Code" <> '') and
            (Asset."Asset Sub Category Code" <> AssetRequestLine."Asset Sub Category Code")
         then
-            Error(
-                'Asset %1 does not belong to the requested sub category %2.',
+            Error('Asset %1 does not belong to the requested sub category %2.',
                 AssetNo,
                 AssetRequestLine."Asset Sub Category Code");
 
@@ -84,8 +80,7 @@ codeunit 50002 "Asset Assignment Management"
         RemainingToAssign := AssetRequestLine."Approved Quantity" - AssetRequestLine."Assigned Quantity";
 
         if RemainingToAssign <= 0 then
-            Error(
-                'Asset request line for %1 is already fully assigned (%2 of %3).',
+            Error('Asset request line for %1 is already fully assigned (%2 of %3).',
                 AssetRequestLine."Asset Category Code",
                 AssetRequestLine."Assigned Quantity",
                 AssetRequestLine."Approved Quantity");
@@ -118,8 +113,7 @@ codeunit 50002 "Asset Assignment Management"
     begin
         AssetNotificationManagement.Notify(
             AssetRequestHeader."Requested By",
-            StrSubstNo(
-                'Asset %1 has been assigned to you for request %2.',
+            StrSubstNo('Asset %1 has been assigned to you for request %2.',
                 AssetNo,
                 AssetRequestHeader."No."),
             AssetRequestHeader."No.");

@@ -20,9 +20,7 @@ codeunit 50000 "Asset Setup Management"
     begin
         AssetSetup := GetSetup();
         if AssetSetup."Asset Request Nos." = '' then
-            Error(
-                'Asset No. Series must be specified in Asset Setup.');
-
+            Error('Asset No. Series must be specified in Asset Setup.');
         exit(
             NoSeries.GetNextNo(
                 AssetSetup."Asset Request Nos.",

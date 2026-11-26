@@ -48,6 +48,5 @@ page 50027 "Asset Headline"
     end;
 
     var
-        ApprovalHeadlineText: Text;
-        OverdueHeadlineText: Text;
+        ApprovalHeadlineText, OverdueHeadlineText : Text;
 }

@@ -1,7 +1,6 @@
 codeunit 50014 "Asset Bulk Management"
 {
-    procedure BulkReturn(var FixedAsset: Record "Fixed Asset";
-    Condition: Enum "Asset Condition"; Remarks: Text[250];
+    procedure BulkReturn(var FixedAsset: Record "Fixed Asset"; Condition: Enum "Asset Condition"; Remarks: Text[250];
     var Skipped: Integer): Integer
     var
         AssetReturnManagement: Codeunit "Asset Return Management";

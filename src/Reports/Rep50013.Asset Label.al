@@ -44,6 +44,5 @@ report 50013 "Asset Label"
     }
 
     var
-        BarcodeValue: Text;
-        BarcodeText: Text;
+        BarcodeValue, BarcodeText : Text;
 }

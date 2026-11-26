@@ -5,8 +5,7 @@
         Asset: Record "Fixed Asset";
         AssetAssignment: Record "Asset Assignment";
         AssetReturn: Record "Asset Return";
-    // AssetRequestHeader: Record "Asset Request Header";
-    // AssetNotificationManagement: Codeunit "Asset Notification Management";
+
     begin
         Asset.Get(AssetNo);
 
@@ -30,9 +29,6 @@
 
         Asset."Asset Condition" := Condition;
 
-        // A returned asset in New/Good/Fair condition goes straight back into the
-        // available pool; Damaged/Beyond Repair routes it to maintenance instead of
-        // silently becoming assignable again.
         case Condition of
             Condition::New, Condition::Good, Condition::Fair:
                 Asset."Asset Status" := Asset."Asset Status"::Available;
@@ -41,14 +37,6 @@
         end;
 
         Asset.Modify(true);
-        // if AssetRequestHeader.Get(
-        //     AssetAssignment."Document No.")
-        //     then
-        //     AssetNotificationManagement.Notify(
-        //         AssetRequestHeader."Requested By", StrSubstNo(
-        //             'Asset %1 has been returned (condition: %2).', AssetNo, Condition),
-        //         AssetRequestHeader."No.");
-
         NotifyRequesterOfReturn(AssetAssignment, AssetNo, Condition);
     end;
 

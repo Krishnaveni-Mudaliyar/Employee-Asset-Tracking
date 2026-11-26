@@ -15,11 +15,6 @@
 
         Employee.Get(ToEmployeeNo);
 
-        // if Employee.Status <> Employee.Status::Active then
-        //     Error('Employee %1 is not active and cannot receive assets.', ToEmployeeNo);
-        // if Asset."Blocked" then
-        //     Error('Asset %1 is blocked and cannot be transferred.', AssetNo);
-
         OldAssignment.SetRange("Asset No.", AssetNo);
         OldAssignment.SetRange(Active, true);
         if not OldAssignment.FindLast() then

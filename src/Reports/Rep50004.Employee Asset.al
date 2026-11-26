@@ -96,8 +96,7 @@ report 50004 "Employee Assets"
         AssignedOnlyOpt: Boolean;
         EmployeeNameText: Text[150];
         AssetDescription: Text[100];
-        AssetCategoryCode: Code[20];
-        AssetBrandCode: Code[20];
+        AssetCategoryCode, AssetBrandCode : Code[20];
         AssetSerialNo: Code[50];
 
     local procedure GetEmployeesWithAssetsFilter(): Text

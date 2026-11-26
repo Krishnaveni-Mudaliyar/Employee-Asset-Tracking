@@ -132,14 +132,9 @@ report 50009 "Asset History"
     end;
 
     var
-        EventDates: List of [Text];
-        EventTypes: List of [Text];
-        EventDocs: List of [Text];
-        EventDetails: List of [Text];
-        EventBys: List of [Text];
-        EventDateText: Text[20];
+        EventDates, EventTypes, EventDocs, EventDetails, EventBys : List of [Text];
+        EventDateText, EventDocText : Text[20];
         EventTypeText: Text[30];
-        EventDocText: Text[20];
         EventDetailText: Text[250];
         EventByText: Text[50];
 }

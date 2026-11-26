@@ -5,8 +5,8 @@ codeunit 50016 "Asset Stocktake Management"
         AssetStocktakeLine: Record "Asset Stocktake Line";
         FixedAsset: Record "Fixed Asset";
         AssetAssignment: Record "Asset Assignment";
-        LineNo: Integer;
-        Added: Integer;
+        LineNo, Added : Integer;
+
     begin
         AssetStocktakeHeader.TestField(Completed, false);
         if (AssetStocktakeHeader."Location Code" = '') and (AssetStocktakeHeader."Employee No." = '') then
@@ -48,8 +48,8 @@ codeunit 50016 "Asset Stocktake Management"
     var
         AssetStocktakeLine: Record "Asset Stocktake Line";
         AssetNotificationManagement: Codeunit "Asset Notification Management";
-        MissingCount: Integer;
-        MismatchCount: Integer;
+        MissingCount, MismatchCount : Integer;
+
     begin
         AssetStocktakeHeader.TestField(Completed, false);
 

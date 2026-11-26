@@ -170,7 +170,5 @@ page 50025 "Asset Activities"
     end;
 
     var
-        PendingStyle: Text;
-        OverdueStyle: Text;
-        WarrantyStyle: Text;
+        PendingStyle, OverdueStyle, WarrantyStyle : Text;
 }

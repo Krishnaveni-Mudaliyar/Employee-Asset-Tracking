@@ -1,18 +1,12 @@
 codeunit 50015 "Asset Excel Import"
 {
-    // Expected columns (row 1 = headers, data from row 2):
-    // A Description, B Category Code, C Sub Category Code, D Brand Code, E Model No.,
-    // F Serial No., G Tag No., H Location Code, I Warranty Start, J Warranty End
-
     procedure ImportFromStream(var InStr: InStream): Integer
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
         FixedAsset: Record "Fixed Asset";
-        SheetName: Text;
-        LastRow: Integer;
-        RowNo: Integer;
-        Created: Integer;
-        Description: Text;
+        SheetName, Description : Text;
+        LastRow, RowNo, Created : Integer;
+
     begin
         SheetName := TempExcelBuffer.SelectSheetsNameStream(InStr);
         if SheetName = '' then

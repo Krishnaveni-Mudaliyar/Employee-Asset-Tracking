@@ -8,8 +8,7 @@
         AssetRequestHeader.TestField("Employee No.");
 
         if AssetRequestHeader.Status <> AssetRequestHeader.Status::Open then
-            Error(
-                'Asset request %1 must have open status before it can be sent for approval.',
+            Error('Asset request %1 must have open status before it can be sent for approval.',
                 AssetRequestHeader."No.");
 
         AssetRequestHeader.OnSendAssetRequestForApproval(AssetRequestHeader);

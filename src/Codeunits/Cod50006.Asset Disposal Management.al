@@ -13,9 +13,6 @@
         if Asset."Asset Status" = Asset."Asset Status"::Disposed then
             Error('Asset %1 has already been disposed.', AssetNo);
 
-        // if Asset."Asset Status" = Asset."Asset Status"::"Under Maintenance" then
-        //     Error('Asset %1 is under maintenance.Complete the maintenance before disposing of it.', AssetNo);
-
         AssetDisposal.Init();
         AssetDisposal."Asset No." := AssetNo;
         AssetDisposal.Reason := Reason;

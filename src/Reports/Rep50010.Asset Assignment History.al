@@ -46,11 +46,7 @@ report 50010 "Asset Assignment History"
     }
 
     var
-        EmployeeName: Text;
-        AssetDescription: Text;
-        ReturnDateText: Text;
-        StatusText: Text;
-        ConditionText: Text;
+        EmployeeName, AssetDescription, ReturnDateText, StatusText, ConditionText : Text;
 
     local procedure GetEmployeeName(EmployeeNo: Code[20]): Text
     var

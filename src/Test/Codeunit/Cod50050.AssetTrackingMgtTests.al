@@ -6,7 +6,6 @@ codeunit 50050 "Asset Tracking Mgt. Tests"
         LibraryAssert: Codeunit "Library Assert";
 
     // ---------- Asset master ----------
-
     [TEST]
     procedure TestNewAssetDefaultAndNumbering()
     var
@@ -210,9 +209,7 @@ codeunit 50050 "Asset Tracking Mgt. Tests"
     var
         AssetRequestHeader: Record "Asset Request Header";
         AssetRequestLine: Record "Asset Request Line";
-        Asset1: Record "Fixed Asset";
-        Asset2: Record "Fixed Asset";
-        Asset3: Record "Fixed Asset";
+        Asset1, Asset2, Asset3 : Record "Fixed Asset";
         AssetAssignmentManagement: Codeunit "Asset Assignment Management";
         AssignedCount: Integer;
     begin
@@ -522,9 +519,6 @@ codeunit 50050 "Asset Tracking Mgt. Tests"
         AssetSetupManagement: Codeunit "Asset Setup Management";
     begin
         AssetSetup := AssetSetupManagement.GetSetup();
-        // NOTE: asset numbers come from the Fixed Asset number series in FA Setup.
-        // Configure it in the test company first; otherwise the numbering test fails
-        // with a clear setup error instead of passing silently.
     end;
 
     local procedure GetAnyEmployeeNo(): Code[20]

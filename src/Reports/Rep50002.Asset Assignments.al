@@ -15,8 +15,6 @@ report 50002 "Asset Assignments"
             RequestFilterFields = "Asset No.", "Employee No.", "Assignment Date";
 
             column(AssignmentNo; "No.") { }
-            // column(DocumentNo; "Document No.") { }
-            // column(RequestNo; "Document No.") { }
             column(AssetNo; "Asset No.") { }
             column(AssetDescription; AssetDescription) { }
             column(EmployeeNo; "Employee No.") { }
@@ -24,24 +22,7 @@ report 50002 "Asset Assignments"
             column(AssignmentDate; Format("Assignment Date")) { }
             column(ExpectedReturnDate; Format("Expected Return Date")) { }
             column(AssignedBy; "Assigned By") { }
-            // column(ActiveText; Format(Active)) { }
 
-            // trigger OnAfterGetRecord()
-            // var
-            //     FixedAsset: Record "Fixed Asset";
-            //     Employee: Record Employee;
-            // begin
-            //     Clear(AssetDescription);
-            //     if FixedAsset.Get("Asset No.") then
-            //         AssetDescription := FixedAsset.Description;
-
-            //     Clear(EmployeeName);
-            //     if Employee.Get("Employee No.") then
-            //         EmployeeName :=
-            //         CopyStr(
-            //             DelChr(Employee."First Name" + ' ' + Employee."Last Name", '<>', ' '),
-            //             1, MaxStrLen(EmployeeName));
-            // end;
             trigger OnAfterGetRecord()
             begin
                 EmployeeName := GetEmployeeName("Employee No.");
