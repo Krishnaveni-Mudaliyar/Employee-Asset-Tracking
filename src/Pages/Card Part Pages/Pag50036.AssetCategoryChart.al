@@ -46,7 +46,7 @@ page 50036 "Asset Category Chart"
         i: Integer;
     begin
         Rec.Initialize();
-        Rec.AddMeasure('Assets', 1, Rec."Data Type"::Integer, Rec."Chart Type"::Column);
+        Rec.AddIntegerMeasure('Assets', 1, Rec."Chart Type"::Column);
         Rec.SetXAxis('Category', Rec."Data Type"::String);
 
         AssetCategory.SetRange(Blocked, false);

@@ -121,7 +121,7 @@ page 50025 "Asset Activities"
                     {
                         ApplicationArea = All;
                         Caption = 'My Notifications';
-                        Image = TileBrickNotes;
+                        Image = TileInfo;
                         RunObject = page "Asset Notifications";
                         ToolTip = 'Open your asset notifications.';
                     }

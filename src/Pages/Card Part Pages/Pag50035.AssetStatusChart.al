@@ -47,7 +47,7 @@ page 50035 "Asset Status Chart"
         i: Integer;
     begin
         Rec.Initialize();
-        Rec.AddMeasure('Assets', 1, Rec."Data Type"::Integer, Rec."Chart Type"::Column);
+        Rec.AddIntegerMeasure('Assets', 1, Rec."Chart Type"::Column);
         Rec.SetXAxis('Status', Rec."Data Type"::String);
 
         StatusNames := Enum::"Asset Status".Names();
