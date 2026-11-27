@@ -69,6 +69,20 @@ table 50015 "Asset Clearance Header"
         {
             Caption = 'Remarks';
         }
+        field(10; "Total Lines"; Integer)
+        {
+            Caption = 'Total Lines';
+            FieldClass = FlowField;
+            CalcFormula = count("Asset Clearance Line" where("Clearance No." = field("No.")));
+            Editable = false;
+        }
+        field(11; "Open Lines"; Integer)
+        {
+            Caption = 'Open Lines';
+            FieldClass = FlowField;
+            CalcFormula = count("Asset Clearance Line" where("Clearance No." = field("No."), Action = const(Pending)));
+            Editable = false;
+        }
     }
     keys
     {
@@ -93,5 +107,15 @@ table 50015 "Asset Clearance Header"
 
         "Created Date" := Today();
         "Created By" := CopyStr(UserId(), 1, MaxStrLen("Created By"));
+    end;
+
+    trigger OnDelete()
+    var
+        AssetClearanceLine: Record "Asset Clearance Line";
+    begin
+        TestField(Status, Status::Open);
+
+        AssetClearanceLine.SetRange("Clearance No.", "No.");
+        AssetClearanceLine.DeleteAll(true);
     end;
 }
